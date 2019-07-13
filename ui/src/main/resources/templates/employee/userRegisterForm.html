@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <th:block layout:fragment="headersfragment">
+        <th:block th:replace="fragments :: headers-login"></th:block>
+    </th:block>
+    <title>Login form</title>
+</head>
+<body>
+<div layout:fragment="top-bar"></div>
+<div layout:fragment="side-bar"></div>
+<div layout:fragment="menubar">
+    <div th:replace="fragments :: menu-bar"></div>
+</div>
+<div layout:fragment="usermenu">
+    <div th:replace="fragments :: user-dropdown-menu"></div>
+</div>
+<div layout:fragment="container">
+    <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-dark">
+        <div class="auth-box bg-dark border-top border-secondary">
+            <div id="loginform">
+                <!-- Form -->
+                <form class="form-horizontal m-t-20" th:action="@{/register}" th:method="post" th:object="${user}">
+                    <div class="row colored-row"> <!-- wiersz -->
+                        <div class="col-12"> <!-- podział wiersza na kolumny-->
+                            <!-- 12 to max, czyli zajmujemy całą przestrzeń -->
+                            <h2>User Register Page</h2>
+                        </div>
+                    </div>
+                    <div class="row colored-row">
+                        <div class="col-6">
+                            <label for="input-email">Email:</label>
+                        </div>
+                        <div class="col-6">
+                            <input type="email" class="form-control" id="input-email" th:field="*{email}" required>
+                        </div>
+                    </div>
+                    <div class="row colored-row">
+                        <div class="col-6">
+                            <label for="input-password">Password:</label>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control" type="password" id="input-password" th:field="*{password}"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="row colored-row">
+                        <div class="col-6">
+                            <label for="input-password-confirm">Password confirm:</label>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control" type="password" id="input-password-confirm"
+                                   name="passwordConfirm"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="row colored-row">
+                        <div class="offset-2 col-8"> <!--odsuń od lewej strony o 2 kolumny -->
+                            <input class="form-control" type="submit" value="Register">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!--<div id="recoverform">-->
+            <!--<div class="text-center">-->
+            <!--<span class="text-white">Enter your e-mail address below and we will send you instructions how to recover a password.</span>-->
+            <!--</div>-->
+            <!--<div class="row m-t-20">-->
+            <!--&lt;!&ndash; Form &ndash;&gt;-->
+            <!--<form class="col-12" action="html/ltr/radarForm.html">-->
+            <!--&lt;!&ndash; email &ndash;&gt;-->
+            <!--<div class="input-group mb-3">-->
+            <!--<div class="input-group-prepend">-->
+            <!--<span class="input-group-text bg-danger text-white"><i class="ti-email"></i></span>-->
+            <!--</div>-->
+            <!--<input type="text" class="form-control form-control-lg" placeholder="Email Address" aria-label="Username" aria-describedby="basic-addon1">-->
+            <!--</div>-->
+            <!--&lt;!&ndash; pwd &ndash;&gt;-->
+            <!--<div class="row m-t-20 p-t-20 border-top border-secondary">-->
+            <!--<div class="col-12">-->
+            <!--<a class="btn btn-success" id="to-login" name="action">Back To Login</a>-->
+            <!--<button class="btn btn-info float-right" type="button" name="action">Recover</button>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</form>-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+<div layout:fragment="additonal-scripts">
+    <script>
+
+        $('[data-toggle="tooltip"]').tooltip();
+        $(".preloader").fadeOut();
+        // ==============================================================
+        // Login and Recover Password
+        // ==============================================================
+        $('#to-recover').on("click", function () {
+            $("#loginform").slideUp();
+            $("#recoverform").fadeIn();
+        });
+        $('#to-login').click(function () {
+
+            $("#recoverform").hide();
+            $("#loginform").fadeIn();
+        });
+    </script>
+</div>
+</body>
+</html>
+

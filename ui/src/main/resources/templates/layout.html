@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <th:block layout:fragment="headersfragment">
+        <div th:replace="matrix/fragments/headers::headers"></div>
+    </th:block>
+    <title>Index Page</title>
+</head>
+<body>
+
+<div id="main-wrapper">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- Topbar header - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div layout:fragment="side-bar">
+        <div th:replace="matrix/fragments/navigators :: sidebar"></div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Topbar header -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <div layout:fragment="top-bar">
+        <div th:replace="matrix/fragments/navigators :: topbar"></div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+
+    <!--main old site content-->
+    <div layout:fragment="container">
+        <div layout:fragment="content">
+        </div>
+    </div>
+</div>
+
+<div layout:fragment="base-scripts">
+    <div th:replace="matrix/fragments/footers:: basescripts"></div>
+</div>
+<div layout:fragment="additional-scripts"></div>
+</body>
+</html>

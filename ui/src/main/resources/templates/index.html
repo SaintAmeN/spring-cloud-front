@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{matrix/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Index Page</title>
+</head>
+<body>
+<div layout:fragment="menubar">
+    <div th:replace="matrix/fragments/navigators :: menu-bar"></div>
+</div>
+<div layout:fragment="usermenu">
+    <div th:replace="matrix/fragments/navigators :: user-dropdown-menu"></div>
+</div>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <main role="main" class="container">
+        <h1 class="mt-5" th:text="#{index.headertext}"></h1>
+        <p class="lead" th:text="#{index.paragraph.text}"></p>
+    </main>
+</div>
+</body>
+</html>

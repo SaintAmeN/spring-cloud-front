@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{matrix/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Create new radar form</title>
+</head>
+
+<body>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <main role="main" class="container">
+        <div class="container aligned-margines">
+            <div class="row container window aligned-margines">
+                <h2 class="table-head-title" th:text="#{add.radar.form.title}"></h2>
+                <form class="listing-container container" th:action="@{/radar/add}" method="post"
+                      th:object="${radarDto}">
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="mac" th:text="#{radar.mac}"></label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control2" style="width: 100%" id="mac" th:field="*{mac}" th:value="*{mac}"/>
+                        </div>
+                    </div>
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="serial" th:text="#{radar.serial.id}"></label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control2" style="width: 100%" id="serial" th:field="*{radarBoardSerialId}" th:value="*{radarBoardSerialId}"/>
+                        </div>
+                    </div>
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="offset-3 col-8">
+                            <input class="button form-control button-form-control" type="submit" th:value="#{ctrl.add}">
+                            <!--<div class="button w-100" th:onclick="goBack()"  th:text="#{ctrl.previous}"></div>-->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

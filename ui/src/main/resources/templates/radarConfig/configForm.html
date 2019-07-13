@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{matrix/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{config.form.title}"></title>
+</head>
+
+<body>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <main role="main" class="container">
+        <div class="container aligned-margines">
+            <div class="row container window aligned-margines">
+                <h2 class="table-head-title" th:text="#{config.form.title}"></h2>
+                <form class="listing-container container" th:action="@{'/configuration/'+${radarId}}" method="post"
+                      th:object="${configDto}">
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="version" th:text="#{config.add.version}"></label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control2" type="number" style="width: 100%" id="version" name="version" th:value="0"/>
+                        </div>
+                    </div>
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="rx[0]" th:text="#{config.add.rx}"></label>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control2" type="number" style="width: 100%" id="rx[0]" name="rx[0]" th:value="4"/>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control2" type="number" style="width: 100%" id="rx[1]" name="rx[1]" th:value="3"/>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control2" type="number" style="width: 100%" id="rx[2]" name="rx[2]" th:value="2"/>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control2" type="number" style="width: 100%" id="rx[3]" name="rx[3]" th:value="1"/>
+                        </div>
+                    </div>
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="tx" th:text="#{config.add.tx}"></label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control2" type="number" style="width: 100%" id="tx" name="tx" th:value="-1"/>
+                        </div>
+                    </div>
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="amplitude[0]" th:text="#{config.add.amplitude}"></label>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control2" type="number" step="0.001" style="width: 100%" id="amplitude[0]" name="amplitude[0]" th:value="1"/>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control2" type="number" step="0.001" style="width: 100%" id="amplitude[1]" name="amplitude[1]" th:value="1"/>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control2" type="number" step="0.001" style="width: 100%" id="amplitude[2]" name="amplitude[2]" th:value="1"/>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control2" type="number" step="0.001" style="width: 100%" id="amplitude[3]" name="amplitude[3]" th:value="1"/>
+                        </div>
+                    </div>
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="phase[0]" th:text="#{config.add.phase}"></label>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control2" type="number" style="width: 100%" id="phase[0]" name="phase[0]" th:value="0"/>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control2" type="number" style="width: 100%" id="phase[1]" name="phase[1]" th:value="0"/>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control2" type="number" style="width: 100%" id="phase[2]" name="phase[2]" th:value="0"/>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control2" type="number" style="width: 100%" id="phase[3]" name="phase[3]" th:value="0"/>
+                        </div>
+                    </div>
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="azimuth" th:text="#{config.add.azimuth}"></label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control2" type="number" step="0.1" style="width: 100%" id="azimuth" name="azimuth" th:value="0"/>
+                        </div>
+                    </div>
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="elevation" th:text="#{config.add.elevation}"></label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control2" type="number" step="0.1" style="width: 100%" id="elevation" name="elevation" th:value="0"/>
+                        </div>
+                    </div>
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="rxGain" th:text="#{config.add.rx.gain}"></label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control2" type="number" style="width: 100%" id="rxGain" name="rxGain" th:value="0"/>
+                        </div>
+                    </div>
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="txGain" th:text="#{config.add.tx.gain}"></label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control2" type="number" style="width: 100%" id="txGain" name="txGain" th:value="0"/>
+                        </div>
+                    </div>
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="txPower" th:text="#{config.add.power}"></label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control2" type="number" style="width: 100%" id="txPower" name="txPower" th:value="40"/>
+                        </div>
+                    </div>
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="col-3">
+                            <label for="dBmNormalization" th:text="#{config.add.normalization}"></label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control2" type="number" style="width: 100%" id="dBmNormalization" name="dBmNormalization" th:value="192"/>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row offset-md-1 col-md-10">
+                        <div class="offset-3 col-8">
+                            <input class="button form-control button-form-control" type="submit" th:value="#{ctrl.add}">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{matrix/layout}">
+<head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Configurations</title>
+</head>
+<body>
+<div layout:fragment="menubar">
+    <div th:replace="matrix/fragments/navigators :: menu-bar"></div>
+</div>
+<div layout:fragment="usermenu">
+    <div th:replace="matrix/fragments/navigators :: user-dropdown-menu"></div>
+</div>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <div class="col-lg-12 mb-4">
+        <div class="card shadow">
+            <div class="card-header col-12 aligned-margines shadow-table-header">
+                <h2 class="table-head-title" th:text="#{config.list.title}"></h2>
+                <h3 class="table-head-title" th:text="'for radar with id: '+${radarId}"></h3>
+            </div>
+
+            <div class="col-12 table" style="padding-right:15px">
+                <div class="row table-header shadow">
+                    <div class="col-05 border" th:text="#{config.id}"></div>
+                    <div class="col-05 border" th:text="#{config.version}"></div>
+                    <div class="col-2 border" th:text="#{config.rx}"></div>
+                    <div class="col-05 border" th:text="#{config.tx}"></div>
+                    <div class="col-2 border" th:text="#{config.amplitude}"></div>
+                    <div class="col-2 border" th:text="#{config.phase}"></div>
+                    <div class="col-05 border" th:text="#{config.azimuth}"></div>
+                    <div class="col-05 border" th:text="#{config.elevation}"></div>
+                    <div class="col-05 border" th:text="#{config.rx.gain}"></div>
+                    <div class="col-05 border" th:text="#{config.tx.gain}"></div>
+                    <div class="col-05 border" th:text="#{config.power}"></div>
+                    <div class="col-1 border" th:text="#{config.normalization}"></div>
+                    <div class="col-1 border" th:text="#{users.actions}"></div>
+                </div>
+
+
+                <div class="row colored shadow " th:each=" config : ${configurations}">
+                    <div class="col-05 border" th:text="${config.id}"></div>
+                    <div class="col-05 border" th:text="${config.version}"></div>
+                    <div class="col-2 border" style="padding-right: 0; padding-left:0;">
+                        <div class="row" style="margin-left: 0; margin-right: 0;">
+                            <div class="col-3 border" th:text="${config.rx[0]}"></div>
+                            <div class="col-3 border" th:text="${config.rx[1]}"></div>
+                            <div class="col-3 border" th:text="${config.rx[2]}">b</div>
+                            <div class="col-3 border" th:text="${config.rx[3]}">b</div>
+                        </div>
+                    </div>
+                    <div class="col-05 border" th:text="${config.tx}"></div>
+                    <div class="col-2 border" style="padding-right: 0; padding-left:0;">
+                        <div class="row " style="margin-left: 0; margin-right: 0;">
+                            <div class="col-3 no-padding border"
+                                 th:text="${config.amplitude[0]}"></div>
+                            <div class="col-3 no-padding border"
+                                 th:text="${config.amplitude[1]}"></div>
+                            <div class="col-3 no-padding border"
+                                 th:text="${config.amplitude[2]}"></div>
+                            <div class="col-3 no-padding border"
+                                 th:text="${config.amplitude[3]}"></div>
+                        </div>
+                    </div>
+                    <div class="col-2 border" style="padding-right: 0; padding-left:0;">
+                        <div class="row " style="margin-left: 0; margin-right: 0;">
+                            <div class="col-3 no-padding border"
+                                 th:text="${config.phase[0]}"></div>
+                            <div class="col-3 no-padding border"
+                                 th:text="${config.phase[1]}"></div>
+                            <div class="col-3 no-padding border"
+                                 th:text="${config.phase[2]}"></div>
+                            <div class="col-3 no-padding border"
+                                 th:text="${config.phase[3]}"></div>
+                        </div>
+                    </div>
+                    <div class="col-05 border" th:text="${config.azimuth}"></div>
+                    <div class="col-05 border" th:text="${config.elevation}"></div>
+                    <div class="col-05 border" th:text="${config.rxGain}"></div>
+                    <div class="col-05 border" th:text="${config.txGain}"></div>
+                    <div class="col-05 border" th:text="${config.txPower}"></div>
+                    <div class="col-1 border"
+                         th:text="${config.getDBmNormalization()}"></div>
+                    <div class="col-1 border">
+                        <a class="link"
+                           th:href="@{'/configuration/'+ ${config.getId()} + '/edit'}"
+                           th:text="#{ctrl.edit}"></a>
+                    </div>
+                </div>
+            </div>
+
+            <script th:inline="javascript">
+                $(document).ready(function () {
+                    changePageAndSize();
+                });
+
+                function changePageAndSize() {
+                    $('#pageSizeSelect').change(function () {
+                        var url_string = window.location;
+                        url_string = setParams(url_string, "pageSize", this.value)
+                        url_string = setParams(url_string, "page", 1)
+                        window.location.replace(url_string)
+                    });
+                    $('#pageSizeSelectComment').change(function () {
+                        var url_string = window.location;
+                        url_string = setParams(url_string, "pageSizeComment", this.value)
+                        url_string = setParams(url_string, "pageComment", 1)
+                        window.location.replace(url_string)
+                    });
+                }
+
+                function setParams(url_string, name, value) {
+                    var url = new URL(url_string);
+                    if (url.searchParams.has(name)) {
+                        url.searchParams.set(name, value)
+                    } else {
+                        url.searchParams.append(name, value)
+                    }
+                    return url.toString();
+                }
+            </script>
+
+            <div class="row col-12" th:if="${configurations.totalPages > 1}">
+                <div class="form-group col-md-1"><select class="form-control pagination"
+                                                         id="pageSizeSelect">
+                    <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
+                            th:selected="${pageSize} == ${selectedPageSize}"></option>
+                </select></div>
+                <div class="form-group col-md-8 pagination-centered">
+                    <ul class="pagination">
+                        <li th:class="${configurations.number == 0} ? disabled">
+                            <a class="page-link"
+                               th:href="@{${urlBuilder.replaceQueryParam('pageSize', selectedPageSize).replaceQueryParam('page', 1).build().toUriString()}}"
+                               th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">«</a>
+                        </li>
+                        <li th:class="${configurations.number == 0} ? disabled">
+                            <a class="page-link"
+                               th:href="@{${urlBuilder.replaceQueryParam('pageSize', selectedPageSize).replaceQueryParam('page', configurations.number).build().toUriString()}}"
+                               th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">«</a>
+                        </li>
+                        <li th:class="${configurations.number == (page - 1)} ? 'active pointer-disabled'"
+                            th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+                            <a class="page-link"
+                               th:href="@{${urlBuilder.replaceQueryParam('pageSize', selectedPageSize).replaceQueryParam('page', page).build().toUriString()}}"
+                               th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                               th:text="${page}"></a></li>
+                        <li th:class="${configurations.number + 1 == configurations.totalPages} ? disabled"><a
+                                class="page-link"
+                                th:href="@{${urlBuilder.replaceQueryParam('pageSize', selectedPageSize).replaceQueryParam('page', configurations.number + 2).build().toUriString()}}"
+                                th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">→</a>
+                        </li>
+                        <li th:class="${configurations.number + 1 == configurations.totalPages} ? disabled"><a
+                                class="page-link"
+                                th:href="@{${urlBuilder.replaceQueryParam('pageSize', selectedPageSize).replaceQueryParam('page', configurations.totalPages).build().toUriString()}}"
+                                th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">»</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <a class="button w-100 shadow" th:href="@{'/configuration/'+${radarId}+'/add'}" th:text="#{add.new}"></a>
+                </div>
+            </div>
+
+            <!--COMMENT PANEL-->
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 th:text="#{comment.list.title}"></h3>
+                    </div>
+                </div>
+                <!--ADD NEW-->
+                <form class="row" th:action="@{'/configuration/'+${radarId}+'/add_comment'}" method="post"
+                      th:object="${newComment}">
+                    <div class="col-05" style="padding-left: 10px">
+                        <div class="thumbnail">
+                            <img class="img-responsive user-photo"
+                                 th:src="@{/assets/images/users/1.jpg}">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-10">
+                        <div class="panel panel-default">
+                            <div class="col-12 panel-heading">
+                                <strong th:text="${loggedInUserDTO.getUsername()}"></strong>
+                                <label for="newComment"></label>
+                            </div>
+                            <textarea class="panel-body form-control" id="newComment" th:field="*{content}"
+                                      rows="2"></textarea>
+                            <div class="col-3">
+                                <input class="form-control button" type="submit" th:value="#{ctrl.add}">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row" th:each="comment: ${comments}">
+                    <div class="col-05" style="padding-left: 10px">
+                        <div class="thumbnail">
+                            <img class="img-responsive user-photo"
+                                 th:src="@{/assets/images/users/1.jpg}">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-10">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong th:text="${comment.author.getUsername()}"></strong>
+                                <span class="text-muted" th:text="${comment.created}"></span>
+                            </div>
+                            <div class="panel-body" th:text="${comment.content}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-12" th:if="${comments.totalPages > 1}">
+                    <div class="form-group col-md-1"><select class="form-control pagination"
+                                                             id="pageSizeSelectComment">
+                        <option th:each="pageSizeComment : ${pageSizes}" th:text="${pageSizeComment}"
+                                th:value="${pageSizeComment}"
+                                th:selected="${pageSizeComment} == ${selectedPageSizeComment}"></option>
+                    </select></div>
+                    <div class="form-group col-md-8 pagination-centered">
+                        <ul class="pagination">
+                            <li th:class="${comments.number == 0} ? disabled">
+                                <a class="page-link"
+                                   th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', 1).build().toUriString()}}"
+                                   th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">«</a>
+                            </li>
+                            <li th:class="${comments.number == 0} ? disabled">
+                                <a class="page-link"
+                                   th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', comments.number).build().toUriString()}}"
+                                   th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">←</a>
+                            </li>
+                            <li th:class="${comments.number == (pageComment - 1)} ? 'active pointer-disabled'"
+                                th:each="pageComment : ${#numbers.sequence(pagerComment.startPage, pagerComment.endPage)}">
+                                <a
+                                        class="page-link"
+                                        th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', pageComment).build().toUriString()}}"
+                                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                                        th:text="${pageComment}"></a></li>
+                            <li th:class="${comments.number + 1 == comments.totalPages} ? disabled"><a
+                                    class="page-link"
+                                    th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', comments.number + 2).build().toUriString()}}"
+                                    th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">→</a>
+                            </li>
+                            <li th:class="${comments.number + 1 == comments.totalPages} ? disabled"><a
+                                    class="page-link"
+                                    th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', comments.totalPages).build().toUriString()}}"
+                                    th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">»</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--END OF COMMENT PANEL-->
+        </div>
+        <div class="offset-9">
+            <a class="button w-100 shadow" th:href="@{'/'}"
+               th:text="#{ctrl.back.to.home.page}"></a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

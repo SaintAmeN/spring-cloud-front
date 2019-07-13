@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Not Found</title>
+</head>
+<body>
+<div layout:fragment="menubar">
+    <div th:replace="matrix/fragments/navigators :: menu-bar"></div>
+</div>
+<div layout:fragment="usermenu">
+    <div th:replace="matrix/fragments/navigators :: user-dropdown-menu"></div>
+</div>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <h2>Error</h2>
+    <div class="row">
+        <div class="col-3">
+            Status:
+        </div>
+        <div class="col-3">
+            <p th:text="${status}"></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            Error message:
+        </div>
+        <div class="col-3">
+            <p th:text="${errorMessage}"></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            Error exception:
+        </div>
+        <div class="col-3">
+            <p th:text="${errorException}"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

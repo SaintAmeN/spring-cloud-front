@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{matrix/layout}">
+<head>
+    <th:block layout:fragment="headersfragment">
+        <th:block th:replace="matrix/fragments/headers :: headers-login"></th:block>
+    </th:block>
+    <title>Login form</title>
+</head>
+<body>
+<div layout:fragment="top-bar"></div>
+<div layout:fragment="side-bar"></div>
+<div layout:fragment="menubar">
+    <div th:replace="matrix/fragments/navigators :: menu-bar"></div>
+</div>
+<div layout:fragment="usermenu">
+    <div th:replace="matrix/fragments/navigators :: user-dropdown-menu"></div>
+</div>
+<div layout:fragment="container">
+    <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-dark">
+        <div class="auth-box bg-dark border-top border-secondary">
+            <div id="loginform">
+                <div class="text-center p-t-20 p-b-20">
+                    <span class="db"><img class="col-12" th:src="@{/assets/images/logo.svg}" alt="logo"/></span>
+                </div>
+                <!-- Form -->
+                <form class="form-horizontal m-t-20" th:action="@{/login}" method="post">
+                    <div class="row p-b-30">
+                        <div class="col-12">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-success text-white" id="basic-addon1"><i
+                                            class="ti-user"></i></span>
+                                </div>
+                                <input type="text" class="form-control form-control-lg" placeholder="Username"
+                                       aria-label="Username" aria-describedby="basic-addon1" name="username">
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-warning text-white" id="basic-addon2"><i
+                                            class="ti-pencil"></i></span>
+                                </div>
+                                <input type="password" class="form-control form-control-lg" placeholder="Password"
+                                       aria-label="Password" aria-describedby="basic-addon1" name="password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row border-top border-secondary ptb-5">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <div class="p-t-20">
+                                    <input class="btn btn-success offset-7 col-5 float-right" type="submit" value="Login" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div layout:fragment="additonal-scripts">
+    <script>
+
+        $('[data-toggle="tooltip"]').tooltip();
+        $(".preloader").fadeOut();
+        // ==============================================================
+        // Login and Recover Password
+        // ==============================================================
+        $('#to-recover').on("click", function () {
+            $("#loginform").slideUp();
+            $("#recoverform").fadeIn();
+        });
+        $('#to-login').click(function () {
+
+            $("#recoverform").hide();
+            $("#loginform").fadeIn();
+        });
+    </script>
+</div>
+</body>
+</html>
+

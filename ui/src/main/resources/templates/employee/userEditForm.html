@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:include="templates/fragments/headers :: headers"></th:block>
+    <title>User Register Page</title>
+</head>
+<body>
+<th:block th:include="templates/fragments/navigators :: navigator_bar"></th:block>
+<!--<div class="d-flex align-items-center">-->
+<div class="container main-window"> <!-- Główny element bootstrapa -->
+    <form th:action="@{/user/register}" th:object="${user}" th:method="post">
+        <div class="row colored-row"> <!-- wiersz -->
+            <div class="col-12"> <!-- podział wiersza na kolumny-->
+                <!-- 12 to max, czyli zajmujemy całą przestrzeń -->
+                <h2>User Register Page</h2>
+            </div>
+        </div>
+        <div class="row colored-row">
+            <div class="col-6">
+                <label for="input-email">Email:</label>
+            </div>
+            <div class="col-6">
+                <input class="form-control" id="input-email" th:field="*{email}" readonly>
+            </div>
+        </div>
+
+        <div class="row colored-row">
+            <div class="col-6">
+                <label for="input-first-name">First name:</label>
+            </div>
+            <div class="col-6">
+                <input class="form-control" id="input-first-name" th:field="*{firstName}" readonly>
+            </div>
+        </div>
+
+        <div class="row colored-row">
+            <div class="col-6">
+                <label for="input-last-name">Email:</label>
+            </div>
+            <div class="col-6">
+                <input class="form-control" id="input-last-name" th:field="*{lastName}" readonly>
+            </div>
+        </div>
+
+        <div class="row colored-row"> <!-- wiersz -->
+            <div class="col-12"> <!-- podział wiersza na kolumny-->
+                <!-- 12 to max, czyli zajmujemy całą przestrzeń -->
+                <h2>User Register Page</h2>
+            </div>
+        </div>
+        <div class="row colored-row">
+            <div class="col-6">
+                <label for="input-old-password">Old password:</label>
+            </div>
+            <div class="col-6">
+                <input class="form-control" type="password" id="input-old-password" name="password">
+            </div>
+        </div>
+        <div class="row colored-row">
+            <div class="col-6">
+                <label for="input-new-password">New password:</label>
+            </div>
+            <div class="col-6">
+                <input class="form-control" type="password" id="input-new-password" name="password">
+            </div>
+        </div>
+        <div class="row colored-row">
+            <div class="col-6">
+                <label for="input-new-password-confirm">New password confirm:</label>
+            </div>
+            <div class="col-6">
+                <input class="form-control" type="password" id="input-new-password-confirm" name="password-confirm">
+            </div>
+        </div>
+        <div class="row colored-row">
+            <div class="offset-2 col-8"> <!--odsuń od lewej strony o 2 kolumny -->
+                <input class="form-control" type="submit" value="Register">
+            </div>
+        </div>
+    </form>
+</div>
+<!--</div>-->
+<th:block th:include="templates/fragments/footers :: footer_scripts"></th:block>
+</body>
+</html>
