@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <th:block layout:fragment="headersfragment">
-        <div th:replace="matrix/fragments/headers::headers"></div>
+        <div th:replace="fragments/headers::headers"></div>
     </th:block>
     <title>Index Page</title>
 </head>
@@ -24,7 +24,7 @@
     <!-- Topbar header - style you can find in pages.scss -->
     <!-- ============================================================== -->
     <div layout:fragment="side-bar">
-        <div th:replace="matrix/fragments/navigators :: sidebar"></div>
+        <div th:replace="fragments/navigators :: sidebar"></div>
     </div>
     <!-- ============================================================== -->
     <!-- End Topbar header -->
@@ -34,7 +34,7 @@
     <!-- Left Sidebar - style you can find in sidebar.scss  -->
     <!-- ============================================================== -->
     <div layout:fragment="top-bar">
-        <div th:replace="matrix/fragments/navigators :: topbar"></div>
+        <div th:replace="fragments/navigators :: topbar"></div>
     </div>
     <!-- ============================================================== -->
     <!-- End Left Sidebar - style you can find in sidebar.scss  -->
@@ -48,7 +48,7 @@
 </div>
 
 <div layout:fragment="base-scripts">
-    <div th:replace="matrix/fragments/footers:: basescripts"></div>
+    <div th:replace="fragments/footers:: basescripts"></div>
 </div>
 <div layout:fragment="additional-scripts"></div>
 </body>

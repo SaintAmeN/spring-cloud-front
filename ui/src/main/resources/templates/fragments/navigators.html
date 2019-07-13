@@ -91,7 +91,7 @@
                         <!--<div class="inline-image">-->
                         <img th:src="@{/assets/images/users/1.jpg}" alt="user"
                              class="rounded-circle inline-with float-left avatar-imgicon">
-                        <div class="inline-with float-right avatar-imgicon"
+                        <div th:if="${loggedInUserDTO != null}" class="inline-with float-right avatar-imgicon"
                              th:text="${'Hello ' + loggedInUserDTO.username + '!'}"></div>
                         <!--</div>-->
                     </a>
