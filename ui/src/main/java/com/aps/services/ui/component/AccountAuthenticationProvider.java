@@ -1,13 +1,11 @@
 package com.aps.services.ui.component;
 
+import com.aps.services.component.TokenParserUtility;
 import com.aps.services.config.UserJwtConfig;
 import com.aps.services.model.AccountAuthentication;
-import com.aps.services.model.dto.common.AbstractResponse;
 import com.aps.services.model.dto.userservice.requests.AuthenticationRequestDto;
-import com.aps.services.model.dto.userservice.responses.AuthenticationResponse;
 import com.aps.services.ui.apiclients.AuthorizationMS;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import io.jsonwebtoken.Claims;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,25 +13,29 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
 public class AccountAuthenticationProvider extends DaoAuthenticationProvider {
-
     private final UserJwtConfig userJwtConfig;
     private final AuthorizationMS employeeService;
-    private final ObjectMapper objectMapper;
+    private final TokenParserUtility tokenParserUtility;
+
+    public AccountAuthenticationProvider(UserJwtConfig userJwtConfig, AuthorizationMS employeeService, TokenParserUtility tokenParserUtility, BCryptPasswordEncoder passwordEncoder) {
+        this.userJwtConfig = userJwtConfig;
+        this.employeeService = employeeService;
+        this.tokenParserUtility = tokenParserUtility;
+
+        this.setPasswordEncoder(passwordEncoder);
+    }
 
     @Override
     protected void doAfterPropertiesSet() throws Exception {
@@ -47,7 +49,6 @@ public class AccountAuthenticationProvider extends DaoAuthenticationProvider {
                         "AbstractUserDetailsAuthenticationProvider.onlySupports",
                         "Only UsernamePasswordAuthenticationToken is supported"));
 
-        // Determine username
         String username = (authentication.getPrincipal() == null) ? "NONE_PROVIDED"
                 : authentication.getName();
 
@@ -58,24 +59,20 @@ public class AccountAuthenticationProvider extends DaoAuthenticationProvider {
             cacheWasUsed = false;
 
             try {
-                // todo: tutaj logowanie przez rest api
-                ResponseEntity<String> response = employeeService.login(new AuthenticationRequestDto(String.valueOf(authentication.getPrincipal()), String.valueOf(authentication.getCredentials())));
-                try {
-                    AuthenticationResponse authResponse = objectMapper.readValue(response.getBody(), AuthenticationResponse.class);
+                ResponseEntity response = employeeService.login(new AuthenticationRequestDto(String.valueOf(authentication.getPrincipal()), String.valueOf(authentication.getCredentials())));
 
-                    System.out.println(authResponse);
-                    List<String> authHeaders = response.getHeaders().get(userJwtConfig.getHeader());
-                    Assert.notEmpty(authHeaders, "Header should be returned with authentication data.");
+                List<String> authHeaders = response.getHeaders().get(userJwtConfig.getHeader());
+                Assert.notEmpty(authHeaders, "Header should be returned with authentication data.");
+                Claims claims = tokenParserUtility.parse(authHeaders.get(0).replace(userJwtConfig.getPrefix(), "").replace(" ", ""));
 
-                    user = new AccountAuthentication(
-                            authResponse.getUsername(),
-                            authResponse.getPassword(),
-                            authResponse.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()),
-                            authHeaders.get(0));
+                List<String> roles = (List<String>) claims.get(userJwtConfig.getAuthoritiesTag());
+                user = new AccountAuthentication(
+                        String.valueOf(claims.get(userJwtConfig.getLoginClaimTag())),
+                        new String(Base64.getDecoder().decode(String.valueOf(claims.get(userJwtConfig.getPasswordClaimTag())).getBytes())),
+                        roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()),
+                        authHeaders.get(0),
+                        Long.parseLong(String.valueOf(claims.get(userJwtConfig.getUidClaimTag()))));
 
-                } catch (IOException e) {
-                    logger.error("Error while trying to decode message.");
-                }
             } catch (UsernameNotFoundException notFound) {
                 logger.debug("User '" + username + "' not found");
 

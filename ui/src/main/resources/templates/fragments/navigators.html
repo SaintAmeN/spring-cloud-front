@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 </head>
@@ -91,8 +92,8 @@
                         <!--<div class="inline-image">-->
                         <img th:src="@{/assets/images/users/1.jpg}" alt="user"
                              class="rounded-circle inline-with float-left avatar-imgicon">
-                        <div th:if="${loggedInUserDTO != null}" class="inline-with float-right avatar-imgicon"
-                             th:text="${'Hello ' + loggedInUserDTO.username + '!'}"></div>
+                        <div sec:authorize="isAuthenticated()" class="inline-with float-right avatar-imgicon"
+                             th:text="${'Hello ' + username+ '!'}"></div>
                         <!--</div>-->
                     </a>
                     <div layout:fragment="usermenu">
@@ -145,11 +146,11 @@
                     </li>
 
                     <!--<li sec:authorize="hasRole('ADMIN')" class="sidebar-item">-->
-                        <!--<a class="sidebar-link waves-effect waves-dark sidebar-link" th:href="@{/user/list}"-->
-                           <!--aria-expanded="false">-->
-                            <!--<i class="mdi mdi-account-key"></i>-->
-                            <!--<span class="hide-menu">User list</span>-->
-                        <!--</a>-->
+                    <!--<a class="sidebar-link waves-effect waves-dark sidebar-link" th:href="@{/user/list}"-->
+                    <!--aria-expanded="false">-->
+                    <!--<i class="mdi mdi-account-key"></i>-->
+                    <!--<span class="hide-menu">User list</span>-->
+                    <!--</a>-->
                     <!--</li>-->
 
                     <li class="sidebar-item">
