@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication()
 @EnableDiscoveryClient
-@ComponentScan(basePackages = {"com.aps.services.ui", "com.aps.services.config"})
+@ComponentScan(basePackages = {"com.aps.services.ui", "com.aps.services.config", "com.aps.services.service"})
 @EnableFeignClients(basePackages = {"com.aps.services.apiclients", "com.aps.services.ui.apiclients"})
 public class UiApplication {
 

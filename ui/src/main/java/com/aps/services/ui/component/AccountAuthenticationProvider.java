@@ -4,7 +4,9 @@ import com.aps.services.config.UserJwtConfig;
 import com.aps.services.model.AccountAuthentication;
 import com.aps.services.model.dto.common.AbstractResponse;
 import com.aps.services.model.dto.userservice.requests.AuthenticationRequestDto;
+import com.aps.services.model.dto.userservice.responses.AuthenticationResponse;
 import com.aps.services.ui.apiclients.AuthorizationMS;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,7 +22,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -27,6 +33,7 @@ public class AccountAuthenticationProvider extends DaoAuthenticationProvider {
 
     private final UserJwtConfig userJwtConfig;
     private final AuthorizationMS employeeService;
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doAfterPropertiesSet() throws Exception {
@@ -52,22 +59,31 @@ public class AccountAuthenticationProvider extends DaoAuthenticationProvider {
 
             try {
                 // todo: tutaj logowanie przez rest api
-                ResponseEntity<HashMap<String, String>> response = employeeService.login(new AuthenticationRequestDto(String.valueOf(authentication.getPrincipal()), String.valueOf(authentication.getCredentials())));
-//                AccountAuthentication accountAuthentication = new AccountAuthentication(response.g)
-//                user =
-//                user = retrieveUser(username,
-//                        (UsernamePasswordAuthenticationToken) authentication);
-                System.out.println(response);
-            }
-            catch (UsernameNotFoundException notFound) {
+                ResponseEntity<String> response = employeeService.login(new AuthenticationRequestDto(String.valueOf(authentication.getPrincipal()), String.valueOf(authentication.getCredentials())));
+                try {
+                    AuthenticationResponse authResponse = objectMapper.readValue(response.getBody(), AuthenticationResponse.class);
+
+                    System.out.println(authResponse);
+                    List<String> authHeaders = response.getHeaders().get(userJwtConfig.getHeader());
+                    Assert.notEmpty(authHeaders, "Header should be returned with authentication data.");
+
+                    user = new AccountAuthentication(
+                            authResponse.getUsername(),
+                            authResponse.getPassword(),
+                            authResponse.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()),
+                            authHeaders.get(0));
+
+                } catch (IOException e) {
+                    logger.error("Error while trying to decode message.");
+                }
+            } catch (UsernameNotFoundException notFound) {
                 logger.debug("User '" + username + "' not found");
 
                 if (hideUserNotFoundExceptions) {
                     throw new BadCredentialsException(messages.getMessage(
                             "AbstractUserDetailsAuthenticationProvider.badCredentials",
                             "Bad credentials"));
-                }
-                else {
+                } else {
                     throw notFound;
                 }
             }
@@ -80,8 +96,7 @@ public class AccountAuthenticationProvider extends DaoAuthenticationProvider {
             getPreAuthenticationChecks().check(user);
             additionalAuthenticationChecks(user,
                     (UsernamePasswordAuthenticationToken) authentication);
-        }
-        catch (AuthenticationException exception) {
+        } catch (AuthenticationException exception) {
             if (cacheWasUsed) {
                 // There was a problem, so try again after checking
                 // we're using latest data (i.e. not from the cache)
@@ -91,8 +106,7 @@ public class AccountAuthenticationProvider extends DaoAuthenticationProvider {
                 getPreAuthenticationChecks().check(user);
                 additionalAuthenticationChecks(user,
                         (UsernamePasswordAuthenticationToken) authentication);
-            }
-            else {
+            } else {
                 throw exception;
             }
         }

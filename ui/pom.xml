@@ -132,6 +132,17 @@
         </dependencies>
     </dependencyManagement>
 
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <profiles>
         <profile>
             <id>dev</id>
@@ -143,6 +154,19 @@
             </activation>
             <properties>
                 <bootstrapprofile>development</bootstrapprofile>
+                <production-active>false</production-active>
+            </properties>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <activation>
+                <property>
+                    <name>env.machine</name>
+                    <value>docker</value>
+                </property>
+            </activation>
+            <properties>
+                <bootstrapprofile>docker</bootstrapprofile>
                 <production-active>false</production-active>
             </properties>
         </profile>
