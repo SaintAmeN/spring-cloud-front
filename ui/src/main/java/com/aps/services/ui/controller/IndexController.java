@@ -24,6 +24,6 @@ public class IndexController extends BaseAbstractController {
         ResponseEntity responseEntity = configlutms.hello();
         System.out.println(responseEntity);
 
-        return "return:/index";
+        return "redirect:/index";
     }
 }

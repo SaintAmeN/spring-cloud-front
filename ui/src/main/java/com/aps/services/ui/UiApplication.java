@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 @Slf4j
 @SpringBootApplication()
 @EnableDiscoveryClient
-@ComponentScan(basePackages = {"com.aps.services.ui", "com.aps.services.config", "com.aps.services.service", "com.aps.services.component"})
+@ComponentScan(basePackages = {"com.aps.services.ui", "com.aps.services.config", "com.aps.services.service", "com.aps.services.component", "com.aps.services.interceptors.feign"})
 @EnableFeignClients(basePackages = {"com.aps.services.apiclients", "com.aps.services.ui.apiclients"})
 public class UiApplication {
 
