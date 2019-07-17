@@ -6,7 +6,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-
 /**
  * @author amen
  * @project ms-ui
