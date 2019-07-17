@@ -1,6 +1,5 @@
 package com.aps.services.ui.config;
 
-import com.aps.services.ui.component.SessionScopeComponent;
 import com.aps.services.ui.filters.MessageInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
