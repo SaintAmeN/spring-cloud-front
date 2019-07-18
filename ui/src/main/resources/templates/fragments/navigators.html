@@ -175,6 +175,35 @@
 
                         </ul>
                     </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                           aria-expanded="false">
+                            <i class="mdi mdi-shopping"></i>
+                            <span class="hide-menu">Ordering Service</span>
+                        </a>
+                        <ul aria-expanded="false" class="collapse first-level">
+                            <li class="sidebar-item">
+                                <a th:href="@{/radar}" class="sidebar-link smaller-sidebar-link">
+                                    <i class="mdi mdi-arrow-right"></i>
+                                    <span class="hide-menu smaller-font-menu">Orders</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a th:href="@{/ordering/product/add}" class="sidebar-link smaller-sidebar-link">
+                                    <i class="mdi mdi-arrow-right"></i>
+                                    <span class="hide-menu smaller-font-menu">Products</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a th:href="@{/ordering/shop/add}" class="sidebar-link smaller-sidebar-link">
+                                    <i class="mdi mdi-arrow-right"></i>
+                                    <span class="hide-menu smaller-font-menu">Shops</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </nav>
             <!-- End Sidebar navigation -->

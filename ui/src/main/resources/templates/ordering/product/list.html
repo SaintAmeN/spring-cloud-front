@@ -3,7 +3,7 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Not Found</title>
+    <title>Product list</title>
 </head>
 <body>
 <div layout:fragment="menubar">
@@ -13,8 +13,133 @@
     <div th:replace="fragments/navigators :: user-dropdown-menu"></div>
 </div>
 <div layout:fragment="content" id="content" class="container lite-padding">
-    <h2>Theoretically product list</h2>
-    <div th:text="${products}"></div>
+    <main role="main" class="container">
+        <div class="container aligned-margines">
+<!--            <th th:if="${currentUser.getNotificationSettings().getNotificationProducts()}">-->
+<!--                <div class="col-lg-12 mb-4">-->
+<!--                    <div id="notification" class="card shadow">-->
+<!--                        <div class="row col-12 card-body">-->
+<!--                            <div class="offset-3 col-4">-->
+<!--                                <p class="lead" th:text="#{notification.product.text}"></p>-->
+<!--                            </div>-->
+<!--                            <div class="col-3">-->
+<!--                                <a class="card-body" th:href="@{'/notifications/update?name=product&status=false'}">-->
+<!--                                    <input class="form-control roundless button button-create-orderlist shadow"-->
+<!--                                           type="submit" th:value="#{ctrl.ok}">-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </th>-->
+            <div class="col-lg-12 mb-4">
+                <div class="card shadow">
+                    <div class="card-header row col-12 aligned-margines shadow-table-header">
+                        <h2 class="table-head-title" th:text="#{product.list.title}"/>
+                    </div>
+                    <script>
+                        function myConfirm() {
+                            var result = confirm("Do you want to delete the product?");
+                            if (result == true) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    </script>
+                    <table class="table table-striped card-text card-body shadow">
+                        <th class="row col-12 table-header aligned-margines shadow">
+                            <div class="col-2" th:text="#{id}"/>
+                            <div class="col-3" th:text="#{product.name}"/>
+                            <div class="col-2" th:text="#{owner}"/>
+                            <div class="col-4" th:text="#{actions}"/>
+                        </th>
+                        <th class="row col-12 colored aligned-margines" th:each="product : ${productList}"
+                            th:if="${admin || !product.isAwaitingApproval()}">
+                            <div class="col-2" th:text="${product.getId()}">
+                            </div>
+                            <div class="col-3 break-line" th:text="${product.getName()}">
+                            </div>
+                            <div class="col-2 break-line" th:text="${product.getCreator().getUsername()}">
+                            </div>
+                            <div class="col-1">
+                                <a class="link actions-details"
+                                   th:href="@{'/product/details/' + ${product.getId()}}" th:text="#{ctrl.details}"></a>
+                            </div>
+                            <div class="col-1">
+                                <a class="link actions-details"
+                                   th:if="${admin || product.getCreator().getId() == currentUser.getId()}"
+                                   th:href="@{'/product/edit/' + ${product.getId()} + '/info'}"
+                                   th:text="#{ctrl.edit}"></a>
+                            </div>
+                            <div class="col-1">
+                                <a class="link actions-details" onclick="return myConfirm();"
+                                   th:if="${admin || product.getCreator().getId() == currentUser.getId()}"
+                                   th:href="@{'/product/remove/' + ${product.getId()}}" th:text="#{ctrl.remove}"></a>
+                            </div>
+                            <div class="col-1">
+                                <a class="link actions-details"
+                                   th:if="${admin && product.isAwaitingApproval()}"
+                                   th:href="@{'/product/approve/' + ${product.getId()}}" th:text="#{ctrl.approve}"></a>
+                            </div>
+                        </th>
+                    </table>
+                    <div class="row col-12 colored aligned-margines redish" th:if="${products.getSize() == 0}">
+                        <div class="col-12" th:text="#{list.empty}">
+                        </div>
+                    </div>
+                    <div class="row offset-4" th:if="${productList.totalPages > 1}">
+                        <div class="form-group col-md-1.5"><select class="form-control roundless" id="pageSizeSelect">
+                            <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
+                                    th:selected="${pageSize} == ${selectedPageSize}"></option>
+                        </select></div>
+                        <div th:if="${productList.totalPages != 1}" class="form-group col-md-11 pagination-centered">
+                            <ul class="pagination">
+                                <li th:class="${productList.number == 0} ? disabled"><a class="page-link"
+                                                                                        th:href="@{/product/list/(pageSize=${selectedPageSize}, page=1)}">«</a>
+                                </li>
+                                <li th:class="${productList.number == 0} ? disabled"><a class="page-link"
+                                                                                        th:href="@{/product/list/(pageSize=${selectedPageSize}, page=${productList.number})}">←</a>
+                                </li>
+                                <li th:class="${productList.number == (page - 1)} ? 'active pointer-disabled'"
+                                    th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a
+                                        class="page-link"
+                                        th:href="@{/product/list/(pageSize=${selectedPageSize}, page=${page})}"
+                                        th:text="${page}"></a></li>
+                                <li th:class="${productList.number + 1 == productList.totalPages} ? disabled"><a
+                                        class="page-link"
+                                        th:href="@{/product/list/(pageSize=${selectedPageSize}, page=${productList.number + 2})}">→</a>
+                                </li>
+                                <li th:class="${productList.number + 1 == productList.totalPages} ? disabled"><a
+                                        class="page-link"
+                                        th:href="@{/product/list/(pageSize=${selectedPageSize}, page=${productList.totalPages})}">»</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="offset-10 col-2 paddingless">
+                        <a class="button w-100 shadow" th:href="@{/product/add}" th:text="#{ctrl.create}"></a>
+                        <!--<a class="button w-100 shadow" th:href="@{'/'}" th:text="#{ctrl.back.to.home.page}"></a>-->
+                    </div>
+                </div>
+                <div class="offset-9">
+                    <a class="button w-100 shadow" th:href="@{'/'}"
+                       th:text="#{ctrl.back.to.home.page}"></a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            changePageAndSize();
+        });
+
+        function changePageAndSize() {
+            $('#pageSizeSelect').change(function () {
+                window.location.replace("/product/list/?pageSize=" + this.value + "&page=1");
+            });
+        }
+    </script>
 </div>
 </body>
 </html>

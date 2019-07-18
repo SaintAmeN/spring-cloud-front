@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="menubar">
+    <div th:replace="fragments/navigators :: menu-bar"></div>
+</div>
+<div layout:fragment="usermenu">
+    <div th:replace="fragments/navigators :: user-dropdown-menu"></div>
+</div>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <main role="main" class="container">
+        <div id="hideMe" class="warning-nav" th:if="${error_message}">
+            <div th:text="${error_message}"></div>
+        </div>
+        <div class="container aligned-margines">
+            <div class="col-lg-12 mb-4">
+                <form id="productForm" class="card shadow" th:action="@{/product/add}" th:object="${productRequestDto}"
+                      th:method="post">
+                    <div class="card-header row col-12 aligned-margines shadow-table-header">
+                        <h3 class="table-head-title" th:text="'#{product.add}'"/>
+                    </div>
+                    <div class="row card-body">
+                        <div class="row col-md-12">
+                            <div class="offset-md-1 col-md-5 middled">
+                                <label for="productName" th:text="'#{product.details.name.header}'"/>
+                            </div>
+                            <div class="col-md-5 middled">
+                                <input required class="form-control roundless shadow" type="text" id="productName"
+                                       th:field="*{name}"/>
+                            </div>
+                        </div>
+                        <div class="row col-md-12">
+                            <div class="offset-md-1 col-md-5 middled">
+                                <label for="description" th:text="'#{product.description}'"/>
+                            </div>
+                            <div class="col-md-5 middled">
+                                <textarea id="description" class="form-control roundless shadow" th:inline="text"
+                                          th:field="*{description}">[[${desc}]]</textarea>
+                            </div>
+                        </div>
+                        <div class="row col-md-12">
+                            <div class="offset-md-1 col-md-5 middled">
+                                <label for="shop" th:text="'#{product.shop}'"/>
+                            </div>
+                            <div class="col-md-5 middled">
+                                <select required id="shop" class="form-control roundless shadow"
+                                        th:field="*{shopId}">
+                                    <option class="form-control roundless" th:each="shop : ${shops}"
+                                            th:value="${shop.getId()}"
+                                            th:text="${shop.getName()}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control roundless button shadow" type="submit" th:value="'#{product.add}'">
+                </form>
+            </div>
+            <div class="offset-8">
+                <a class="button button-create-orderlist shadow" th:href="@{'/ordering/product/list/'}"
+                   th:text="#{ctrl.previous}"></a>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

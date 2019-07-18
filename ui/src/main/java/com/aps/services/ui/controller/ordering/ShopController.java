@@ -1,6 +1,7 @@
 package com.aps.services.ui.controller.ordering;
 
 import com.aps.services.model.dto.ordering.request.ProductRequestDto;
+import com.aps.services.model.dto.ordering.request.ShopRequestDto;
 import com.aps.services.ui.apiclients.ordering.OrderingMS;
 import com.aps.services.ui.controller.BaseAbstractController;
 import lombok.RequiredArgsConstructor;
@@ -17,20 +18,20 @@ import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZ
  * @author ajarmolkowicz
  */
 @RestController
-@RequestMapping("/ordering/product/")
+@RequestMapping("/ordering/shop/")
 @RequiredArgsConstructor
 @Slf4j
-public class ProductController extends BaseAbstractController {
+public class ShopController extends BaseAbstractController {
     private final OrderingMS orderingMS;
 
     @GetMapping("/list")
-    public ModelAndView getProductList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                 @RequestParam(value = "page", required = false) Integer page) {
+    public ModelAndView getShopList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                       @RequestParam(value = "page", required = false) Integer page) {
         int selectedPageSize = pageSize != null ? pageSize : DEFAULT_PAGE_SIZE;
         int currentPage = page != null ? page - 1 : INITIAL_PAGE;
 
-        ModelAndView model = new ModelAndView("ordering/product/list");
-        model.addObject("products", orderingMS.getProductList(selectedPageSize,currentPage).getBody());
+        ModelAndView model = new ModelAndView("ordering/shop/list");
+        model.addObject("products", orderingMS.getShopList(selectedPageSize, currentPage).getBody());
         model.addObject("selectedPageSize", selectedPageSize);
         model.addObject("pageSizes", PAGE_SIZES);
 
@@ -38,17 +39,16 @@ public class ProductController extends BaseAbstractController {
     }
 
     @GetMapping("/add")
-    public ModelAndView getProductForm(Authentication auth) {
-        ModelAndView model = new ModelAndView("ordering/product/form");
-        model.addObject("shops", orderingMS.findAllShops().getBody());
-        model.addObject("productRequestDto", ProductRequestDto.builder().userId(Long.parseLong(userId(auth))).build());
+    public ModelAndView getShopForm(Authentication auth) {
+        ModelAndView model = new ModelAndView("ordering/shop/form");
+        model.addObject("shopRequestDto", ShopRequestDto.builder().userId(Long.parseLong(userId(auth))).build());
         return model;
     }
 
     @PostMapping("/add")
-    public ModelAndView add(ProductRequestDto dto) {
-        ModelAndView model = new ModelAndView("redirect:/ordering/product/list");
-        orderingMS.addProduct(dto);
+    public ModelAndView add(ShopRequestDto dto) {
+        ModelAndView model = new ModelAndView("redirect:/ordering/shop/list");
+        orderingMS.addShop(dto);
 //        String message = messageSource.getMessage("product.add.success", null, LocaleContextHolder.getLocale());
 //        model.addObject(MESSAGE, message);
         return model;
