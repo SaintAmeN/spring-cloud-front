@@ -171,6 +171,19 @@
             </properties>
         </profile>
         <profile>
+            <id>local</id>
+            <activation>
+                <property>
+                    <name>env.machine</name>  <!--To zmienna środowiskowa.-->
+                    <value>local</value>
+                </property>
+            </activation>
+            <properties>
+                <bootstrapprofile>local</bootstrapprofile>
+                <production-active>false</production-active>
+            </properties>
+        </profile>
+        <profile>
             <id>prod</id>
             <activation>
                 <property>
