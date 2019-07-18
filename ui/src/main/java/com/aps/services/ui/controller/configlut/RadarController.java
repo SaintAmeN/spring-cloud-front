@@ -22,20 +22,18 @@ public class RadarController extends BaseAbstractController {
 
     private Integer evalPageSize = INITIAL_PAGE_SIZE;
 
-    @GetMapping("")
+    @GetMapping
     public ModelAndView list(@RequestParam(value = "pageSize", required = false) Integer pageSize,
                              @RequestParam(value = "page", required = false) Integer page) {
         evalPageSize = pageSize != null ? pageSize : evalPageSize;
         int evalPage = page != null ? page - 1 : INITIAL_PAGE;
         ModelAndView model = new ModelAndView("radar/radarList");
-        OwnPageImpl<RadarResponseDto> radars = configlutMS.getRadarList(evalPageSize, evalPage).getBody();
-        if (radars!=null){
-            PagerModel pager = new PagerModel(radars.getTotalPages(), radars.getNumber(), BUTTONS_TO_SHOW);
-            model.addObject("radars", radars);
-            model.addObject("selectedPageSize", evalPageSize);
-            model.addObject("pageSizes", PAGE_SIZES);
-            model.addObject("pager", pager);
-        }
+        OwnPageImpl<RadarResponseDto> radars = configlutMS.getRadarList(evalPageSize, evalPage);
+        PagerModel pager = new PagerModel(radars.getTotalPages(), radars.getNumber(), BUTTONS_TO_SHOW);
+        model.addObject("radars", radars);
+        model.addObject("selectedPageSize", evalPageSize);
+        model.addObject("pageSizes", PAGE_SIZES);
+        model.addObject("pager", pager);
         return model;
     }
 }
