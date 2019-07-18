@@ -1,6 +1,8 @@
 package com.aps.services.ui.config;
 
 import com.aps.services.ui.component.SessionScopeComponent;
+import com.fasterxml.jackson.databind.Module;
+import org.springframework.cloud.openfeign.support.PageJacksonModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
@@ -16,4 +18,8 @@ public class BasicConfiguration implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public Module pageJacksonModule() {
+        return new PageJacksonModule();
+    }
 }
