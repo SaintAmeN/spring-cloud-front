@@ -1,5 +1,6 @@
 package com.aps.services.ui.controller.configlut;
 
+import com.aps.services.model.dto.OwnPageImpl;
 import com.aps.services.model.dto.configlut.response.RadarResponseDto;
 import com.aps.services.ui.apiclients.ConfiglutMS;
 import com.aps.services.ui.util.CustomPageImpl;
@@ -37,8 +38,9 @@ public class RadarController {
         ModelAndView model = new ModelAndView("radar/radarList");
 
 
-//        CustomPageImpl<RadarResponseDto> radars = objectMapper.convertValue(configlutMS.getRadarList(pageSize, page), new TypeReference<CustomPageImpl<RadarResponseDto>>(){});
-        List<RadarResponseDto> radars = configlutMS.getRadarList(pageSize, page).getBody();
+        OwnPageImpl<RadarResponseDto> radars = configlutMS.getRadarList(pageSize, page).getBody();
+//        OwnPageImpl<RadarResponseDto> radars = objectMapper.convertValue(configlutMS.getRadarList(pageSize, page).getBody(), new TypeReference<OwnPageImpl<RadarResponseDto>>(){});
+//        List<RadarResponseDto> radars = configlutMS.getRadarList(pageSize, page).getBody();
 //        ResponseEntity<PagedResources<RadarResponseDto>> radars = configlutMS.getRadarList(pageSize, page);
         PagerModel pager = new PagerModel(4, 0, BUTTONS_TO_SHOW);
         model.addObject("radars", radars);
