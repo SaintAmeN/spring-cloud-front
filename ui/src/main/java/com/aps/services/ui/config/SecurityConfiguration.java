@@ -17,8 +17,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/test/**").permitAll()
-                .antMatchers("/login", "/css/**", "/error/**", "/assets/**", "/dist/**").permitAll()
+                .antMatchers("/webjars/**", "/login", "/css/**", "/error/**", "/assets/**", "/dist/**", "/i18n/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN") /* Na potem, wszystko co w /admin/ musi mieć rolę admina*/
                 .and()
                 .formLogin()
