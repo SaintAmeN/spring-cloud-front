@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{matrix/layout}">
+      layout:decorate="~{layout}"
+>
 <head>
     <meta charset="UTF-8">
     <title>Index Page</title>
 </head>
 <body>
 <div layout:fragment="menubar">
-    <div th:replace="matrix/fragments/navigators :: menu-bar"></div>
+    <div th:replace="fragments/navigators :: menu-bar"></div>
 </div>
 <div layout:fragment="usermenu">
-    <div th:replace="matrix/fragments/navigators :: user-dropdown-menu"></div>
+    <div th:replace="fragments/navigators :: user-dropdown-menu"></div>
 </div>
 <div layout:fragment="content" id="content" class="container lite-padding">
     <div class="col-lg-12 mb-4">
@@ -49,69 +50,69 @@
                            th:onclick="'show(\'config'+${radar.id} +'\'); return false;'"
                            th:text="#{show.current.config}"></a>
                     </div>
-                    <!--CURRENT CONFIG-->
-                    <div class="col-12" th:if="${radar.lastUsedConfiguration}==null" th:id="${'config'+radar.id}" style="display: none" th:text="#{no.config}"></div>
-                    <div class="col-12" th:if="${radar.lastUsedConfiguration}!=null" th:id="${'config'+radar.id}" style="display: none">
-                        <div class="row col-12">
-                            <div class="col-05 border" th:text="#{config.id}"></div>
-                            <div class="col-05 border" th:text="#{config.version}"></div>
-                            <div class="col-2 border" th:text="#{config.rx}"></div>
-                            <div class="col-05 border" th:text="#{config.tx}"></div>
-                            <div class="col-2 border" th:text="#{config.amplitude}"></div>
-                            <div class="col-2 border" th:text="#{config.phase}"></div>
-                            <div class="col-05 border" th:text="#{config.azimuth}"></div>
-                            <div class="col-05 border" th:text="#{config.elevation}"></div>
-                            <div class="col-1 border" th:text="#{config.rx.gain}"></div>
-                            <div class="col-1 border" th:text="#{config.tx.gain}"></div>
-                            <div class="col-05 border" th:text="#{config.power}"></div>
-                            <div class="col-1 border" th:text="#{config.normalization}"></div>
-                        </div>
+                    <!--&lt;!&ndash;CURRENT CONFIG&ndash;&gt;-->
+                    <!--<div class="col-12" th:if="${radar.lastUsedConfiguration}==null" th:id="${'config'+radar.id}" style="display: none" th:text="#{no.config}"></div>-->
+                    <!--<div class="col-12" th:if="${radar.lastUsedConfiguration}!=null" th:id="${'config'+radar.id}" style="display: none">-->
+                        <!--<div class="row col-12">-->
+                            <!--<div class="col-05 border" th:text="#{config.id}"></div>-->
+                            <!--<div class="col-05 border" th:text="#{config.version}"></div>-->
+                            <!--<div class="col-2 border" th:text="#{config.rx}"></div>-->
+                            <!--<div class="col-05 border" th:text="#{config.tx}"></div>-->
+                            <!--<div class="col-2 border" th:text="#{config.amplitude}"></div>-->
+                            <!--<div class="col-2 border" th:text="#{config.phase}"></div>-->
+                            <!--<div class="col-05 border" th:text="#{config.azimuth}"></div>-->
+                            <!--<div class="col-05 border" th:text="#{config.elevation}"></div>-->
+                            <!--<div class="col-1 border" th:text="#{config.rx.gain}"></div>-->
+                            <!--<div class="col-1 border" th:text="#{config.tx.gain}"></div>-->
+                            <!--<div class="col-05 border" th:text="#{config.power}"></div>-->
+                            <!--<div class="col-1 border" th:text="#{config.normalization}"></div>-->
+                        <!--</div>-->
 
 
-                        <div class="row col-12">
-                            <div class="col-05 border" th:text="${radar.lastUsedConfiguration.id}"></div>
-                            <div class="col-05 border" th:text="${radar.lastUsedConfiguration.version}"></div>
-                            <div class="col-2 border" style="padding-right: 0; padding-left:0;">
-                                <div class="row" style="margin-left: 0; margin-right: 0;">
-                                    <div class="col-3 border" th:text="${radar.lastUsedConfiguration.rx[0]}"></div>
-                                    <div class="col-3 border" th:text="${radar.lastUsedConfiguration.rx[1]}"></div>
-                                    <div class="col-3 border" th:text="${radar.lastUsedConfiguration.rx[2]}">b</div>
-                                    <div class="col-3 border" th:text="${radar.lastUsedConfiguration.rx[3]}">b</div>
-                                </div>
-                            </div>
-                            <div class="col-05 border" th:text="${radar.lastUsedConfiguration.tx}"></div>
-                            <div class="col-2 border" style="padding-right: 0; padding-left:0;">
-                                <div class="row " style="margin-left: 0; margin-right: 0;">
-                                    <div class="col-3 no-padding border"
-                                         th:text="${radar.lastUsedConfiguration.amplitude[0]}"></div>
-                                    <div class="col-3 no-padding border"
-                                         th:text="${radar.lastUsedConfiguration.amplitude[1]}"></div>
-                                    <div class="col-3 no-padding border"
-                                         th:text="${radar.lastUsedConfiguration.amplitude[2]}"></div>
-                                    <div class="col-3 no-padding border"
-                                         th:text="${radar.lastUsedConfiguration.amplitude[3]}"></div>
-                                </div>
-                            </div>
-                            <div class="col-2 border" style="padding-right: 0; padding-left:0;">
-                                <div class="row " style="margin-left: 0; margin-right: 0;">
-                                    <div class="col-3 no-padding border"
-                                         th:text="${radar.lastUsedConfiguration.phase[0]}"></div>
-                                    <div class="col-3 no-padding border"
-                                         th:text="${radar.lastUsedConfiguration.phase[1]}"></div>
-                                    <div class="col-3 no-padding border"
-                                         th:text="${radar.lastUsedConfiguration.phase[2]}"></div>
-                                    <div class="col-3 no-padding border"
-                                         th:text="${radar.lastUsedConfiguration.phase[3]}"></div>
-                                </div>
-                            </div>
-                            <div class="col-05 border" th:text="${radar.lastUsedConfiguration.azimuth}"></div>
-                            <div class="col-05 border" th:text="${radar.lastUsedConfiguration.elevation}"></div>
-                            <div class="col-1 border" th:text="${radar.lastUsedConfiguration.rxGain}"></div>
-                            <div class="col-1 border" th:text="${radar.lastUsedConfiguration.txGain}"></div>
-                            <div class="col-05 border" th:text="${radar.lastUsedConfiguration.txPower}"></div>
-                            <div class="col-1 border" th:text="${radar.lastUsedConfiguration.getDBmNormalization()}"></div>
-                    </div>
-                    <!--CURRENT CONFIG-->
+                        <!--<div class="row col-12">-->
+                            <!--<div class="col-05 border" th:text="${radar.lastUsedConfiguration.id}"></div>-->
+                            <!--<div class="col-05 border" th:text="${radar.lastUsedConfiguration.version}"></div>-->
+                            <!--<div class="col-2 border" style="padding-right: 0; padding-left:0;">-->
+                                <!--<div class="row" style="margin-left: 0; margin-right: 0;">-->
+                                    <!--<div class="col-3 border" th:text="${radar.lastUsedConfiguration.rx[0]}"></div>-->
+                                    <!--<div class="col-3 border" th:text="${radar.lastUsedConfiguration.rx[1]}"></div>-->
+                                    <!--<div class="col-3 border" th:text="${radar.lastUsedConfiguration.rx[2]}">b</div>-->
+                                    <!--<div class="col-3 border" th:text="${radar.lastUsedConfiguration.rx[3]}">b</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="col-05 border" th:text="${radar.lastUsedConfiguration.tx}"></div>-->
+                            <!--<div class="col-2 border" style="padding-right: 0; padding-left:0;">-->
+                                <!--<div class="row " style="margin-left: 0; margin-right: 0;">-->
+                                    <!--<div class="col-3 no-padding border"-->
+                                         <!--th:text="${radar.lastUsedConfiguration.amplitude[0]}"></div>-->
+                                    <!--<div class="col-3 no-padding border"-->
+                                         <!--th:text="${radar.lastUsedConfiguration.amplitude[1]}"></div>-->
+                                    <!--<div class="col-3 no-padding border"-->
+                                         <!--th:text="${radar.lastUsedConfiguration.amplitude[2]}"></div>-->
+                                    <!--<div class="col-3 no-padding border"-->
+                                         <!--th:text="${radar.lastUsedConfiguration.amplitude[3]}"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="col-2 border" style="padding-right: 0; padding-left:0;">-->
+                                <!--<div class="row " style="margin-left: 0; margin-right: 0;">-->
+                                    <!--<div class="col-3 no-padding border"-->
+                                         <!--th:text="${radar.lastUsedConfiguration.phase[0]}"></div>-->
+                                    <!--<div class="col-3 no-padding border"-->
+                                         <!--th:text="${radar.lastUsedConfiguration.phase[1]}"></div>-->
+                                    <!--<div class="col-3 no-padding border"-->
+                                         <!--th:text="${radar.lastUsedConfiguration.phase[2]}"></div>-->
+                                    <!--<div class="col-3 no-padding border"-->
+                                         <!--th:text="${radar.lastUsedConfiguration.phase[3]}"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="col-05 border" th:text="${radar.lastUsedConfiguration.azimuth}"></div>-->
+                            <!--<div class="col-05 border" th:text="${radar.lastUsedConfiguration.elevation}"></div>-->
+                            <!--<div class="col-1 border" th:text="${radar.lastUsedConfiguration.rxGain}"></div>-->
+                            <!--<div class="col-1 border" th:text="${radar.lastUsedConfiguration.txGain}"></div>-->
+                            <!--<div class="col-05 border" th:text="${radar.lastUsedConfiguration.txPower}"></div>-->
+                            <!--<div class="col-1 border" th:text="${radar.lastUsedConfiguration.getDBmNormalization()}"></div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;CURRENT CONFIG&ndash;&gt;-->
                 </div>
             </div>
 
@@ -126,36 +127,36 @@
                     });
                 }
             </script>
-            <div class="row" th:if="${radars.totalPages > 1}">
-                <div class="form-group col-md-1"><select class="form-control pagination"
-                                                         id="pageSizeSelect">
-                    <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
-                            th:selected="${pageSize} == ${selectedPageSize}"></option>
-                </select></div>
-                <div class="form-group col-md-11 pagination-centered">
-                    <ul class="pagination">
-                        <li th:class="${radars.number == 0} ? disabled"><a class="page-link"
-                                                                           th:href="@{/radar(pageSize=${selectedPageSize}, page=1)}">«</a>
-                        </li>
-                        <li th:class="${radars.number == 0} ? disabled"><a class="page-link"
-                                                                           th:href="@{/radar(pageSize=${selectedPageSize}, page=${radars.number})}">←</a>
-                        </li>
-                        <li th:class="${radars.number == (page - 1)} ? 'active pointer-disabled'"
-                            th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a
-                                class="page-link"
-                                th:href="@{/radar(pageSize=${selectedPageSize}, page=${page})}"
-                                th:text="${page}"></a></li>
-                        <li th:class="${radars.number + 1 == radars.totalPages} ? disabled"><a
-                                class="page-link"
-                                th:href="@{/radar(pageSize=${selectedPageSize}, page=${radars.number + 2})}">→</a>
-                        </li>
-                        <li th:class="${radars.number + 1 == radars.totalPages} ? disabled"><a
-                                class="page-link"
-                                th:href="@{/radar(pageSize=${selectedPageSize}, page=${radars.totalPages})}">»</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <!--<div class="row" th:if="${radars.totalPages > 1}">-->
+                <!--<div class="form-group col-md-1"><select class="form-control pagination"-->
+                                                         <!--id="pageSizeSelect">-->
+                    <!--<option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"-->
+                            <!--th:selected="${pageSize} == ${selectedPageSize}"></option>-->
+                <!--</select></div>-->
+                <!--<div class="form-group col-md-11 pagination-centered">-->
+                    <!--<ul class="pagination">-->
+                        <!--<li th:class="${radars.number == 0} ? disabled"><a class="page-link"-->
+                                                                           <!--th:href="@{/radar(pageSize=${selectedPageSize}, page=1)}">«</a>-->
+                        <!--</li>-->
+                        <!--<li th:class="${radars.number == 0} ? disabled"><a class="page-link"-->
+                                                                           <!--th:href="@{/radar(pageSize=${selectedPageSize}, page=${radars.number})}">←</a>-->
+                        <!--</li>-->
+                        <!--<li th:class="${radars.number == (page - 1)} ? 'active pointer-disabled'"-->
+                            <!--th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a-->
+                                <!--class="page-link"-->
+                                <!--th:href="@{/radar(pageSize=${selectedPageSize}, page=${page})}"-->
+                                <!--th:text="${page}"></a></li>-->
+                        <!--<li th:class="${radars.number + 1 == radars.totalPages} ? disabled"><a-->
+                                <!--class="page-link"-->
+                                <!--th:href="@{/radar(pageSize=${selectedPageSize}, page=${radars.number + 2})}">→</a>-->
+                        <!--</li>-->
+                        <!--<li th:class="${radars.number + 1 == radars.totalPages} ? disabled"><a-->
+                                <!--class="page-link"-->
+                                <!--th:href="@{/radar(pageSize=${selectedPageSize}, page=${radars.totalPages})}">»</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="offset-9">
                 <a class="button w-100 shadow" th:href="@{/radar/add}" th:text="#{add.new}"></a>
             </div>
