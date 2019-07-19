@@ -1,5 +1,6 @@
 package com.aps.services.ui.config;
 
+import com.aps.services.ui.component.FeignErrorDecoder;
 import com.aps.services.ui.filters.MessageInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

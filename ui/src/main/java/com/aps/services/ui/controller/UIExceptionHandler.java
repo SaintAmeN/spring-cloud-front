@@ -1,6 +1,7 @@
 package com.aps.services.ui.controller;
 
 import com.aps.services.model.exception.usageerrors.UnauthorizedException;
+import com.aps.services.model.exception.usageerrors.UsageException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -27,6 +28,14 @@ public class UIExceptionHandler {
     public String handleUnauthorized(UnauthorizedException une, Model model) {
 
         return "redirect:/user/login";
+    }
+
+    @ExceptionHandler(UsageException.class)
+    public String handleUsageException(UsageException ex, Model model) {
+        model.addAttribute("status", "exception");
+        model.addAttribute("errorMessage", "usage exception");
+        model.addAttribute("errorException", ex.getMessage());
+        return "error/error";
     }
 }
 
