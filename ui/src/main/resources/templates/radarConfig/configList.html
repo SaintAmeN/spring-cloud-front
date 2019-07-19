@@ -222,29 +222,29 @@
                     </div>
                 </div>
                 <!--ADD NEW-->
-                <!--<form class="row" th:action="@{'/radar/'+${radarId}+'/configuration/add_comment'}" method="post"-->
-                      <!--th:object="${newComment}">-->
-                    <!--<div class="col-05" style="padding-left: 10px">-->
-                        <!--<div class="thumbnail">-->
-                            <!--<img class="img-responsive user-photo"-->
-                                 <!--th:src="@{/assets/images/users/1.jpg}">-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <form class="row" th:action="@{'/radar/'+${radarId}+'/configuration/add_comment'}" method="post"
+                      th:object="${newComment}">
+                    <div class="col-05" style="padding-left: 10px">
+                        <div class="thumbnail">
+                            <img class="img-responsive user-photo"
+                                 th:src="@{/assets/images/users/1.jpg}">
+                        </div>
+                    </div>
 
-                    <!--<div class="col-sm-10">-->
-                        <!--<div class="panel panel-default">-->
-                            <!--<div class="col-12 panel-heading">-->
-                                <!--<strong th:text="${loggedInUserDTO.getUsername()}"></strong>-->
-                                <!--<label for="newComment"></label>-->
-                            <!--</div>-->
-                            <!--<textarea class="panel-body form-control" id="newComment" th:field="*{content}"-->
-                                      <!--rows="2"></textarea>-->
-                            <!--<div class="col-3">-->
-                                <!--<input class="form-control button" type="submit" th:value="#{ctrl.add}">-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</form>-->
+                    <div class="col-sm-10">
+                        <div class="panel panel-default">
+                            <div class="col-12 panel-heading">
+                                <strong th:text="${username}"></strong>
+                                <label for="newComment"></label>
+                            </div>
+                            <textarea class="panel-body form-control" id="newComment" th:field="*{content}"
+                                      rows="2"></textarea>
+                            <div class="col-3">
+                                <input class="form-control button" type="submit" th:value="#{ctrl.add}">
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <!--ADD NEW-->
 
                 <div class="row" th:each="comment: ${comments}">
