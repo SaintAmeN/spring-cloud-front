@@ -1,6 +1,7 @@
 package com.aps.services.ui.apiclients;
 
 import com.aps.services.apiclients.IConfiglutMS;
+import com.aps.services.model.dto.configlut.response.CommentResponseDto;
 import com.aps.services.model.dto.configlut.response.RadarConfigurationResponseDto;
 import com.aps.services.model.pagination.OwnPageImpl;
 import com.aps.services.model.dto.configlut.response.RadarResponseDto;
@@ -20,7 +21,13 @@ public interface ConfiglutMS extends IConfiglutMS {
 
     @GetMapping("/radar/{radar_id}/configuration")
     OwnPageImpl<RadarConfigurationResponseDto>
-    getAllByRadar(@PathVariable(name = "radar_id") Long radarId,
-                  @RequestParam(name = "pageSize", required = false) Integer pageSize,
-                  @RequestParam(name = "page", required = false) Integer page);
+    getConfigurationsByRadar(@PathVariable(name = "radar_id") Long radarId,
+                             @RequestParam(name = "pageSize", required = false) Integer pageSize,
+                             @RequestParam(name = "page", required = false) Integer page);
+
+    @GetMapping("/radar/{radar_id}/comment")
+    OwnPageImpl<CommentResponseDto>
+    getCommentsByRadar(@PathVariable(name = "radar_id") Long radarId,
+                       @RequestParam(name = "pageSize", required = false) Integer pageSize,
+                       @RequestParam(name = "page", required = false) Integer page);
 }

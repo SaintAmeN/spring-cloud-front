@@ -215,13 +215,13 @@
             </div>
 
             <!--COMMENT PANEL-->
-            <!--<div class="container">-->
-                <!--<div class="row">-->
-                    <!--<div class="col-sm-12">-->
-                        <!--<h3 th:text="#{comment.list.title}"></h3>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;ADD NEW&ndash;&gt;-->
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 th:text="#{comment.list.title}"></h3>
+                    </div>
+                </div>
+                <!--ADD NEW-->
                 <!--<form class="row" th:action="@{'/radar/'+${radarId}+'/configuration/add_comment'}" method="post"-->
                       <!--th:object="${newComment}">-->
                     <!--<div class="col-05" style="padding-left: 10px">-->
@@ -245,66 +245,67 @@
                         <!--</div>-->
                     <!--</div>-->
                 <!--</form>-->
+                <!--ADD NEW-->
 
-                <!--<div class="row" th:each="comment: ${comments}">-->
-                    <!--<div class="col-05" style="padding-left: 10px">-->
-                        <!--<div class="thumbnail">-->
-                            <!--<img class="img-responsive user-photo"-->
-                                 <!--th:src="@{/assets/images/users/1.jpg}">-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <div class="row" th:each="comment: ${comments}">
+                    <div class="col-05" style="padding-left: 10px">
+                        <div class="thumbnail">
+                            <img class="img-responsive user-photo"
+                                 th:src="@{/assets/images/users/1.jpg}">
+                        </div>
+                    </div>
 
-                    <!--<div class="col-sm-10">-->
-                        <!--<div class="panel panel-default">-->
-                            <!--<div class="panel-heading">-->
-                                <!--<strong th:text="${comment.author.getUsername()}"></strong>-->
-                                <!--<span class="text-muted" th:text="${comment.created}"></span>-->
-                            <!--</div>-->
-                            <!--<div class="panel-body" th:text="${comment.content}"></div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
+                    <div class="col-sm-10">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong th:text="${comment.author}"></strong>
+                                <span class="text-muted" th:text="${comment.created}"></span>
+                            </div>
+                            <div class="panel-body" th:text="${comment.content}"></div>
+                        </div>
+                    </div>
+                </div>
 
-                <!--<div class="row col-12" th:if="${comments.totalPages > 1}">-->
-                    <!--<div class="form-group col-md-1"><select class="form-control pagination"-->
-                                                             <!--id="pageSizeSelectComment">-->
-                        <!--<option th:each="pageSizeComment : ${pageSizes}" th:text="${pageSizeComment}"-->
-                                <!--th:value="${pageSizeComment}"-->
-                                <!--th:selected="${pageSizeComment} == ${selectedPageSizeComment}"></option>-->
-                    <!--</select></div>-->
-                    <!--<div class="form-group col-md-8 pagination-centered">-->
-                        <!--<ul class="pagination">-->
-                            <!--<li th:class="${comments.number == 0} ? disabled">-->
-                                <!--<a class="page-link"-->
-                                   <!--th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', 1).build().toUriString()}}"-->
-                                   <!--th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">«</a>-->
-                            <!--</li>-->
-                            <!--<li th:class="${comments.number == 0} ? disabled">-->
-                                <!--<a class="page-link"-->
-                                   <!--th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', comments.number).build().toUriString()}}"-->
-                                   <!--th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">←</a>-->
-                            <!--</li>-->
-                            <!--<li th:class="${comments.number == (pageComment - 1)} ? 'active pointer-disabled'"-->
-                                <!--th:each="pageComment : ${#numbers.sequence(pagerComment.startPage, pagerComment.endPage)}">-->
-                                <!--<a-->
-                                        <!--class="page-link"-->
-                                        <!--th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', pageComment).build().toUriString()}}"-->
-                                        <!--th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"-->
-                                        <!--th:text="${pageComment}"></a></li>-->
-                            <!--<li th:class="${comments.number + 1 == comments.totalPages} ? disabled"><a-->
-                                    <!--class="page-link"-->
-                                    <!--th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', comments.number + 2).build().toUriString()}}"-->
-                                    <!--th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">→</a>-->
-                            <!--</li>-->
-                            <!--<li th:class="${comments.number + 1 == comments.totalPages} ? disabled"><a-->
-                                    <!--class="page-link"-->
-                                    <!--th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', comments.totalPages).build().toUriString()}}"-->
-                                    <!--th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">»</a>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
+                <div class="row col-12" th:if="${comments.totalPages > 1}">
+                    <div class="form-group col-md-1"><select class="form-control pagination"
+                                                             id="pageSizeSelectComment">
+                        <option th:each="pageSizeComment : ${pageSizes}" th:text="${pageSizeComment}"
+                                th:value="${pageSizeComment}"
+                                th:selected="${pageSizeComment} == ${selectedPageSizeComment}"></option>
+                    </select></div>
+                    <div class="form-group col-md-8 pagination-centered">
+                        <ul class="pagination">
+                            <li th:class="${comments.number == 0} ? disabled">
+                                <a class="page-link"
+                                   th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', 1).build().toUriString()}}"
+                                   th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">«</a>
+                            </li>
+                            <li th:class="${comments.number == 0} ? disabled">
+                                <a class="page-link"
+                                   th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', comments.number).build().toUriString()}}"
+                                   th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">←</a>
+                            </li>
+                            <li th:class="${comments.number == (pageComment - 1)} ? 'active pointer-disabled'"
+                                th:each="pageComment : ${#numbers.sequence(pagerComment.startPage, pagerComment.endPage)}">
+                                <a
+                                        class="page-link"
+                                        th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', pageComment).build().toUriString()}}"
+                                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                                        th:text="${pageComment}"></a></li>
+                            <li th:class="${comments.number + 1 == comments.totalPages} ? disabled"><a
+                                    class="page-link"
+                                    th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', comments.number + 2).build().toUriString()}}"
+                                    th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">→</a>
+                            </li>
+                            <li th:class="${comments.number + 1 == comments.totalPages} ? disabled"><a
+                                    class="page-link"
+                                    th:href="@{${urlBuilder.replaceQueryParam('pageSizeComment', selectedPageSizeComment).replaceQueryParam('pageComment', comments.totalPages).build().toUriString()}}"
+                                    th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">»</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <!--END OF COMMENT PANEL-->
         </div>
         <div class="offset-9">
