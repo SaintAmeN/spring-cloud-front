@@ -136,6 +136,10 @@ code {
     background-color: #6e6e6e87;
 }
 
+.shadow-table-header {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.2) !important;
+}
+
 .colored:nth-child(odd) {
     color: black;
     background-color: white;
@@ -657,42 +661,53 @@ a:not([href]):not([tabindex]) {
 
 /*COMMENT PANEL*/
 .thumbnail {
-    padding:0px;
+    padding: 0px;
 }
+
 .panel {
-    position:relative;
+    position: relative;
 }
-.panel>.panel-heading:after,.panel>.panel-heading:before{
-    position:absolute;
-    top:11px;left:-16px;
-    right:100%;
-    width:0;
-    height:0;
-    display:block;
-    content:" ";
-    border-color:transparent;
-    border-style:solid solid outset;
-    pointer-events:none;
+
+.panel > .panel-heading:after, .panel > .panel-heading:before {
+    position: absolute;
+    top: 11px;
+    left: -16px;
+    right: 100%;
+    width: 0;
+    height: 0;
+    display: block;
+    content: " ";
+    border-color: transparent;
+    border-style: solid solid outset;
+    pointer-events: none;
 }
-.panel>.panel-heading:after{
-    border-width:7px;
-    border-right-color:#f7f7f7;
-    margin-top:1px;
-    margin-left:2px;
+
+.panel > .panel-heading:after {
+    border-width: 7px;
+    border-right-color: #f7f7f7;
+    margin-top: 1px;
+    margin-left: 2px;
 }
-.panel>.panel-heading:before{
-    border-right-color:#ddd;
-    border-width:8px;
+
+.panel > .panel-heading:before {
+    border-right-color: #ddd;
+    border-width: 8px;
 }
 
 .panel-heading {
-    padding: 10px 15px; !important;
-    padding-top: 5px; !important;
-    padding-right: 5px; !important;
-    padding-bottom: 5px; !important;
-    padding-left: 5px; !important;
+    padding: 10px 15px;
+!important;
+    padding-top: 5px;
+!important;
+    padding-right: 5px;
+!important;
+    padding-bottom: 5px;
+!important;
+    padding-left: 5px;
+!important;
 }
 
 .panel-body {
-    padding: 5px; !important;
+    padding: 5px;
+!important;
 }

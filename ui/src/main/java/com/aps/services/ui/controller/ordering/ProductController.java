@@ -1,6 +1,8 @@
 package com.aps.services.ui.controller.ordering;
 
+import com.aps.services.model.dto.OwnPageImpl;
 import com.aps.services.model.dto.ordering.request.ProductRequestDto;
+import com.aps.services.model.dto.ordering.response.EntityResponseDto;
 import com.aps.services.ui.apiclients.ordering.OrderingMS;
 import com.aps.services.ui.controller.BaseAbstractController;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +27,12 @@ public class ProductController extends BaseAbstractController {
 
     @GetMapping("/list")
     public ModelAndView getProductList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                 @RequestParam(value = "page", required = false) Integer page) {
+                                       @RequestParam(value = "page", required = false) Integer page) {
         int selectedPageSize = pageSize != null ? pageSize : DEFAULT_PAGE_SIZE;
         int currentPage = page != null ? page - 1 : INITIAL_PAGE;
 
         ModelAndView model = new ModelAndView("ordering/product/list");
-        model.addObject("products", orderingMS.getProductList(selectedPageSize,currentPage).getBody());
+        model.addObject("products", orderingMS.getProductList(selectedPageSize, currentPage).getBody());
         model.addObject("selectedPageSize", selectedPageSize);
         model.addObject("pageSizes", PAGE_SIZES);
 
@@ -38,16 +40,17 @@ public class ProductController extends BaseAbstractController {
     }
 
     @GetMapping("/add")
-    public ModelAndView getProductForm(Authentication auth) {
+    public ModelAndView getProductForm() {
         ModelAndView model = new ModelAndView("ordering/product/form");
         model.addObject("shops", orderingMS.findAllShops().getBody());
-        model.addObject("productRequestDto", ProductRequestDto.builder().userId(Long.parseLong(userId(auth))).build());
+        model.addObject("productRequestDto", new ProductRequestDto());
         return model;
     }
 
     @PostMapping("/add")
-    public ModelAndView add(ProductRequestDto dto) {
+    public ModelAndView add(Authentication auth, ProductRequestDto dto) {
         ModelAndView model = new ModelAndView("redirect:/ordering/product/list");
+        dto.setUser(user(auth));
         orderingMS.addProduct(dto);
 //        String message = messageSource.getMessage("product.add.success", null, LocaleContextHolder.getLocale());
 //        model.addObject(MESSAGE, message);

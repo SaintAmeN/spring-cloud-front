@@ -1,6 +1,5 @@
 package com.aps.services.ui.controller.ordering;
 
-import com.aps.services.model.dto.ordering.request.ProductRequestDto;
 import com.aps.services.model.dto.ordering.request.ShopRequestDto;
 import com.aps.services.ui.apiclients.ordering.OrderingMS;
 import com.aps.services.ui.controller.BaseAbstractController;
@@ -26,12 +25,12 @@ public class ShopController extends BaseAbstractController {
 
     @GetMapping("/list")
     public ModelAndView getShopList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                       @RequestParam(value = "page", required = false) Integer page) {
+                                    @RequestParam(value = "page", required = false) Integer page) {
         int selectedPageSize = pageSize != null ? pageSize : DEFAULT_PAGE_SIZE;
         int currentPage = page != null ? page - 1 : INITIAL_PAGE;
 
         ModelAndView model = new ModelAndView("ordering/shop/list");
-        model.addObject("products", orderingMS.getShopList(selectedPageSize, currentPage).getBody());
+        model.addObject("shops", orderingMS.getShopList(selectedPageSize, currentPage).getBody());
         model.addObject("selectedPageSize", selectedPageSize);
         model.addObject("pageSizes", PAGE_SIZES);
 
@@ -39,15 +38,16 @@ public class ShopController extends BaseAbstractController {
     }
 
     @GetMapping("/add")
-    public ModelAndView getShopForm(Authentication auth) {
+    public ModelAndView getShopForm() {
         ModelAndView model = new ModelAndView("ordering/shop/form");
-        model.addObject("shopRequestDto", ShopRequestDto.builder().userId(Long.parseLong(userId(auth))).build());
+        model.addObject("shopRequestDto", new ShopRequestDto());
         return model;
     }
 
     @PostMapping("/add")
-    public ModelAndView add(ShopRequestDto dto) {
+    public ModelAndView add(Authentication auth, ShopRequestDto dto) {
         ModelAndView model = new ModelAndView("redirect:/ordering/shop/list");
+        dto.setUser(user(auth));
         orderingMS.addShop(dto);
 //        String message = messageSource.getMessage("product.add.success", null, LocaleContextHolder.getLocale());
 //        model.addObject(MESSAGE, message);

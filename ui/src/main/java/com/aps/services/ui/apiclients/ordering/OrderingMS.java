@@ -8,6 +8,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -22,16 +23,20 @@ public interface OrderingMS {
                                                                   @RequestParam(value = "page", required = false) Integer page);
 
     @PostMapping("/product/add")
-    ResponseEntity<Long> addProduct(ProductRequestDto dto);
+    ResponseEntity<Long> addProduct(@RequestBody ProductRequestDto dto);
 
 
     @GetMapping("/shop/list")
     ResponseEntity<OwnPageImpl<EntityResponseDto>> getShopList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                                  @RequestParam(value = "page", required = false) Integer page);
+                                                               @RequestParam(value = "page", required = false) Integer page);
 
     @PostMapping("/shop/add")
-    ResponseEntity<Long> addShop(ShopRequestDto dto);
+    ResponseEntity<Long> addShop(@RequestBody ShopRequestDto dto);
 
     @GetMapping("/shop/get_all")
     ResponseEntity<List<EntityResponseDto>> findAllShops();
+
+    @GetMapping("/order/list")
+    ResponseEntity<OwnPageImpl<EntityResponseDto>> gerOrderList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                @RequestParam(value = "page", required = false) Integer page);
 }

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <div class="container aligned-margines">
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h2 class="table-head-title" th:text="#{order.list.title}"/>
+                </div>
+                <table class="table table-striped card-text card-body shadow">
+                    <th class="row col-12 table-header aligned-margines shadow">
+                        <div class="col-1" th:text="#{id}"/>
+                        <div class="col-2" th:text="#{order.name}"/>
+                        <div class="col-1" th:text="#{owner}"/>
+                        <div class="col-2" th:text="#{created.time}"/>
+                        <div class="col-2" th:text="#{last.updated.time}"/>
+                        <div class="col-4" th:text="#{actions}"/>
+                    </th>
+                    <th class="row col-12 colored aligned-margines shadow" th:each="orderlst : ${orderLists}"
+                        th:if="${orderlst.isArchived()==false}">
+                        <div class="col-1" th:text="${orderlst.getId()}"></div>
+                        <div class="col-2 break-line" th:text="${orderlst.getName()}"></div>
+                        <div class="col-1 break-line" th:text="${orderlst.getCreator().getUsername()}"></div>
+                        <div class="col-2 break-line" th:object="${orderlst}"
+                             th:text="*{#temporals.format(creationTime,'dd-MM-yyyy HH:mm:ss')}"></div>
+                        <div class="col-2" th:object="${orderlst}"
+                             th:text="*{#temporals.format(updateTime,'dd-MM-yyyy HH:mm:ss')}"></div>
+                        <div class="col-1">
+                            <!--<div class="row col-12 aligned-margines">-->
+                            <a class="link actions-details" th:title="#{order.list.details.title}"
+                               th:href="@{'/order/details/' + ${orderlst.getId()}}"
+                               th:text="#{details}"></a>
+                        </div>
+                        <div class="col-1">
+                            <a class="link actions-details"
+                               th:if="${admin || orderlst.getCreator().getId() == currentUser.getId()}"
+                               th:href="@{'/order/edit/' + ${orderlst.getId()}}" th:text="#{ctrl.edit}"></a>
+                        </div>
+                        <div class="col-1">
+                            <a class="link actions-details"
+                               th:if="${admin || orderlst.getCreator().getId() == currentUser.getId()}"
+                               th:href="@{'/order/addToArchives/' + ${orderlst.getId()}}"
+                               th:text="#{ctrl.archive}"></a>
+                        </div>
+                        <div class="col-1">
+                            <a class="link actions-details" onclick="return myConfirm();"
+                               th:if="${admin || orderlst.getCreator().getId() == currentUser.getId()}"
+                               th:href="@{'/order/remove/' + ${orderlst.getId()}}" th:text="#{ctrl.remove}"></a>
+                        </div>
+                    </th>
+                </table>
+                <div class="row offset-4" th:if="${orderLists.totalPages > 1}">
+                    <div class="form-group col-md-1.5">
+                        <select class="form-control pagination" id="pageSizeSelect">
+                            <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
+                                    th:selected="${pageSize} == ${selectedPageSize}">
+                            </option>
+                        </select>
+                    </div>
+                    <div th:if="${orderLists.totalPages != 1}" class="form-group col-md-11 pagination-centered">
+                        <ul class="pagination">
+                            <li th:class="${orderLists.number == 0} ? disabled"><a class="page-link"
+                                                                                   th:href="@{/order/list/(pageSize=${selectedPageSize}, page=1)}">«</a>
+                            </li>
+                            <li th:class="${orderLists.number == 0} ? disabled"><a class="page-link"
+                                                                                   th:href="@{/order/list/(pageSize=${selectedPageSize}, page=${orderLists.number})}">←</a>
+                            </li>
+                            <!--                            <li th:class="${orderLists.number == (page - 1)} ? 'active pointer-disabled'"-->
+                            <!--                                th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a-->
+                            <!--                                    class="page-link"-->
+                            <!--                                    th:href="@{/order/list/(pageSize=${selectedPageSize}, page=${page})}"-->
+                            <!--                                    th:text="${page}"></a></li>-->
+                            <!--                            <li th:class="${orderLists.number + 1 == orderLists.totalPages} ? disabled"><a-->
+                            <!--                                    class="page-link"-->
+                            <!--                                    th:href="@{/order/list/(pageSize=${selectedPageSize}, page=${orderLists.number + 2})}">→</a>-->
+                            <!--                            </li>-->
+                            <!--                            <li th:class="${orderLists.number + 1 == orderLists.totalPages} ? disabled"><a-->
+                            <!--                                    class="page-link"-->
+                            <!--                                    th:href="@{/order/list/(pageSize=${selectedPageSize}, page=${orderLists.totalPages})}">»</a>-->
+                            <!--                            </li>-->
+                        </ul>
+                    </div>
+                </div>
+                <div class="row col-12 colored aligned-margines redish" th:if="${orderEmptyList.size() == 0}">
+                    <div class="col-12" th:text="#{list.empty}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow" th:if="${allow_new_lists}">
+                <form th:action="@{/order/add}" method="post" th:object="${orderForm}">
+                    <div class="card-header row col-12 aligned-margines shadow-table-header">
+                        <h3 class="table-head-title" th:text="#{add.order.head}"></h3>
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-1 middled">
+                            <label for="orderListName" th:text="#{add.order.name}"></label>
+                        </div>
+                        <div class="col-3 middled">
+                            <input required class="form-control roundless shadow" type="text"
+                                   id="orderListName"
+                                   th:field="*{name}">
+                        </div>
+                        <div class="col-1 middled">
+                            <label for="targetName" th:text="#{order.target.choose}"></label>
+                        </div>
+                        <div class="col-2 middled">
+                            <select id="targetId" name="targetId" class="form-control roundless">
+                                <option selected class="form-control rounded"></option>
+                                <option class="form-control roundless" th:each="target : ${targets}"
+                                        th:value="${target.getId()}"
+                                        th:text="${target.getTargetName()}"></option>
+                            </select>
+                        </div>
+                        <div class="col-1 middled">
+                            <label for="targetName" th:text="#{order.target.new}"></label>
+                        </div>
+                        <div class="col-2 middled">
+                            <input class="form-control roundless shadow" type="text"
+                                   id="targetName"
+                                   th:field="*{targetName}">
+                        </div>
+                        <div class="col-2 middled">
+                            <input class="form-control roundless button shadow" type="submit"
+                                   th:value="#{ctrl.create}">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="offset-9">
+                <a class="button w-100 shadow" th:href="@{'/'}"
+                   th:text="#{ctrl.back.to.home.page}"></a>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-4" th:if="${!allow_new_lists}">
+            <div class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h4 th:text="#{add.order.notification.empty.list}+' '+${counts}+' '+#{add.order.notification.empty.list1}"></h4>
+                </div>
+                <div class="card-body">
+                    <div style="color: blue" th:each="emptylst:${empty_list}">
+                        <li style="color: blue"
+                            th:text="'ID: '+${emptylst.getId()}+' Name: '+${emptylst.getName()}"></li>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -4,81 +4,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Product list</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<div layout:fragment="menubar">
-    <div th:replace="fragments/navigators :: menu-bar"></div>
-</div>
-<div layout:fragment="usermenu">
-    <div th:replace="fragments/navigators :: user-dropdown-menu"></div>
-</div>
-<div layout:fragment="content" id="content" class="container lite-padding">
-    <main role="main" class="container">
-        <div class="container aligned-margines">
-            <div class="row container window aligned-margines">
-                <form class="container col-md-12" th:action="@{/ordering/shop/add}" method="post" th:object="${shopRequestDto}">
-                    <div class="row">
-                        <h3 th:text="'#{shop.form.add}'"/>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 separate-left">
-                            <div class="row">
-                                <div class="offset-md-1 col-md-5 middled">
-                                    <label for="shopName" th:text="'#{shop.name}'"/>
-                                </div>
-                                <div class="col-md-5 middled">
-                                    <input required class="form-control roundless" type="text" id="shopName"
-                                           th:field="*{name}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="offset-md-1 col-md-5 middled">
-                                    <label for="url" th:text="'#{shop.link}'"/>
-                                </div>
-                                <div class="col-md-5 middled">
-                                    <input class="form-control roundless" type="text" id="url" th:field="*{url}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 separate-right">
-                            <div class="row">
-                                <div class="col-md-6 middled">
-                                    <label for="address-street" th:text="'#{shop.form.address.street}'"/>
-                                </div>
-                                <div class="col-md-6 middled">
-                                    <input required class="form-control roundless" type="text" id="address-street"
-                                           th:field="*{street}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3 middled">
-                                    <label for="address-code" th:text="'#{shop.form.address.code}'"/>
-                                </div>
-                                <div class="col-md-3 middled">
-                                    <input required class="form-control roundless" type="text" id="address-code"
-                                           th:field="*{code}">
-                                </div>
-                                <div class="col-md-3 middled">
-                                    <label for="address-city" th:text="'#{shop.form.address.city}'"/>
-                                </div>
-                                <div class="col-md-3 middled">
-                                    <input required class="form-control roundless" type="text" id="address-city"
-                                           th:field="*{city}">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="offset-md-10 col-md-2 middled">
-                            <input class="form-control roundless button" type="submit" th:value="'#{add.shop}'">
-                            <a class="button w-100" th:href="@{'/shop/list/'}" th:text="#{ctrl.previous}"></a>
-                        </div>
-                    </div>
-                </form>
+<div layout:fragment="content" id="content" class="container">
+    <div class="offset-1 col-lg-12">
+        <form class="card shadow" th:action="@{/shop/add}" method="post" th:object="${shopRequestDto}">
+<!--            TODO-->
+            <div class="card-header row col-12 aligned-margines">
+                <h3 th:text="#{shop.add}"></h3>
             </div>
+            <div class="row card-body" >
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="shopName" th:text="#{shop.name}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <input required class="form-control roundless shadow" type="text" id="shopName"
+                                   th:field="*{name}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="address-street" th:text="#{shop.address.street}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <input class="form-control roundless shadow" type="text" id="address-street"
+                                   th:field="*{street}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="address-code" th:text="#{shop.address.code}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <input class="form-control roundless shadow" type="text" id="address-code"
+                                   th:field="*{code}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="address-city" th:text="#{shop.address.city}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <input class="form-control roundless shadow" type="text" id="address-city"
+                                   th:field="*{city}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="url" th:text="#{shop.link}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <input class="form-control roundless shadow" type="text" id="url" th:field="*{url}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-md-10 col-md-2 middled">
+                    <input class="form-control roundless button shadow" type="submit" th:value="#{shop.create}">
+                </div>
+            </div>
+        </form>
+        <div class="offset-9">
+            <a class="button w-100 shadow" th:href="@{'/ordering/shop/list/'}" th:text="#{ctrl.previous}"></a>
         </div>
-    </main>
+    </div>
 </div>
 </body>
 </html>
