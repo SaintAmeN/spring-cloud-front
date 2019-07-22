@@ -21,10 +21,13 @@ public class FeignErrorDecoder implements ErrorDecoder {
     public Exception decode(String s, Response response) {
         ErrorDetails errorDetails = null;
         String message = "Unknown Exception";
-        try {
-            errorDetails = objectMapper.readValue(response.body().asInputStream(), new TypeReference<ErrorDetails>(){});
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (response.body() != null) {
+            try {
+                errorDetails = objectMapper.readValue(response.body().asInputStream(), new TypeReference<ErrorDetails>() {
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         if (errorDetails != null){
             message = errorDetails.getMessage();
@@ -38,7 +41,7 @@ public class FeignErrorDecoder implements ErrorDecoder {
                 return new UsageException(message);
             //możemy dopisać wyjątki dla innych errorów otrzymywanych z feignClientów
             default:
-                return new Exception(message);
+                return new RuntimeException("staus code: "+response.status());
         }
     }
 }

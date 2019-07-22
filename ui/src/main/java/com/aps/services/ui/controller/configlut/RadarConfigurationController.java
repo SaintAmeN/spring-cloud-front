@@ -1,6 +1,7 @@
 package com.aps.services.ui.controller.configlut;
 
 import com.aps.services.model.dto.configlut.request.CommentRequestDto;
+import com.aps.services.model.dto.configlut.request.RadarConfigurationRequestDto;
 import com.aps.services.model.dto.configlut.response.CommentResponseDto;
 import com.aps.services.model.dto.configlut.response.RadarConfigurationResponseDto;
 import com.aps.services.model.pagination.OwnPageImpl;
@@ -69,5 +70,35 @@ public class RadarConfigurationController extends BaseAbstractController {
         return model;
     }
 
+    @GetMapping("/add")
+    public ModelAndView getConfigurationForm(@PathVariable(name = "radar_id") Long radarId) {
+        ModelAndView model = new ModelAndView("radarConfig/configForm");
+        model.addObject("radarId", radarId);
+        model.addObject("configDto", new RadarConfigurationRequestDto());
+        return model;
+    }
 
+    @PutMapping
+    public ModelAndView addConfig(@PathVariable(name = "radar_id") Long radarId, RadarConfigurationRequestDto dto){
+        ModelAndView model = new ModelAndView(String.format(VIEW_CONFIG_REDIRECT, radarId));
+        configlutMS.addRadarConfiguration(radarId, dto);
+        return model;
+    }
+
+    @GetMapping("/{configuration_id}/edit")
+    public ModelAndView getConfigurationEditForm(@PathVariable(name = "radar_id") Long radarId,
+                                                 @PathVariable(name = "configuration_id") Long configurationId) {
+        ModelAndView model = new ModelAndView("radarConfig/configEditForm");
+        model.addObject("radarId", radarId);
+        model.addObject("configDto", configlutMS.createConfigEditForm(radarId, configurationId));
+        return model;
+    }
+
+    @PostMapping("/{configuration_id}")
+    public ModelAndView editConfiguration(@PathVariable(name = "radar_id") Long radarId,
+                                          @PathVariable(name = "configuration_id") Long configurationId,
+                                          RadarConfigurationRequestDto configurationDto){
+        configlutMS.editConfiguration(radarId, configurationId, configurationDto);
+        return new ModelAndView(String.format(VIEW_CONFIG_REDIRECT, radarId));
+    }
 }
