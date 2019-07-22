@@ -13,14 +13,14 @@
                 <div class="card-header row col-12 aligned-margines shadow-table-header">
                     <h2 class="table-head-title" th:text="#{shop.list.title}"></h2>
                 </div>
-                <table class="table table-striped card-text card-body shadow">
-                    <th class="row col-12 table-header aligned-margines shadow">
+                <div class="table table-striped card-text card-body shadow">
+                    <div class="row col-12 table-header aligned-margines shadow">
                         <div class="col-2" th:text="#{id}"></div>
                         <div class="col-3" th:text="#{shop.name}"></div>
                         <div class="col-3" th:text="#{owner}"></div>
                         <div class="col-4" th:text="#{actions}"></div>
-                    </th>
-                    <th class="row col-12 colored aligned-margines shadow" th:each="shop : ${shops}"
+                    </div>
+                    <div class="row col-12 colored aligned-margines shadow" th:each="shop : ${shops}"
                         th:if="${shop.isApproved() || currentUser.isAdmin()}">
                         <div class="col-2" th:text="${shop.getId()}"></div>
                         <div class="col-3 break-line" th:text="${shop.getName()}"></div>
@@ -45,8 +45,8 @@
                                th:href="@{'/ordering/shop/approve/' + ${shop.getId()}}" th:text="#{approve}"></a>
                         </div>
 
-                    </th>
-                </table>
+                    </div>
+                </div>
                 <div class="row col-12 colored aligned-margines redish" th:if="${shops.getContent().size() == 0}">
                     <div class="col-12" th:text="#{list.no.elements}">
                     </div>

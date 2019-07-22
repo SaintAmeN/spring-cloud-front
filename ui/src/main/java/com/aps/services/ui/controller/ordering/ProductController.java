@@ -1,8 +1,6 @@
 package com.aps.services.ui.controller.ordering;
 
-import com.aps.services.model.dto.OwnPageImpl;
 import com.aps.services.model.dto.ordering.request.ProductRequestDto;
-import com.aps.services.model.dto.ordering.response.EntityResponseDto;
 import com.aps.services.ui.apiclients.ordering.OrderingMS;
 import com.aps.services.ui.controller.BaseAbstractController;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +40,7 @@ public class ProductController extends BaseAbstractController {
     @GetMapping("/add")
     public ModelAndView getProductForm() {
         ModelAndView model = new ModelAndView("ordering/product/form");
-        model.addObject("shops", orderingMS.findAllShops().getBody());
+        model.addObject("shops", orderingMS.getAllShops().getBody());
         model.addObject("productRequestDto", new ProductRequestDto());
         return model;
     }

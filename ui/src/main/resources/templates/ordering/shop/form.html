@@ -8,7 +8,7 @@
 <body>
 <div layout:fragment="content" id="content" class="container">
     <div class="offset-1 col-lg-12">
-        <form class="card shadow" th:action="@{/shop/add}" method="post" th:object="${shopRequestDto}">
+        <form class="card shadow" th:action="@{/ordering/shop/add}" method="post" th:object="${shopRequestDto}">
 <!--            TODO-->
             <div class="card-header row col-12 aligned-margines">
                 <h3 th:text="#{shop.add}"></h3>

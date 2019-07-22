@@ -5,12 +5,12 @@ import com.aps.services.ui.apiclients.ordering.OrderingMS;
 import com.aps.services.ui.controller.BaseAbstractController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import static com.aps.services.ui.config.Constants.INITIAL_PAGE;
-import static com.aps.services.ui.config.Constants.PAGE_SIZES;
+import static com.aps.services.ui.config.Constants.*;
 import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
 
 /**
@@ -49,8 +49,8 @@ public class ShopController extends BaseAbstractController {
         ModelAndView model = new ModelAndView("redirect:/ordering/shop/list");
         dto.setUser(user(auth));
         orderingMS.addShop(dto);
-//        String message = messageSource.getMessage("product.add.success", null, LocaleContextHolder.getLocale());
-//        model.addObject(MESSAGE, message);
+        String message = messageSource.getMessage("shop.add.success", null, LocaleContextHolder.getLocale());
+        model.addObject(MESSAGE, message);
         return model;
     }
 }

@@ -1,12 +1,12 @@
 package com.aps.services.ui.controller.ordering;
 
+import com.aps.services.model.dto.ordering.request.OrderListRequestDto;
 import com.aps.services.ui.apiclients.ordering.OrderingMS;
+import com.aps.services.ui.controller.BaseAbstractController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import static com.aps.services.ui.config.Constants.INITIAL_PAGE;
@@ -17,10 +17,10 @@ import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZ
  * @author ajarmolkowicz
  */
 @RestController
-@RequestMapping("/ordering/product/")
+@RequestMapping("/ordering/order/")
 @RequiredArgsConstructor
 @Slf4j
-public class OrderListController {
+public class OrderListController extends BaseAbstractController {
     private final OrderingMS orderingMS;
 
     @GetMapping("/list")
@@ -31,9 +31,20 @@ public class OrderListController {
 
         ModelAndView model = new ModelAndView("ordering/order/list");
         model.addObject("orders", orderingMS.gerOrderList(selectedPageSize, currentPage).getBody());
+        model.addObject("orderListRequestDto", new OrderListRequestDto());
+        model.addObject("emptyOrderLists",orderingMS.getEmptyOrderLists().getBody());
+        model.addObject("targets", orderingMS.getAllOrderTargets().getBody());
         model.addObject("selectedPageSize", selectedPageSize);
         model.addObject("pageSizes", PAGE_SIZES);
 
+        return model;
+    }
+
+    @PostMapping("/add")
+    public ModelAndView add(Authentication auth, OrderListRequestDto dto){
+        ModelAndView model = new ModelAndView("redirect:/ordering/order/list");
+        dto.setUser(user(auth));
+        orderingMS.addOrderList(dto);
         return model;
     }
 }
