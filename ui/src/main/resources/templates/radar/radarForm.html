@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{matrix/layout}">
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
     <title>Create new radar form</title>
@@ -12,7 +12,7 @@
         <div class="container aligned-margines">
             <div class="row container window aligned-margines">
                 <h2 class="table-head-title" th:text="#{add.radar.form.title}"></h2>
-                <form class="listing-container container" th:action="@{/radar/add}" method="post"
+                <form class="listing-container container" th:action="@{/radar}" th:method="put"
                       th:object="${radarDto}">
 
                     <div class="row offset-md-1 col-md-10">

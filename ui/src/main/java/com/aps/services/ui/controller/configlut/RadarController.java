@@ -1,5 +1,6 @@
 package com.aps.services.ui.controller.configlut;
 
+import com.aps.services.model.dto.configlut.request.RadarRequestDto;
 import com.aps.services.model.dto.configlut.response.RadarResponseDto;
 import com.aps.services.model.pagination.OwnPageImpl;
 import com.aps.services.model.pagination.PagerModel;
@@ -8,6 +9,7 @@ import com.aps.services.ui.controller.BaseAbstractController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,5 +37,17 @@ public class RadarController extends BaseAbstractController {
         model.addObject("pageSizes", PAGE_SIZES);
         model.addObject("pager", pager);
         return model;
+    }
+
+    @GetMapping("/add")
+    public ModelAndView createAdditionForm() {
+        ModelAndView model = new ModelAndView("radar/radarForm");
+        return model.addObject("radarDto", new RadarRequestDto());
+    }
+
+    @PutMapping
+    public ModelAndView add(RadarRequestDto dto){
+        configlutMS.addRadar(dto);
+        return new ModelAndView("redirect:/radar");
     }
 }

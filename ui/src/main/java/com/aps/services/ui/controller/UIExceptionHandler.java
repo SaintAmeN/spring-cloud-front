@@ -37,5 +37,14 @@ public class UIExceptionHandler {
         model.addAttribute("errorException", ex.getMessage());
         return "error/error";
     }
+
+    @ExceptionHandler(Exception.class)
+    public String handleUnknownException(Exception ex, Model model) {
+        model.addAttribute("status", "exception");
+        model.addAttribute("errorMessage", "unknown exception");
+        model.addAttribute("errorException", ex.getMessage());
+        return "error/error";
+    }
+
 }
 

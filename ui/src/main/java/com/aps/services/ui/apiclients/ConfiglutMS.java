@@ -2,6 +2,7 @@ package com.aps.services.ui.apiclients;
 
 import com.aps.services.apiclients.IConfiglutMS;
 import com.aps.services.model.dto.configlut.request.CommentRequestDto;
+import com.aps.services.model.dto.configlut.request.RadarRequestDto;
 import com.aps.services.model.dto.configlut.response.CommentResponseDto;
 import com.aps.services.model.dto.configlut.response.RadarConfigurationResponseDto;
 import com.aps.services.model.pagination.OwnPageImpl;
@@ -33,4 +34,7 @@ public interface ConfiglutMS extends IConfiglutMS {
     @PutMapping("/radar/{radar_id}/comment")
     CommentResponseDto addComment(@PathVariable(name = "radar_id") Long radarId,
                                   @RequestBody CommentRequestDto newComment);
+
+    @PutMapping("/radar")
+    RadarResponseDto addRadar(RadarRequestDto dto);
 }
