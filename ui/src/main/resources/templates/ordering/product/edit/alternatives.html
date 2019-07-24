@@ -25,12 +25,12 @@
                                 <div class="col-3" th:text="#{product.alternative.delete}"></div>
                             </div>
                             <div class="row col-12 colored aligned-margines shadow bold"
-                                 th:each="alternative : ${currentAlternatives}">
-                                <div class="col-3 table-element" th:text="${alternative.getId()}"></div>
-                                <div class="col-6 table-element" th:text="${alternative.getName()}"></div>
+                                 th:each="alternative : ${currentAlternatives.entrySet()}">
+                                <div class="col-3 table-element" th:text="${alternative.getValue()}"></div>
+                                <div class="col-6 table-element" th:text="${alternative.getKey()}"></div>
                                 <div class="col-3">
                                     <a class="col-12 button form-control" th:text="#{delete}"
-                                       th:href="@{'/product/edit/alternatives/delete/' + ${id} + '/' + ${alternative.getId()}}"></a>
+                                       th:href="@{'/ordering/product/edit/alternatives/delete/' + ${productId} + '/' + ${alternative.getValue()}}"></a>
                                 </div>
                             </div>
                         </div>
@@ -50,11 +50,11 @@
                             </div>
                             <div class="row col-12 colored aligned-margines shadow bold"
                                  th:each="alternative : ${availableAlternatives}">
-                                <div class="col-3 table-element" th:text="${alternative.getId()}"></div>
-                                <div class="col-6 table-element" th:text="${alternative.getName()}"></div>
+                                <div class="col-3 table-element" th:text="${alternative.getValue()}"></div>
+                                <div class="col-6 table-element" th:text="${alternative.getKey()}"></div>
                                 <div class="col-3">
                                     <a class="col-12 button form-control" th:text="#{add}"
-                                       th:href="@{'/product/edit/alternatives/add/' + ${id} + '/' + ${alternative.getId()}}"></a>
+                                       th:href="@{'/ordering/product/edit/alternatives/add/' + ${productId} + '/' + ${alternative.getValue()}}"></a>
                                 </div>
                             </div>
                         </div>

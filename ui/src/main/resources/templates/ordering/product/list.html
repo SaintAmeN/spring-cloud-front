@@ -40,23 +40,23 @@
                             </div>
                             <div class="col-1">
                                 <a class="link actions-details"
-                                   th:href="@{'/product/details/' + ${product.getId()}}" th:text="#{details}"></a>
+                                   th:href="@{'/ordering/product/details/' + ${product.getId()}}" th:text="#{details}"></a>
                             </div>
                             <div class="col-1">
                                 <a class="link actions-details"
                                    th:if="${currentUser.isAdmin() || product.getCreator().getId() == currentUser.getId()}"
-                                   th:href="@{'/product/edit/' + ${product.getId()} + '/info'}"
+                                   th:href="@{'/ordering/product/edit/' + ${product.getId()}}"
                                    th:text="#{edit}"></a>
                             </div>
                             <div class="col-1">
                                 <a class="link actions-details"
                                    th:if="${currentUser.isAdmin() || product.getCreator().getId() == currentUser.getId()}"
-                                   th:href="@{'/product/remove/' + ${product.getId()}}" th:text="#{remove}"></a>
+                                   th:href="@{'/ordering/product/remove/' + ${product.getId()}}" th:text="#{delete}"></a>
                             </div>
                             <div class="col-1">
                                 <a class="link actions-details"
                                    th:if="${currentUser.isAdmin() && product.isApproved()}"
-                                   th:href="@{'/product/approve/' + ${product.getId()}}" th:text="#{approve}"></a>
+                                   th:href="@{'/ordering/product/approve/' + ${product.getId()}}" th:text="#{approve}"></a>
                             </div>
                         </th>
                     </table>

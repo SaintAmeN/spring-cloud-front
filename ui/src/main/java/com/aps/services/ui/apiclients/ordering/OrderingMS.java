@@ -25,9 +25,6 @@ public interface OrderingMS {
     @PostMapping("/product/add")
     ResponseEntity<Long> addProduct(@RequestBody ProductRequestDto dto);
 
-    @GetMapping("/product/get_all")
-    ResponseEntity<List<ProductResponseDto>> findAllProducts();
-
     @GetMapping("/product/get/{id}")
     ResponseEntity<ProductResponseDto> findProductById(@PathVariable(name = "id") Long id);
 
@@ -37,14 +34,14 @@ public interface OrderingMS {
     @GetMapping("/product/get_alternatives_current/{id}")
     ResponseEntity<Map<String, Long>> findCurrentProductAlternatives(@PathVariable(name = "id") Long id);
 
-    @GetMapping("/product/alternative/add/{id}/{alternativeId}")
+    @GetMapping("/product/edit/alternatives/add/{id}/{alternativeId}")
     ResponseEntity<Long> addAlternativeToProduct(@PathVariable(name = "id") Long id, @PathVariable(name = "alternativeId") Long alternativeId);
 
-    @GetMapping("/product/alternative/delete/{id}/alternativeId")
+    @GetMapping("/product/edit/alternatives/delete/{id}/{alternativeId}")
     ResponseEntity<Long> deleteAlternativeFromProduct(@PathVariable(name = "id") Long id, @PathVariable(name = "alternativeId") Long alternativeId);
 
     @GetMapping("/product/list")
-    ResponseEntity<OwnPageImpl<ProductRequestDto>> getProductList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
+    ResponseEntity<OwnPageImpl<ProductResponseDto>> getProductList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                                   @RequestParam(value = "page", required = false) Integer page);
 
     @PostMapping("/shop/add")
