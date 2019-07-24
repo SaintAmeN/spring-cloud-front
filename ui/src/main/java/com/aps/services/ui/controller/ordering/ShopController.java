@@ -53,4 +53,11 @@ public class ShopController extends BaseAbstractController {
         model.addObject(MESSAGE, message);
         return model;
     }
+
+    @GetMapping("/details/{id}")
+    public ModelAndView details(@PathVariable(name = "id") Long id){
+        ModelAndView model = new ModelAndView("ordering/shop/details");
+        model.addObject("shopResponseDto",orderingMS.getShopDetails(id).getBody());
+        return model;
+    }
 }
