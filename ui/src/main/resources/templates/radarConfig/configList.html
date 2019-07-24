@@ -125,7 +125,7 @@
                          th:text="${config.getDBmNormalization()}"></div>
 
                     <div class="col-1">
-                        <a class="dropdown-pointer dropdown-toggle" data-toggle="dropdown" th:text="#{ctrl.choose.action}"></a>
+                        <a class="dropdown-pointer dropdown-toggle link" href="" th:onclick="'return false;'" data-toggle="dropdown" th:text="#{ctrl.choose.action}"></a>
                         <ul class="dropdown-menu window">
                             <li class="selected dropdown-item">
                                 <a class="link"
@@ -133,8 +133,8 @@
                                    th:text="#{ctrl.edit}"></a>
                             </li>
                             <li class="selected dropdown-item">
-                                <a class="link"
-                                   th:onclick="'openHistoryPanel(\''+${config.id} +'\');'"
+                                <a class="link" href=""
+                                   th:onclick="'openHistoryPanel(\''+${config.id} +'\'); return false;'"
                                    th:text="#{ctrl.show.history}"></a>
                             </li>
                         </ul>
