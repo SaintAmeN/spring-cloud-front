@@ -60,4 +60,19 @@ public class ShopController extends BaseAbstractController {
         model.addObject("shopResponseDto",orderingMS.getShopDetails(id).getBody());
         return model;
     }
+
+    @GetMapping("/edit/{id}")
+    public ModelAndView getEditForm(@PathVariable(name = "id") Long id){
+        ModelAndView model = new ModelAndView("ordering/shop/edit");
+        model.addObject("shopResponseDto", orderingMS.getShopDetails(id).getBody());
+        model.addObject("shopRequestDto", new ShopRequestDto());
+        return model;
+    }
+
+    @PostMapping("/edit/{id}")
+    public ModelAndView edit(@PathVariable(name = "id") Long id, ShopRequestDto dto){
+        ModelAndView model = new ModelAndView("redirect:/ordering/shop/details/" + id);
+        orderingMS.editShop(id, dto);
+        return model;
+    }
 }

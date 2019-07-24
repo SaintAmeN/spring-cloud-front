@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-1">
                             <a class="link actions-details"
-                               th:if="${currentUser.isAdmin() && shop.isApproved()}"
+                               th:if="${currentUser.isAdmin() && !shop.isApproved()}"
                                th:href="@{'/ordering/shop/approve/' + ${shop.getId()}}" th:text="#{approve}"></a>
                         </div>
 

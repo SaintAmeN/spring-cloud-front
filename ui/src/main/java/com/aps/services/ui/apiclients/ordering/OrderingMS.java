@@ -36,6 +36,12 @@ public interface OrderingMS {
     @GetMapping("/shop/get_all")
     ResponseEntity<List<ShopResponseDto>> getAllShops();
 
+    @GetMapping("shop/details/{id}")
+    ResponseEntity<ShopResponseDto> getShopDetails(@PathVariable(name = "id") Long id);
+
+    @PostMapping("shop/edit/{id}")
+    ResponseEntity<Long> editShop(@PathVariable(name = "id") Long id, @RequestBody ShopRequestDto dto);
+
 
     @GetMapping("/order/list")
     ResponseEntity<OwnPageImpl<OrderListResponseDto>> gerOrderList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -49,7 +55,4 @@ public interface OrderingMS {
 
     @PostMapping("/order/add")
     ResponseEntity<Long> addOrderList(@RequestBody OrderListRequestDto dto);
-
-    @GetMapping("shop/details/{id}")
-    ResponseEntity<ShopResponseDto> getShopDetails(@PathVariable(name = "id") Long id);
 }
