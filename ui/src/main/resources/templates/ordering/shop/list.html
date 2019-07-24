@@ -37,7 +37,7 @@
                         <div class="col-1">
                             <a class="link actions-details"
                                th:if="${currentUser.isAdmin() || shop.getCreator().getId() == currentUser.getId()}"
-                               th:href="@{'/ordering/shop/remove/' + ${shop.getId()}}" th:text="#{remove}"></a>
+                               th:href="@{'/ordering/shop/delete/' + ${shop.getId()}}" th:text="#{delete}"></a>
                         </div>
                         <div class="col-1">
                             <a class="link actions-details"

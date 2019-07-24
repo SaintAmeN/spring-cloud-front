@@ -23,6 +23,52 @@ import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZ
 public class ShopController extends BaseAbstractController {
     private final OrderingMS orderingMS;
 
+    @PostMapping("/add")
+    public ModelAndView add(Authentication auth, ShopRequestDto dto) {
+        ModelAndView model = new ModelAndView("redirect:/ordering/shop/list");
+        dto.setUser(user(auth));
+        orderingMS.addShop(dto);
+        String message = messageSource.getMessage("shop.add.success", null, LocaleContextHolder.getLocale());
+        model.addObject(MESSAGE, message);
+        return model;
+    }
+
+    @GetMapping("/approve/{id}")
+    public ModelAndView approve(@PathVariable(name = "id") Long id) {
+        ModelAndView model = new ModelAndView("redirect:/ordering/shop/list");
+        orderingMS.approveShop(id);
+        return model;
+    }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView delete(@PathVariable(name = "id") Long id) {
+        ModelAndView model = new ModelAndView("redirect:/ordering/shop/list");
+        orderingMS.deleteShop(id);
+        return model;
+    }
+
+    @GetMapping("/details/{id}")
+    public ModelAndView details(@PathVariable(name = "id") Long id) {
+        ModelAndView model = new ModelAndView("ordering/shop/details");
+        model.addObject("shopResponseDto", orderingMS.getShopDetails(id).getBody());
+        return model;
+    }
+
+    @PostMapping("/edit/{id}")
+    public ModelAndView edit(@PathVariable(name = "id") Long id, ShopRequestDto dto) {
+        ModelAndView model = new ModelAndView("redirect:/ordering/shop/details/" + id);
+        orderingMS.editShop(id, dto);
+        return model;
+    }
+
+    @GetMapping("/edit/{id}")
+    public ModelAndView getEditForm(@PathVariable(name = "id") Long id) {
+        ModelAndView model = new ModelAndView("ordering/shop/edit");
+        model.addObject("shopResponseDto", orderingMS.getShopDetails(id).getBody());
+        model.addObject("shopRequestDto", new ShopRequestDto());
+        return model;
+    }
+
     @GetMapping("/list")
     public ModelAndView getShopList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
                                     @RequestParam(value = "page", required = false) Integer page) {
@@ -41,38 +87,6 @@ public class ShopController extends BaseAbstractController {
     public ModelAndView getShopForm() {
         ModelAndView model = new ModelAndView("ordering/shop/form");
         model.addObject("shopRequestDto", new ShopRequestDto());
-        return model;
-    }
-
-    @PostMapping("/add")
-    public ModelAndView add(Authentication auth, ShopRequestDto dto) {
-        ModelAndView model = new ModelAndView("redirect:/ordering/shop/list");
-        dto.setUser(user(auth));
-        orderingMS.addShop(dto);
-        String message = messageSource.getMessage("shop.add.success", null, LocaleContextHolder.getLocale());
-        model.addObject(MESSAGE, message);
-        return model;
-    }
-
-    @GetMapping("/details/{id}")
-    public ModelAndView details(@PathVariable(name = "id") Long id){
-        ModelAndView model = new ModelAndView("ordering/shop/details");
-        model.addObject("shopResponseDto",orderingMS.getShopDetails(id).getBody());
-        return model;
-    }
-
-    @GetMapping("/edit/{id}")
-    public ModelAndView getEditForm(@PathVariable(name = "id") Long id){
-        ModelAndView model = new ModelAndView("ordering/shop/edit");
-        model.addObject("shopResponseDto", orderingMS.getShopDetails(id).getBody());
-        model.addObject("shopRequestDto", new ShopRequestDto());
-        return model;
-    }
-
-    @PostMapping("/edit/{id}")
-    public ModelAndView edit(@PathVariable(name = "id") Long id, ShopRequestDto dto){
-        ModelAndView model = new ModelAndView("redirect:/ordering/shop/details/" + id);
-        orderingMS.editShop(id, dto);
         return model;
     }
 }

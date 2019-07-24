@@ -18,20 +18,25 @@ import java.util.List;
  */
 @FeignClient("ordering-ms")
 public interface OrderingMS {
-    @GetMapping("/product/list")
-    ResponseEntity<OwnPageImpl<ProductRequestDto>> getProductList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                                  @RequestParam(value = "page", required = false) Integer page);
 
     @PostMapping("/product/add")
     ResponseEntity<Long> addProduct(@RequestBody ProductRequestDto dto);
 
-
-    @GetMapping("/shop/list")
-    ResponseEntity<OwnPageImpl<ShopResponseDto>> getShopList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                             @RequestParam(value = "page", required = false) Integer page);
+    @GetMapping("/product/list")
+    ResponseEntity<OwnPageImpl<ProductRequestDto>> getProductList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                  @RequestParam(value = "page", required = false) Integer page);
 
     @PostMapping("/shop/add")
     ResponseEntity<Long> addShop(@RequestBody ShopRequestDto dto);
+
+    @GetMapping("/shop/approve/{id}")
+    ResponseEntity<Long> approveShop(@PathVariable(name = "id") Long id);
+
+    @GetMapping("/shop/delete/{id}")
+    ResponseEntity<Long> deleteShop(@PathVariable(name = "id") Long id);
+
+    @PostMapping("shop/edit/{id}")
+    ResponseEntity<Long> editShop(@PathVariable(name = "id") Long id, @RequestBody ShopRequestDto dto);
 
     @GetMapping("/shop/get_all")
     ResponseEntity<List<ShopResponseDto>> getAllShops();
@@ -39,9 +44,9 @@ public interface OrderingMS {
     @GetMapping("shop/details/{id}")
     ResponseEntity<ShopResponseDto> getShopDetails(@PathVariable(name = "id") Long id);
 
-    @PostMapping("shop/edit/{id}")
-    ResponseEntity<Long> editShop(@PathVariable(name = "id") Long id, @RequestBody ShopRequestDto dto);
-
+    @GetMapping("/shop/list")
+    ResponseEntity<OwnPageImpl<ShopResponseDto>> getShopList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                             @RequestParam(value = "page", required = false) Integer page);
 
     @GetMapping("/order/list")
     ResponseEntity<OwnPageImpl<OrderListResponseDto>> gerOrderList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
