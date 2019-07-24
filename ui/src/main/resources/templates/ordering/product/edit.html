@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container">
+    <div class="container aligned-margines">
+        <div class="col-lg-12 mb-4">
+            <form id="productForm" class="card shadow" th:action="@{'/product/edit/' + ${productResponseDto.getId()}}"
+                  th:object="${productRequestDto}" th:method="post">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h3 class="table-head-title" th:text="#{product.edit}"></h3>
+                </div>
+                <div class="row card-body">
+                    <div class="row col-md-12">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="productName" th:text="#{product.name}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <input required class="form-control roundless shadow" type="text"
+                                   id="productName" name="productName" th:value="${productResponseDto.getName()}"/>
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="description" th:text="#{product.description}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <textarea id="description" name="description" class="form-control roundless shadow"
+                                      th:inline="text" th:value="${productResponseDto.getDescription()}">[[${desc}]]</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="offset-4 col-4">
+                    <input class="form-control roundless button shadow" type="submit"
+                           th:value="#{product.edit}">
+                </div>
+            </form>
+        </div>
+        <hr>
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h3 class="table-head-title" th:text="#{product.manage.dependencies}"></h3>
+                </div>
+                <hr>
+                <div class="row col-12 aligned-margines">
+                    <div class="col-3">
+                        <a class="button form-control" type="submit"
+                           th:text="#{product.manage.shops}"
+                           th:href="@{'/ordering/product/edit/' + ${productResponseDto.getId()} + '/shops'}"></a>
+                    </div>
+                    <div class="col-3">
+                        <a class="button form-control" type="submit"
+                           th:text="#{product.manage.alternatives}"
+                           th:href="@{'/ordering/product/edit/' + ${productResponseDto.getId()} + '/alternatives'}"></a>
+                    </div>
+                    <div class="col-3">
+                        <a class="button form-control" type="submit"
+                           th:text="#{product.manage.urls}"
+                           th:href="@{'/ordering/product/edit/' + ${productResponseDto.getId()} + '/urls'}"></a>
+                    </div>
+                    <div class="col-3">
+                        <a class="button form-control" type="submit"
+                           th:text="#{product.manage.codes}"
+                           th:href="@{'/ordering/product/edit/' + ${productResponseDto.getId()} + '/codes'}"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="offset-8 col-4">
+            <a class="button button-create-orderlist shadow" th:href="@{'/product/list/'}"
+               th:text="#{ctrl.previous}"></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

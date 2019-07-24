@@ -1,6 +1,8 @@
 package com.aps.services.ui.controller.ordering;
 
+import com.aps.services.model.dto.ordering.request.ProductCodeRequestDto;
 import com.aps.services.model.dto.ordering.request.ProductRequestDto;
+import com.aps.services.model.dto.ordering.request.UrlRequestDto;
 import com.aps.services.ui.apiclients.ordering.OrderingMS;
 import com.aps.services.ui.controller.BaseAbstractController;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,103 @@ import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZ
 public class ProductController extends BaseAbstractController {
     private final OrderingMS orderingMS;
 
+    @PostMapping("/add")
+    public ModelAndView add(Authentication auth, ProductRequestDto dto) {
+        ModelAndView model = new ModelAndView("redirect:/ordering/product/list");
+        dto.setUser(user(auth));
+        orderingMS.addProduct(dto);
+        return model;
+    }
+
+    @GetMapping("/edit/{id}/alternatives")
+    public ModelAndView editAlternatives(@PathVariable(name = "id") Long id) {
+        ModelAndView model = new ModelAndView("ordering/product/edit/alternatives");
+        model.addObject("availableAlternatives", orderingMS.findAvailableProductAlternatives(id).getBody());
+        model.addObject("currentAlternatives", orderingMS.findCurrentProductAlternatives(id).getBody());
+        model.addObject("productId", id);
+        return model;
+    }
+
+    @GetMapping("/edit/alternatives/add/{id}/{alternativeId}")
+    public ModelAndView addAlternative(@PathVariable(name = "id") Long id, @PathVariable(name = "alternativeId") Long alternativeId) {
+        orderingMS.addAlternativeToProduct(id, alternativeId);
+        return new ModelAndView("redirect:/product/edit/" + id + "/alternatives");
+    }
+
+    @GetMapping("/edit/alternatives/delete/{id}/{alternativeId}")
+    public ModelAndView deleteAlternative(@PathVariable(name = "id") Long id, @PathVariable(name = "alternativeId") Long alternativeId) {
+        orderingMS.deleteAlternativeFromProduct(id, alternativeId);
+        return new ModelAndView("redirect:/product/edit/" + id + "/alternatives");
+    }
+
+//    @GetMapping("/edit/{id}/codes")
+//    public ModelAndView editCodes(@PathVariable(name = "id") Long id) {
+//        ModelAndView model = new ModelAndView("ordering/product/edit/codes");
+//        model.addObject("currentCodes", orderingMS.findCurrentProductCodes(id).body());
+//        model.addObject("productCodeRequest", new ProductCodeRequestDto());
+//        return model;
+//    }
+//
+//    @PostMapping("/edit/codes/add/{id}")
+//    public ModelAndView addCode(@PathVariable(name = "id") Long id, ProductCodeRequestDto dto) {
+//        orderingMS.addCodeToProduct(id, dto);
+//        return new ModelAndView("redirect:/product/edit/" + id + "/codes");
+//    }
+//
+//    @GetMapping("/edit/codes/delete/{id}/{codeId}")
+//    public ModelAndView deleteCode(@PathVariable(name = "id") Long id, @PathVariable(name = "codeId") Long codeId) {
+//        orderingMS.deleteCodeFromProduct(id, codeId);
+//        return new ModelAndView("redirect:/product/edit/" + id + "/codes");
+//    }
+//
+//    @GetMapping("/edit/{id}/shops")
+//    public ModelAndView editShops(@PathVariable(name = "id") Long id) {
+//        ModelAndView model = new ModelAndView("ordering/product/edit/shops");
+//        model.addObject("availableShops", orderingMS.findAvailableProductShops(id).body());
+//        model.addObject("currentShops", orderingMS.findCurrentProductShops(id).body());
+//        return model;
+//    }
+//
+//    @GetMapping("/edit/shops/add/{id}/{shopId}")
+//    public ModelAndView addShop(@PathVariable(name = "id") Long id, @PathVariable(name = "shopId") Long shopId) {
+//        orderingMS.addShopToProduct(id, shopId);
+//        return new ModelAndView("redirect:/product/edit/" + id + "/shops");
+//    }
+//
+//    @GetMapping("/edit/shops/delete/{id}/{shopId}")
+//    public ModelAndView deleteShop(@PathVariable(name = "id") Long id, @PathVariable(name = "shopId") Long shopId) {
+//        orderingMS.deleteShopFromProduct(id, shopId);
+//        return new ModelAndView("redirect:/product/edit/" + id + "/shops");
+//    }
+//
+//    @GetMapping("/edit/{id}/urls")
+//    public ModelAndView editUrls(@PathVariable(name = "id") Long id) {
+//        ModelAndView model = new ModelAndView("ordering/product/edit/urls");
+//        model.addObject("currentCodes", orderingMS.findCurrentProductCodes(id).body());
+//        model.addObject("urlRequestDto", new UrlRequestDto());
+//        return model;
+//    }
+//
+//    @PostMapping("/edit/urls/add/{id}")
+//    public ModelAndView addUrl(@PathVariable(name = "id") Long id, UrlRequestDto dto) {
+//        orderingMS.addUrlToProduct(id, dto);
+//        return new ModelAndView("redirect:/product/edit/" + id + "/urls");
+//    }
+//
+//    @GetMapping("/edit/urls/delete/{id}/{urlId}")
+//    public ModelAndView deleteUrl(@PathVariable(name = "id") Long id, @PathVariable(name = "urlId") Long urlId) {
+//        orderingMS.removeUrlFromProduct(id, urlId);
+//        return new ModelAndView("redirect:/product/edit/" + id + "/urls");
+//    }
+
+    @GetMapping("/edit/{id}")
+    public ModelAndView getEditForm(@PathVariable(name = "id") Long id) {
+        ModelAndView model = new ModelAndView("ordering/product/edit");
+        model.addObject("productResponseDto", orderingMS.findProductById(id).getBody());
+        model.addObject("productRequestDto", new ProductRequestDto());
+        return model;
+    }
+
     @GetMapping("/list")
     public ModelAndView getProductList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
                                        @RequestParam(value = "page", required = false) Integer page) {
@@ -42,16 +141,6 @@ public class ProductController extends BaseAbstractController {
         ModelAndView model = new ModelAndView("ordering/product/form");
         model.addObject("shops", orderingMS.getAllShops().getBody());
         model.addObject("productRequestDto", new ProductRequestDto());
-        return model;
-    }
-
-    @PostMapping("/add")
-    public ModelAndView add(Authentication auth, ProductRequestDto dto) {
-        ModelAndView model = new ModelAndView("redirect:/ordering/product/list");
-        dto.setUser(user(auth));
-        orderingMS.addProduct(dto);
-//        String message = messageSource.getMessage("product.add.success", null, LocaleContextHolder.getLocale());
-//        model.addObject(MESSAGE, message);
         return model;
     }
 }

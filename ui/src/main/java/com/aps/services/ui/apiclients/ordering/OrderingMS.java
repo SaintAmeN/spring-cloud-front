@@ -1,10 +1,12 @@
 package com.aps.services.ui.apiclients.ordering;
 
+import ch.qos.logback.core.joran.action.Action;
 import com.aps.services.model.dto.ordering.request.OrderListRequestDto;
 import com.aps.services.model.dto.ordering.request.ProductRequestDto;
 import com.aps.services.model.dto.ordering.request.ShopRequestDto;
 import com.aps.services.model.dto.ordering.response.OrderListResponseDto;
 import com.aps.services.model.dto.ordering.response.OrderTargetResponseDto;
+import com.aps.services.model.dto.ordering.response.ProductResponseDto;
 import com.aps.services.model.dto.ordering.response.ShopResponseDto;
 import com.aps.services.model.pagination.OwnPageImpl;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ajarmolkowicz
@@ -21,6 +24,24 @@ public interface OrderingMS {
 
     @PostMapping("/product/add")
     ResponseEntity<Long> addProduct(@RequestBody ProductRequestDto dto);
+
+    @GetMapping("/product/get_all")
+    ResponseEntity<List<ProductResponseDto>> findAllProducts();
+
+    @GetMapping("/product/get/{id}")
+    ResponseEntity<ProductResponseDto> findProductById(@PathVariable(name = "id") Long id);
+
+    @GetMapping("/product/get_alternatives_available/{id}")
+    ResponseEntity<Map<String, Long>> findAvailableProductAlternatives(@PathVariable(name = "id") Long id);
+
+    @GetMapping("/product/get_alternatives_current/{id}")
+    ResponseEntity<Map<String, Long>> findCurrentProductAlternatives(@PathVariable(name = "id") Long id);
+
+    @GetMapping("/product/alternative/add/{id}/{alternativeId}")
+    ResponseEntity<Long> addAlternativeToProduct(@PathVariable(name = "id") Long id, @PathVariable(name = "alternativeId") Long alternativeId);
+
+    @GetMapping("/product/alternative/delete/{id}/alternativeId")
+    ResponseEntity<Long> deleteAlternativeFromProduct(@PathVariable(name = "id") Long id, @PathVariable(name = "alternativeId") Long alternativeId);
 
     @GetMapping("/product/list")
     ResponseEntity<OwnPageImpl<ProductRequestDto>> getProductList(@RequestParam(value = "pageSize", required = false) Integer pageSize,

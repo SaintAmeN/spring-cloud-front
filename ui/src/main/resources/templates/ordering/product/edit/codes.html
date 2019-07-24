@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container">
+    <div class="container aligned-margines">
+        <div class="col-lg-12 mb-4">
+            <div id="productForm" class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h3 class="table-head-title" th:text="#{product.manage.code}"></h3>
+                </div>
+                <div class="row card-body">
+                    <div class="row col-md-12">
+                        <div class="offset-1 row col-5 middled separate-right">
+                            <h3 class="table-head-title" th:text="#{product.codes}"></h3>
+                        </div>
+                        <div class="offset-1 col-md-5 card-body middled bold">
+                            <div class="row col-12 table-header aligned-margines shadow">
+                                <div class="col-2" th:text="#{product.code.id}"></div>
+                                <div class="col-3" th:text="#{product.code.value}"></div>
+                                <div class="col-4" th:text="#{product.code.type}"></div>
+                                <div class="col-3" th:text="#{product.code.delete}"></div>
+                            </div>
+                            <div class="row col-12 colored aligned-margines shadow bold"
+                                 th:each="code : ${currentCodes}">
+                                <div class="col-2 table-element" th:text="${code.getId()}"></div>
+                                <div class="col-3 table-element" th:text="${code.getCode()}"></div>
+                                <div class="col-4 table-element" th:text="${code.getCodeType()}"></div>
+                                <div class="col-3">
+                                    <a class="button form-control" th:text="#{delete}"
+                                       th:href="@{'/product/edit/codes/delete/' + ${id} + '/' + ${code.getId()}}"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row card-body">
+                    <div class="row col-md-12">
+                        <div class="offset-1 row col-5 middled separate-right">
+                            <h3 class="table-head-title" th:text="#{product.code.add}" method="post"></h3>
+                        </div>
+                        <form class="offset-1 col-md-5 card-body middled bold"
+                              th:action="@{'/product/edit/codes/add/' + ${id}}" th:object="${codeDto}" method="post">
+                            <div class="row col-12 aligned-margines">
+                                <div class="col-4" th:text="#{product.code.value}"></div>
+                                <input required class="col-8 form-control roundless" type="text" th:field="*{code}">
+                            </div>
+                            <hr>
+                            <div class="row col-12 aligned-margines">
+                                <div class="col-4" th:text="#{product.code.type}"></div>
+                                <select required id="codeType" name="codeType" class="col-8 form-control roundless shadow">
+                                    <option id="code" name="code" class="form-control roundless"
+                                            th:each="codeType : ${codeTypes}"
+                                            th:value="${codeType}"
+                                            th:text="${codeType}"></option>
+                                </select>
+                            </div>
+                            <hr>
+                            <div class="row col-12 aligned-margines">
+                                <input class="form-control col-12 button roundless" type="submit" th:value="#{product.code.add}">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="offset-8">
+            <a class="button button-create-orderlist shadow" th:href="@{'/product/edit/'+${id}}"
+               th:text="#{ctrl.previous}"></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
