@@ -54,65 +54,68 @@ public class ProductController extends BaseAbstractController {
         return new ModelAndView("redirect:/ordering/product/edit/" + id + "/alternatives");
     }
 
-//    @GetMapping("/edit/{id}/codes")
-//    public ModelAndView editCodes(@PathVariable(name = "id") Long id) {
-//        ModelAndView model = new ModelAndView("ordering/product/edit/codes");
-//        model.addObject("currentCodes", orderingMS.findCurrentProductCodes(id).body());
-//        model.addObject("productCodeRequest", new ProductCodeRequestDto());
-//        return model;
-//    }
-//
-//    @PostMapping("/edit/codes/add/{id}")
-//    public ModelAndView addCode(@PathVariable(name = "id") Long id, ProductCodeRequestDto dto) {
-//        orderingMS.addCodeToProduct(id, dto);
-//        return new ModelAndView("redirect:/product/edit/" + id + "/codes");
-//    }
-//
-//    @GetMapping("/edit/codes/delete/{id}/{codeId}")
-//    public ModelAndView deleteCode(@PathVariable(name = "id") Long id, @PathVariable(name = "codeId") Long codeId) {
-//        orderingMS.deleteCodeFromProduct(id, codeId);
-//        return new ModelAndView("redirect:/product/edit/" + id + "/codes");
-//    }
-//
-//    @GetMapping("/edit/{id}/shops")
-//    public ModelAndView editShops(@PathVariable(name = "id") Long id) {
-//        ModelAndView model = new ModelAndView("ordering/product/edit/shops");
-//        model.addObject("availableShops", orderingMS.findAvailableProductShops(id).body());
-//        model.addObject("currentShops", orderingMS.findCurrentProductShops(id).body());
-//        return model;
-//    }
-//
-//    @GetMapping("/edit/shops/add/{id}/{shopId}")
-//    public ModelAndView addShop(@PathVariable(name = "id") Long id, @PathVariable(name = "shopId") Long shopId) {
-//        orderingMS.addShopToProduct(id, shopId);
-//        return new ModelAndView("redirect:/product/edit/" + id + "/shops");
-//    }
-//
-//    @GetMapping("/edit/shops/delete/{id}/{shopId}")
-//    public ModelAndView deleteShop(@PathVariable(name = "id") Long id, @PathVariable(name = "shopId") Long shopId) {
-//        orderingMS.deleteShopFromProduct(id, shopId);
-//        return new ModelAndView("redirect:/product/edit/" + id + "/shops");
-//    }
-//
-//    @GetMapping("/edit/{id}/urls")
-//    public ModelAndView editUrls(@PathVariable(name = "id") Long id) {
-//        ModelAndView model = new ModelAndView("ordering/product/edit/urls");
-//        model.addObject("currentCodes", orderingMS.findCurrentProductCodes(id).body());
-//        model.addObject("urlRequestDto", new UrlRequestDto());
-//        return model;
-//    }
-//
-//    @PostMapping("/edit/urls/add/{id}")
-//    public ModelAndView addUrl(@PathVariable(name = "id") Long id, UrlRequestDto dto) {
-//        orderingMS.addUrlToProduct(id, dto);
-//        return new ModelAndView("redirect:/product/edit/" + id + "/urls");
-//    }
-//
-//    @GetMapping("/edit/urls/delete/{id}/{urlId}")
-//    public ModelAndView deleteUrl(@PathVariable(name = "id") Long id, @PathVariable(name = "urlId") Long urlId) {
-//        orderingMS.removeUrlFromProduct(id, urlId);
-//        return new ModelAndView("redirect:/product/edit/" + id + "/urls");
-//    }
+    @GetMapping("/edit/{id}/codes")
+    public ModelAndView editCodes(@PathVariable(name = "id") Long id) {
+        ModelAndView model = new ModelAndView("ordering/product/edit/codes");
+        model.addObject("currentCodes", orderingMS.findCurrentProductCodes(id).getBody());
+        model.addObject("productCodeRequest", new ProductCodeRequestDto());
+        model.addObject("productId", id);
+        return model;
+    }
+
+    @PostMapping("/edit/codes/add/{id}")
+    public ModelAndView addCode(@PathVariable(name = "id") Long id, ProductCodeRequestDto dto) {
+        orderingMS.addCodeToProduct(id, dto);
+        return new ModelAndView("redirect:/ordering/product/edit/" + id + "/codes");
+    }
+
+    @GetMapping("/edit/codes/delete/{id}/{codeId}")
+    public ModelAndView deleteCode(@PathVariable(name = "id") Long id, @PathVariable(name = "codeId") Long codeId) {
+        orderingMS.deleteCodeFromProduct(id, codeId);
+        return new ModelAndView("redirect:/ordering/product/edit/" + id + "/codes");
+    }
+
+    @GetMapping("/edit/{id}/shops")
+    public ModelAndView editShops(@PathVariable(name = "id") Long id) {
+        ModelAndView model = new ModelAndView("ordering/product/edit/shops");
+        model.addObject("availableShops", orderingMS.findAvailableProductShops(id).getBody());
+        model.addObject("currentShops", orderingMS.findCurrentProductShops(id).getBody());
+        model.addObject("productId", id);
+        return model;
+    }
+
+    @GetMapping("/edit/shops/add/{id}/{shopId}")
+    public ModelAndView addShop(@PathVariable(name = "id") Long id, @PathVariable(name = "shopId") Long shopId) {
+        orderingMS.addShopToProduct(id, shopId);
+        return new ModelAndView("redirect:/ordering/product/edit/" + id + "/shops");
+    }
+
+    @GetMapping("/edit/shops/delete/{id}/{shopId}")
+    public ModelAndView deleteShop(@PathVariable(name = "id") Long id, @PathVariable(name = "shopId") Long shopId) {
+        orderingMS.deleteShopFromProduct(id, shopId);
+        return new ModelAndView("redirect:/ordering/product/edit/" + id + "/shops");
+    }
+
+    @GetMapping("/edit/{id}/urls")
+    public ModelAndView editUrls(@PathVariable(name = "id") Long id) {
+        ModelAndView model = new ModelAndView("ordering/product/edit/urls");
+        model.addObject("currentUrls", orderingMS.findCurrentProductUrls(id).getBody());
+        model.addObject("urlRequestDto", new UrlRequestDto());
+        model.addObject("productId", id);
+        return model;
+    }
+
+    @PostMapping("/edit/urls/add/{id}")
+    public ModelAndView addUrl(@PathVariable(name = "id") Long id, UrlRequestDto dto) {
+        orderingMS.addUrlToProduct(id, dto);
+        return new ModelAndView("redirect:/ordering/product/edit/" + id + "/urls");
+    }
+
+    @GetMapping("/edit/urls/delete/{id}/{urlId}")
+    public ModelAndView deleteUrl(@PathVariable(name = "id") Long id, @PathVariable(name = "urlId") Long urlId) {
+        orderingMS.deleteUrlFromProduct(id, urlId);
+        return new ModelAndView("redirect:/ordering/product/edit/" + id + "/urls");
+    }
 
     @GetMapping("/edit/{id}")
     public ModelAndView getEditForm(@PathVariable(name = "id") Long id) {

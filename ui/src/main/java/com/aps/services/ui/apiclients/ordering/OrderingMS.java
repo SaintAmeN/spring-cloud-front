@@ -1,18 +1,15 @@
 package com.aps.services.ui.apiclients.ordering;
 
 import ch.qos.logback.core.joran.action.Action;
-import com.aps.services.model.dto.ordering.request.OrderListRequestDto;
-import com.aps.services.model.dto.ordering.request.ProductRequestDto;
-import com.aps.services.model.dto.ordering.request.ShopRequestDto;
-import com.aps.services.model.dto.ordering.response.OrderListResponseDto;
-import com.aps.services.model.dto.ordering.response.OrderTargetResponseDto;
-import com.aps.services.model.dto.ordering.response.ProductResponseDto;
-import com.aps.services.model.dto.ordering.response.ShopResponseDto;
+import com.aps.services.model.dto.ordering.request.*;
+import com.aps.services.model.dto.ordering.response.*;
 import com.aps.services.model.pagination.OwnPageImpl;
+import groovy.lang.GrabExclude;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.CacheResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -40,9 +37,39 @@ public interface OrderingMS {
     @GetMapping("/product/edit/alternatives/delete/{id}/{alternativeId}")
     ResponseEntity<Long> deleteAlternativeFromProduct(@PathVariable(name = "id") Long id, @PathVariable(name = "alternativeId") Long alternativeId);
 
+    @GetMapping("/product/get_codes_current/{id}")
+    ResponseEntity<Map<String, Long>> findCurrentProductCodes(@PathVariable(name = "id") Long id);
+
+    @PostMapping("/product/edit/codes/add/{id}")
+    ResponseEntity<Long> addCodeToProduct(@PathVariable(name = "id") Long id, @RequestBody ProductCodeRequestDto dto);
+
+    @GetMapping("/product/edit/codes/delete/{id}/{codeId}")
+    ResponseEntity<Long> deleteCodeFromProduct(@PathVariable(name = "id") Long id, @PathVariable(name = "codeId") Long codeId);
+
+    @GetMapping("/product/get_shops_available/{id}")
+    ResponseEntity<Map<String, Long>> findAvailableProductShops(@PathVariable(name = "id") Long id);
+
+    @GetMapping("/product/get_shops_current/{id}")
+    ResponseEntity<Map<String, Long>> findCurrentProductShops(@PathVariable(name = "id") Long id);
+
+    @GetMapping("/product/edit/shops/add/{id}/{shopId}")
+    ResponseEntity<Long> addShopToProduct(@PathVariable(name = "id") Long id, @PathVariable(name = "shopId") Long shopId);
+
+    @GetMapping("/product/edit/shops/delete/{id}/{shopId}")
+    ResponseEntity<Long> deleteShopFromProduct(@PathVariable(name = "id") Long id, @PathVariable(name = "shopId") Long shopId);
+
+    @GetMapping("/product/get_urls_current/{id}")
+    ResponseEntity<Map<String, Long>> findCurrentProductUrls(@PathVariable(name = "id") Long id);
+
+    @PostMapping("/product/edit/urls/add/{id}")
+    ResponseEntity<Long> addUrlToProduct(@PathVariable(name = "id") Long id, @RequestBody UrlRequestDto dto);
+
+    @GetMapping("/product/edit/urls/delete/{id}/{urlId}")
+    ResponseEntity<Long> deleteUrlFromProduct(@PathVariable(name = "id") Long id, @PathVariable(name = "urlId") Long urlId);
+
     @GetMapping("/product/list")
     ResponseEntity<OwnPageImpl<ProductResponseDto>> getProductList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                                  @RequestParam(value = "page", required = false) Integer page);
+                                                                   @RequestParam(value = "page", required = false) Integer page);
 
     @PostMapping("/shop/add")
     ResponseEntity<Long> addShop(@RequestBody ShopRequestDto dto);

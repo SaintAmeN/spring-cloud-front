@@ -11,7 +11,7 @@
         <div class="col-lg-12 mb-4">
             <div id="productForm" class="card shadow">
                 <div class="card-header row col-12 aligned-margines shadow-table-header">
-                    <h3 class="table-head-title" th:text="#{product.shops.manage}"></h3>
+                    <h3 class="table-head-title" th:text="#{product.manage.shops}"></h3>
                 </div>
                 <div class="row card-body">
                     <div class="row col-md-12">
@@ -22,15 +22,15 @@
                             <div class="row col-12 table-header aligned-margines shadow">
                                 <div class="col-3" th:text="#{shop.id}"></div>
                                 <div class="col-6" th:text="#{shop.name}"></div>
-                                <div class="col-3" th:text="#{shop.remove}"></div>
+                                <div class="col-3" th:text="#{shop.delete}"></div>
                             </div>
                             <div class="row col-12 colored aligned-margines shadow bold"
-                                 th:each="shop : ${currentShops}">
-                                <div class="col-3 table-element" th:text="${shop.getId()}"></div>
-                                <div class="col-6 table-element" th:text="${shop.getName()}"></div>
+                                 th:each="shop : ${currentShops.entrySet()}">
+                                <div class="col-3 table-element" th:text="${shop.getValue()}"></div>
+                                <div class="col-6 table-element" th:text="${shop.getKey()}"></div>
                                 <div class="col-3">
                                     <a class="col-12 button form-control" th:text="#{delete}"
-                                       th:href="@{'/product/edit/shops/delete/' + ${id} + '/' + ${shop.getId()}}"></a>
+                                       th:href="@{'/ordering/product/edit/shops/delete/' + ${productId} + '/' + ${shop.getValue()}}"></a>
                                 </div>
                             </div>
                         </div>
@@ -40,7 +40,7 @@
                 <div class="row card-body">
                     <div class="row col-md-12">
                         <div class="offset-1 row col-5 middled separate-right">
-                            <h3 class="table-head-title" th:text="#{product.shops.names}"></h3>
+                            <h3 class="table-head-title" th:text="#{shop.names}"></h3>
                         </div>
                         <div class="offset-1 col-md-5 card-body middled bold">
                             <div class="row col-12 table-header aligned-margines shadow">
@@ -50,11 +50,11 @@
                             </div>
                             <div class="row col-12 colored aligned-margines shadow bold"
                                  th:each="shop : ${availableShops}">
-                                <div class="col-3 table-element" th:text="${shop.getId()}"></div>
-                                <div class="col-6 table-element" th:text="${shop.getName()}"></div>
+                                <div class="col-3 table-element" th:text="${shop.getValue()}"></div>
+                                <div class="col-6 table-element" th:text="${shop.getKey()}"></div>
                                 <div class="col-3">
                                     <a class="col-12 button form-control" th:text="#{add}"
-                                       th:href="@{'/product/edit/shops/add/' + ${id} + '/' + ${shop.getId()}}"></a>
+                                       th:href="@{'/ordering/product/edit/shops/add/' + ${productId} + '/' + ${shop.getValue()}}"></a>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="offset-8">
-            <a class="button button-create-orderlist shadow" th:href="@{'/product/edit/'+${id}}"
+            <a class="button button-create-orderlist shadow" th:href="@{'/ordering/product/edit/'+${productId}}"
                th:text="#{ctrl.previous}"></a>
         </div>
     </div>
