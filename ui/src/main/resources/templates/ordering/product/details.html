@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container">
+    <div class="container aligned-margines">
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow">
+                    <h3 class="table-head-title" th:text="#{product.details}"></h3>
+                </div>
+                <div class="table table-striped card-text card-body shadow">
+                    <div class="row col-12 table-header aligned-margines">
+                        <div class="col-1" th:text="#{id}"></div>
+                        <div class="col-1" th:text="#{owner}"></div>
+                        <div class="col-3" th:text="#{product.name}"></div>
+                        <div class="col-4" th:text="#{product.description}"></div>
+                        <div class="col-3" th:text="#{shop.name}"></div>
+                    </div>
+                    <div class="row col-12 colored aligned-margines shadow">
+                        <div class="col-1" th:text="${productResponseDto.getId()}"></div>
+                        <div class="col-1" th:text="${productResponseDto.getCreator().getName()}"></div>
+                        <div class="col-3 break-line" th:text="${productResponseDto.getName()}"></div>
+                        <div class="col-4 break-line" th:text="${productResponseDto.getDescription()}"></div>
+                        <div class="col-3">
+                            <div th:each="shop : ${shops}">
+                                <li th:text="${shop.getKey()}"></li>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-12 table-header aligned-margines">
+                        <div class="col-4" th:text="#{product.alternatives}"></div>
+                        <div class="col-4" th:text="#{product.codes}"></div>
+                        <div class="col-4" th:text="#{product.urls}"></div>
+                    </div>
+                    <div class="row col-12 colored aligned-margines shadow">
+                        <div class="col-4 break-line separate-right">
+                            <div th:each="alternative : ${alternatives}">
+                                <li th:text="${alternative.getKey()}"></li>
+                            </div>
+                        </div>
+                        <div class="col-4 break-line separate-left separate-right">
+                            <div th:each="code : ${codes}">
+                                <li th:text="${code.getKey()}"></li>
+                            </div>
+                        </div>
+                        <div class="col-4 break-line separate-left" th:each="url:${urls}">
+                            <div th:each="url : ${urls}">
+                                <a th:href="${url.getKey()}">
+                                    <li th:text="${url.getKey()}"></li>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="offset-9 row col-12">
+                    <div class="col-3">
+                        <a class="button  aligned-margines"
+                           th:if="${currentUser.isAdmin() || productResponseDto.getCreator().getId() == currentUser.getId()}"
+                           th:href="@{'/ordering/product/edit/' + ${productResponseDto.getId()}}"
+                           th:text="#{product.edit}"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="offset-8">
+            <a class="button button-create-orderlist shadow" th:href="@{'/product/list/'}"
+               th:text="#{ctrl.previous}"></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

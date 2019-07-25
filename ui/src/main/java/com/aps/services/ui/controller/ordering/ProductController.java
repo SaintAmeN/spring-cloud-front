@@ -117,6 +117,17 @@ public class ProductController extends BaseAbstractController {
         return new ModelAndView("redirect:/ordering/product/edit/" + id + "/urls");
     }
 
+    @GetMapping("/details/{id}")
+    public ModelAndView getProductDetails(@PathVariable(name = "id") Long id){
+        ModelAndView model = new ModelAndView("ordering/product/details");
+        model.addObject("productResponseDto", orderingMS.findProductById(id).getBody());
+        model.addObject("alternatives", orderingMS.findCurrentProductAlternatives(id).getBody());
+        model.addObject("codes", orderingMS.findCurrentProductCodes(id).getBody());
+        model.addObject("shops", orderingMS.findCurrentProductShops(id).getBody());
+        model.addObject("urls", orderingMS.findCurrentProductUrls(id).getBody());
+        return model;
+    }
+
     @GetMapping("/edit/{id}")
     public ModelAndView getEditForm(@PathVariable(name = "id") Long id) {
         ModelAndView model = new ModelAndView("ordering/product/edit");
