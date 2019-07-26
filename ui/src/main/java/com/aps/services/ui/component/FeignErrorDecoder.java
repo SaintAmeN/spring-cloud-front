@@ -44,4 +44,5 @@ public class FeignErrorDecoder implements ErrorDecoder {
                 return new RuntimeException("staus code: "+response.status());
         }
     }
+
 }
