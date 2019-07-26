@@ -3,12 +3,10 @@ package com.aps.services.ui.apiclients.ordering;
 import com.aps.services.model.dto.ordering.request.*;
 import com.aps.services.model.dto.ordering.response.*;
 import com.aps.services.model.pagination.OwnPageImpl;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.CacheResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +18,9 @@ public interface OrderingMS {
 
     @PostMapping("/product/add")
     ResponseEntity<Long> addProduct(@RequestBody ProductRequestDto dto);
+
+    @GetMapping("/product/get_all")
+    ResponseEntity<List<ProductResponseDto>> findAllProducts();
 
     @GetMapping("/product/get/{id}")
     ResponseEntity<ProductResponseDto> findProductById(@PathVariable(name = "id") Long id);
@@ -113,4 +114,10 @@ public interface OrderingMS {
 
     @GetMapping("/order/get/{id}/invoices")
     ResponseEntity<List<InvoiceResponseDto>> getInvoicesFromOrderList(@PathVariable(name = "id") Long id);
+
+    @PostMapping("/order/request/add/{orderId}")
+    ResponseEntity<Long> addProductRequest(@PathVariable(name = "orderId") Long orderId, @RequestBody ProductRequestRequestDto dto);
+
+    @GetMapping("/unit/get_all")
+    ResponseEntity<List<UnitResponseDto>> findAllUnits();
 }

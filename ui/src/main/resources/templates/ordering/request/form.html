@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <div class="container aligned-margines">
+        <div class="col-lg-12 mb-4">
+            <form class="card shadow" th:action="@{/ordering/request/add/}" method="post" th:object="${requestDto}">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h3 class="table-head-title" th:text="#{request.add}"></h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middledd">
+                            <label for="shop" th:text="#{product.name}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <select required id="shop" th:field="*{productId}" class="form-control roundless shadow">
+                                <option class="form-control roundless shadow" th:each="product : ${products}"
+                                        th:value="${product.getId()}"
+                                        th:if="${!product.isApproved()}"
+                                        th:text="${product.getName()}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="quantity" th:text="#{quantity}"></label>
+                        </div>
+                        <div class="col-md-2 middled">
+                            <input required class="form-control roundless shadow" type="number" min="0" step="0.01"
+                                   id="quantity"
+                                   th:field="*{quantity}">
+                        </div>
+                        <div class="col-md-3 middled">
+                            <select id="unit" th:field="*{unitId}" class="form-control roundless shadow">
+                                <option class="form-control roundless shadow" th:each="unit: ${units}"
+                                        th:value="${unit.id}"
+                                        th:text="${unit.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="priority" th:text="#{priority}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <select id="priority" th:field="*{priority}" class="form-control roundless shadow">
+                                <option class="form-control roundless"
+                                        th:each="priority : ${priorities}"
+                                        th:value="${priority}" th:text="${priority.name()}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="description" th:text="#{description.additional}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                    <textarea class="form-control roundless shadow" type="text" id="description"
+                              th:field="*{description}"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
