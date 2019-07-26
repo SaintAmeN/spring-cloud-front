@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <div class="container aligned-margines">
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow">
+                    <h3 class="table-head-title" th:text="#{order.management}"></h3>
+                </div>
+                <div class="table table-striped card-text card-body shadow">
+                    <div class="row col-12 table-header aligned-margines shadow">
+                        <div class="col-2" th:text="#{name}"></div>
+                        <div class="col-2" th:text="#{order.target}"></div>
+                        <div class="col-2" th:text="#{created.time}"></div>
+                        <div class="col-2" th:text="#{owner}"></div>
+                        <div class="col-2" th:text="#{updated.time}"></div>
+                        <div class="col-2" th:text="#{archived}"></div>
+                    </div>
+                    <div class="row col-12 colored aligned-margines shadow">
+                        <div class="col-2 break-line" th:text="${orderListResponseDto.getName()}"></div>
+                        <div class="col-2 break-line" th:text="${orderListResponseDto.getTargetName()}"></div>
+                        <div class="col-2" th:text="${#temporals.format(orderListResponseDto.getCreationTime(),'dd-MM-yyyy HH:mm:ss')}"></div>
+                        <div class="col-2 break-line" th:text="${orderListResponseDto.getCreator().getName()}"></div>
+                        <div class="col-2" th:text="${#temporals.format(orderListResponseDto.getUpdateTime(),'dd-MM-yyyy HH:mm:ss')}"></div>
+                        <div class="col-2" th:text="${orderListResponseDto.isArchived()}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h4 class="table-head-title" th:text="#{order.list.products}"></h4>
+                </div>
+                <div class="card-text card-body shadow">
+                    <div class="row col-12 table-header aligned-margines shadow">
+                        <div class="col-1" th:text="#{product.name}"></div>
+                        <div class="col-1" th:text="#{priority}"></div>
+                        <div class="col-1" th:text="#{quantity}"></div>
+                        <div class="col-1" th:text="#{unit}"></div>
+                        <div class="col-1" th:text="#{owner}"></div>
+                        <div class="col-2" th:text="#{actions}"></div>
+                        <div class="col-2" th:text="#{status}"></div>
+                        <div class="col-3" th:text="#{invoice}"></div>
+                    </div>
+                    <div th:class="${(request.getStatus.equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).ORDERED) || request.getStatus().equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).DELIVERED)) ? 'row col-12 colored shadow aligned-margines positive-event' : 'row col-12 aligned-margines colored shadow'}"
+                        th:each="request : ${requests}">
+                        <div class="col-1 break-line" th:text="${request.getProductName()}"></div>
+                        <div class="col-1" th:text="${request.getPriority()}"></div>
+                        <div class="col-1" th:text="${request.getQuantity()}"></div>
+                        <div class="col-1" th:text="${request.getUnit()}"></div>
+                        <div class="col-1" th:text="${request.getCreator().getName()}"></div>
+                        <div class="col-1">
+                            <div th:if="${request.getStatus().equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).CREATED) || currentUser.isAdmin()}">
+                                <a class="link actions-details"
+                                   th:if="${currentUser.isAdmin() || request.getCreator().getId() == currentUser.getId()}"
+                                   th:href="@{'/ordering/request/edit/' + ${request.getId()}}"
+                                   th:text="#{request.edit}"></a>
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <div th:if="${request.getStatus.equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).CREATED)}">
+                                <a class="link actions-details"
+                                   th:if="${currentUser.isAdmin()|| request.getCreator().getId() == currentUser.getId()}"
+                                   th:href="@{'/ordering/request/delete/' + ${request.getId()}}"
+                                   th:text="#{delete}"></a>
+                            </div>
+                        </div>
+                        <form class="row col-5" id="updateForm"
+                              th:action="@{'/ordering/request/update/'  + ${orderListResponseDto.getId()} + '/' + ${request.getId()}}"
+                              method="post" th:object="${requestUpdateDto}">
+                            <div class="col-4">
+                                <select id="status" name="status" class="form-control">
+                                    <option th:each=" status: ${T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).values()}"
+                                            th:selected="${request.getStatus().equals(status)}"
+                                            th:attr="value = ${status}"
+                                            th:text="${status}"></option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <div th:if="${!request.getStatus.equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).CREATED)}">
+                                    <select id="invoiceId" name="invoiceId" class="form-control">
+                                        <option value="" selected>None</option>
+                                        <option th:if="${request.getInvoice() != null}" th:each="invoice : ${orderInvoices}"
+                                                th:selected="${request.getInvoice.getNumber().equals(invoice.getNumber())}"
+                                                th:attr="value = ${invoice.getId()}"
+                                                th:text="${invoice.getNumber()}"></option>
+                                        <option th:if="${request.getInvoice() == null}" th:each="invoice : ${orderInvoices}"
+                                                th:attr="value = ${invoice.getId()}"
+                                                th:text="${invoice.getNumber()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <input type="submit" th:value="#{update}"
+                                       class="link actions-details form-control roundless button shadow">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row col-12 colored aligned-margines redish" th:if="${requests.isEmpty()}">
+                    <div class="col-12" th:text="#{list.no.elements}">
+                    </div>
+                </div>
+                <hr>
+                <form th:action="@{/ordering/request/add_file}" method="post" enctype='multipart/form-data'>
+                    <div class="offset-6 row col-12">
+                        Option unavailable
+                        <input disabled class="col-6" required type="file" name="xlsx" accept=".xlsx, .xls">
+                    </div>
+                    <div class="offset-6 row col-12">
+                        <div class="col-3">
+                            <input class="form-control" name="listId" th:value="${orderListResponseDto.getId()}"
+                                   hidden>
+                            <input disabled class="col-12 form-control roundless button interaction shadow" type="submit"
+                                   th:value="#{request.add.file}">
+                        </div>
+                        <div class="col-3">
+                            <a class="col-12 button shadow"
+                               th:href="@{'/ordering/order/summary/' + ${orderListResponseDto.getId()}}"
+                               th:text="#{invoice.generate.excel}"></a>
+                        </div>
+                    </div>
+                </form>
+                <div class="offset-6 row col-12">
+                    <div class="col-3">
+                        <a class="col-12 button shadow"
+                           th:href="@{'/ordering/request/add/' + ${orderListResponseDto.getId()}}"
+                           th:text="#{request.create.new}"></a>
+                    </div>
+                    <div class="col-3">
+                        <a class="col-12 button shadow" th:href="@{'/ordering/order/list/'}" th:text="#{ctrl.previous}"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="col-lg-12 mb-4">
+        <div class="card shadow">
+            <div class="card-header row col-12 aligned-margines shadow-table-header">
+                <h4 class="table-head-title" th:text="#{invoice.panel}"></h4>
+            </div>
+            <form th:action="@{'/ordering/invoice/add/' + ${orderListResponseDto.getId()}}" method="post"
+                  th:object="${invoiceRequestDto}">
+                <div class="card-body row center-item">
+                    <div class="col-2 middled center-item">
+                        <label for="invoiceNumber" th:text="#{invoice.number}"></label>
+                    </div>
+                    <div class="col-2 middled center-item">
+                        <input required class="form-control roundless shadow" type="text"
+                               id="invoiceNumber" th:field="*{number}">
+                    </div>
+                    <div class="col-2 middled center-item">
+                        <label for="invoicePrice" th:text="#{invoice.price}"></label>
+                    </div>
+                    <div class="col-2 middled center-item">
+                        <input required class="form-control roundless shadow" type="text"
+                               id="invoicePrice" th:field="*{price}">
+                    </div>
+                    <div class="col-1 middled center-item">
+                        <label for="shopId" th:text="#{shop}"></label>
+                    </div>
+                    <div class="col-2 middled center-item">
+                        <select id="shopId" name="shopId" class="form-control">
+                            <option th:each="shop : ${shops}"
+                                    th:value="${shop.getId()}"
+                                    th:text="${shop.getName()}"></option>
+                        </select>
+                    </div>
+                    <div class="col-1 middled center-item">
+                        <input class="form-control roundless button shadow" type="submit"
+                               th:value="#{create}">
+                    </div>
+                </div>
+            </form>
+            <div class="table table-striped card-text card-body shadow">
+                <div class="row col-12 table-header aligned-margines shadow">
+                    <div class="offset-2 col-2" th:text="#{invoice.number}"></div>
+                    <div class="col-2" th:text="#{invoice.price}"></div>
+                    <div class="col-2" th:text="#{invoice.shop}"></div>
+                    <div class="col-4" th:text="#{invoice.requests.associated}"></div>
+                </div>
+                <div class="row col-12 colored aligned-margines shadow" th:each="invoice : ${orderInvoices}">
+                    <div class="offset-2 col-2 break-line" th:text="${invoice.getNumber()}"></div>
+                    <div class="col-2 break-line" th:text="${invoice.getPrice()}"></div>
+                    <div class="col-2" th:text="${invoice.getShopName()}"></div>
+                    <div class="col-4">
+                        <p th:each="request : ${invoice.getAssociatedRequests()}" th:text="${request}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+<!--    <div class="col-lg-12 mb-4">-->
+<!--        <div class="card shadow-list-change">-->
+<!--            <div class="card-header row col-12 aligned-margines shadow-list-change">-->
+<!--                <h3 class="table-head-title" th:text="#{order.last.change}"></h3>-->
+<!--            </div>-->
+<!--            <div class="table table-striped card-text card-body shadow-list-change">-->
+<!--                <div class="row col-12 table-header aligned-margines shadow-list-change">-->
+<!--                    <div class="offset-1 col-2" th:text="#{order.details.changed.by}"></div>-->
+<!--                    <div class="col-6" th:text="#{request.change.message}"></div>-->
+<!--                    <div class="col-2" th:text="#{request.update.time}"></div>-->
+<!--                </div>-->
+<!--                <div class="row col-12 colored aligned-margines shadow-list-change" th:each="event : ${events}">-->
+<!--                    <div class="offset-1 col-2" th:text="${event.getMsg()}"></div>-->
+<!--                    <div class="col-6" th:text="${event.getEvent()}"></div>-->
+<!--                    <div class="col-2" th:text="*{#temporals.format(event.getTime(),'dd-MM-yyyy HH:mm:ss')}"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="row offset-5" th:if="${events.totalPages > 1}">-->
+<!--                <div class="form-group col-md-1.5"><select class="form-control roundless" id="pageSizeSelect">-->
+<!--                    <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"-->
+<!--                            th:selected="${pageSize} == ${selectedPageSize}"></option>-->
+<!--                </select></div>-->
+<!--                <div th:if="${events.totalPages != 1}" class="form-group col-md-11 pagination-centered">-->
+<!--                    <ul class="pagination">-->
+<!--                        <li th:class="${events.number == 0} ? disabled"><a class="page-link"-->
+<!--                                                                           th:href="@{'/order/details/' + ${detailed_order_list.getId()} + '?pageSize=' + ${selectedPageSize} + '&page=1'}">«</a>-->
+<!--                        </li>-->
+<!--                        <li th:class="${events.number == 0} ? disabled"><a class="page-link"-->
+<!--                                                                           th:href="@{'/order/details/' + ${detailed_order_list.getId()} + '?pageSize=' + ${selectedPageSize} + '&page=' + ${events.number}}">←</a>-->
+<!--                        </li>-->
+<!--                        <li th:class="${events.number + 1== (page)} ? 'active pointer-disabled'"-->
+<!--                            th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a-->
+<!--                                class="page-link"-->
+<!--                                th:href="@{'/order/details/' + ${detailed_order_list.getId()} + '?pageSize=' + ${selectedPageSize} + '&page=' + ${page}}"-->
+<!--                                th:text="${page}"></a></li>-->
+<!--                        <li th:class="${events.number + 1 == events.totalPages} ? disabled"><a-->
+<!--                                class="page-link"-->
+<!--                                th:href="@{'/order/details/' + ${detailed_order_list.getId()}+ '?pageSize=' + ${selectedPageSize} +'&page=' + ${events.number + 2}}">→</a>-->
+<!--                        </li>-->
+<!--                        <li th:class="${events.number + 1 == events.totalPages} ? disabled"><a-->
+<!--                                class="page-link"-->
+<!--                                th:href="@{'/order/details/' + ${detailed_order_list.getId()} + '?pageSize=' + ${selectedPageSize} + '&page=' + ${events.totalPages}}">»</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+</body>
+</html>

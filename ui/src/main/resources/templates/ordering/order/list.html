@@ -33,24 +33,24 @@
                              th:text="*{#temporals.format(updateTime,'dd-MM-yyyy HH:mm:ss')}"></div>
                         <div class="col-1">
                             <a class="link actions-details"
-                               th:href="@{'/order/details/' + ${order.getId()}}"
+                               th:href="@{'/ordering/order/manage/' + ${order.getId()}}"
                                th:text="#{manage}"></a>
                         </div>
                         <div class="col-1">
                             <a class="link actions-details"
                                th:if="${currentUser.isAdmin() || order.getCreator().getId() == currentUser.getId()}"
-                               th:href="@{'/order/edit/' + ${order.getId()}}" th:text="#{edit}"></a>
+                               th:href="@{'/ordering/order/edit/' + ${order.getId()}}" th:text="#{edit}"></a>
                         </div>
                         <div class="col-1">
                             <a class="link actions-details"
                                th:if="${currentUser.isAdmin() || order.getCreator().getId() == currentUser.getId()}"
-                               th:href="@{'/order/addToArchives/' + ${order.getId()}}"
+                               th:href="@{'/ordering/order/archive/' + ${order.getId()}}"
                                th:text="#{archive}"></a>
                         </div>
                         <div class="col-1">
                             <a class="link actions-details"
                                th:if="${currentUser.isAdmin() || order.getCreator().getId() == currentUser.getId()}"
-                               th:href="@{'/order/remove/' + ${order.getId()}}" th:text="#{remove}"></a>
+                               th:href="@{'/ordering/order/delete/' + ${order.getId()}}" th:text="#{delete}"></a>
                         </div>
                     </th>
                 </table>

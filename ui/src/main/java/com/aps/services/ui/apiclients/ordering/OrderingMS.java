@@ -1,15 +1,14 @@
 package com.aps.services.ui.apiclients.ordering;
 
 import com.aps.services.model.dto.ordering.request.*;
-import com.aps.services.model.dto.ordering.response.OrderListResponseDto;
-import com.aps.services.model.dto.ordering.response.OrderTargetResponseDto;
-import com.aps.services.model.dto.ordering.response.ProductResponseDto;
-import com.aps.services.model.dto.ordering.response.ShopResponseDto;
+import com.aps.services.model.dto.ordering.response.*;
 import com.aps.services.model.pagination.OwnPageImpl;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.CacheResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -84,7 +83,7 @@ public interface OrderingMS {
     ResponseEntity<Long> editShop(@PathVariable(name = "id") Long id, @RequestBody ShopRequestDto dto);
 
     @GetMapping("/shop/get_all")
-    ResponseEntity<List<ShopResponseDto>> getAllShops();
+    ResponseEntity<List<ShopResponseDto>> findAllShops();
 
     @GetMapping("shop/details/{id}")
     ResponseEntity<ShopResponseDto> getShopDetails(@PathVariable(name = "id") Long id);
@@ -105,4 +104,13 @@ public interface OrderingMS {
 
     @PostMapping("/order/add")
     ResponseEntity<Long> addOrderList(@RequestBody OrderListRequestDto dto);
+
+    @GetMapping("/order/get/{id}")
+    ResponseEntity<OrderListResponseDto> getOrderListById(@PathVariable(name = "id") Long id);
+
+    @GetMapping("/order/get/{id}/requests")
+    ResponseEntity<List<ProductRequestResponseDto>> getRequestsFromOrderList(@PathVariable(name = "id") Long id);
+
+    @GetMapping("/order/get/{id}/invoices")
+    ResponseEntity<List<InvoiceResponseDto>> getInvoicesFromOrderList(@PathVariable(name = "id") Long id);
 }

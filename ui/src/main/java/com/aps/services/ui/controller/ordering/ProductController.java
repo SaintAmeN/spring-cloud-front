@@ -153,7 +153,7 @@ public class ProductController extends BaseAbstractController {
     @GetMapping("/add")
     public ModelAndView getProductForm() {
         ModelAndView model = new ModelAndView("ordering/product/form");
-        model.addObject("shops", orderingMS.getAllShops().getBody());
+        model.addObject("shops", orderingMS.findAllShops().getBody());
         model.addObject("productRequestDto", new ProductRequestDto());
         return model;
     }
