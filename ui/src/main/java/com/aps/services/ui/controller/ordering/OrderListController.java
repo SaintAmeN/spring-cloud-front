@@ -1,6 +1,5 @@
 package com.aps.services.ui.controller.ordering;
 
-import com.aps.services.model.dto.ordering.model.attributes.RequestStatus;
 import com.aps.services.model.dto.ordering.request.InvoiceRequestDto;
 import com.aps.services.model.dto.ordering.request.OrderListRequestDto;
 import com.aps.services.model.dto.ordering.request.RequestUpdateDto;

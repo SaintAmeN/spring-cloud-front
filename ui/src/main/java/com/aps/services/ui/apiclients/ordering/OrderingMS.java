@@ -135,4 +135,7 @@ public interface OrderingMS {
 
     @GetMapping("/request/delete/{id}")
     ResponseEntity<Long> deleteProductRequest(@PathVariable(name = "id") Long id);
+
+    @GetMapping("/order/invoice/add/{orderId}")
+    ResponseEntity<Long> addInvoiceToRequest(@PathVariable(name = "orderId") Long orderId, @RequestBody InvoiceRequestDto dto);
 }
