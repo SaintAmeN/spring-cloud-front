@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <div class="container aligned-margines">
+        <div class="col-lg-12 mb-4">
+            <form class="card shadow" th:action="@{'/ordering/order/edit/' + ${orderResponseDto.getId()}}" method="post"
+                  th:object="${editOrderDto}">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h3 class="table-head-title" th:text="#{order.list.edit}"></h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <label class="row offset-2 col-8">
+                            <div class="col-6 middled">
+                                <h5 th:text="#{order.name}"></h5>
+                            </div>
+                            <input class="col-6 middled form-control roundless shadow" type="text"
+                                   name="name" th:value="${orderResponseDto.getName()}">
+                        </label>
+                    </div>
+                    <div class="row">
+                        <label class="row offset-2 col-8">
+                            <div class="col-md-6 middledd">
+                                <h5 th:text="#{order.target}"></h5>
+                            </div>
+                            <select id="targetId" name="targetId" class="col-6 middled form-control roundless shadow">
+                                <option selected class="form-control rounded"></option>
+                                <option class="form-control roundless" th:each="target : ${targets}"
+                                        th:value="${target.getId()}"
+                                        th:text="${target.getName()}"
+                                        th:selected="${target.getName().equals(orderResponseDto.getTargetName())}"></option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="row">
+                        <label class="row offset-md-2 col-8 col-4">
+                            <div class="col-md-6 middled">
+                                <h5 th:text="#{order.target.create}"></h5>
+                            </div>
+                            <input class="col-6 middledd form-control roundless shadow" type="text"
+                                   id="targetName"
+                                   th:field="*{targetName}">
+                        </label>
+                    </div>
+                    <input type="hidden" th:value="${orderResponseDto.getId()}" name="orderListId">
+                    <div class="row">
+                        <div class="offset-10 col-2 paddingless">
+                            <input class="form-control w-100 button roundless shadow" type="submit"
+                                   th:value="#{edit}"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="offset-9">
+                <a class="button w-100 shadow" th:href="@{'/'}" th:text="#{ctrl.back.to.home.page}"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

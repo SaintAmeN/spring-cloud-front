@@ -106,6 +106,15 @@ public interface OrderingMS {
     @PostMapping("/order/add")
     ResponseEntity<Long> addOrderList(@RequestBody OrderListRequestDto dto);
 
+    @GetMapping("/order/archive/{id}")
+    ResponseEntity<Long> archiveOrderList(@PathVariable(name = "id") Long id);
+
+    @PostMapping("/order/edit/{id}")
+    ResponseEntity<Long> editOrderList(@PathVariable(name = "id") Long id, OrderListRequestDto dto);
+
+    @GetMapping("/order/delete/{id}")
+    ResponseEntity<Long> deleteOrderList(@PathVariable(name = "id") Long id);
+
     @GetMapping("/order/get/{id}")
     ResponseEntity<OrderListResponseDto> getOrderListById(@PathVariable(name = "id") Long id);
 
@@ -120,4 +129,10 @@ public interface OrderingMS {
 
     @GetMapping("/unit/get_all")
     ResponseEntity<List<UnitResponseDto>> findAllUnits();
+
+    @GetMapping("/request/get/{id}")
+    ResponseEntity<ProductRequestResponseDto> findProductRequestById(@PathVariable(name = "id") Long id);
+
+    @GetMapping("/request/delete/{id}")
+    ResponseEntity<Long> deleteProductRequest(@PathVariable(name = "id") Long id);
 }

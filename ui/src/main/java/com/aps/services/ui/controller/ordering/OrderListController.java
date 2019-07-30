@@ -26,21 +26,31 @@ import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZ
 public class OrderListController extends BaseAbstractController {
     private final OrderingMS orderingMS;
 
-    @GetMapping("/manage/{id}")
-    public ModelAndView manageOrderList(@PathVariable(name = "id") Long id){
-        ModelAndView model = new ModelAndView("ordering/order/management");
-        model.addObject("orderListResponseDto", orderingMS.getOrderListById(id).getBody());
-        model.addObject("requests", orderingMS.getRequestsFromOrderList(id).getBody());
-        model.addObject("orderInvoices", orderingMS.getInvoicesFromOrderList(id).getBody());
-        model.addObject("shops", orderingMS.findAllShops().getBody());
-        model.addObject("requestUpdateDto", new RequestUpdateDto());
-        model.addObject("invoiceRequestDto", new InvoiceRequestDto());
+    @PostMapping("/add")
+    public ModelAndView add(Authentication auth, OrderListRequestDto dto){
+        ModelAndView model = new ModelAndView("redirect:/ordering/order/list");
+        dto.setUser(user(auth));
+        orderingMS.addOrderList(dto);
+        return model;
+    }
+
+    @GetMapping("/archive/{id}")
+    public ModelAndView archive(@PathVariable(name = "id") Long id){
+        ModelAndView model = new ModelAndView("redirect:/ordering/order/list");
+        orderingMS.archiveOrderList(id);
+        return model;
+    }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView delete(@PathVariable(name = "id") Long id){
+        ModelAndView model = new ModelAndView("redirect:/ordering/order/list");
+        orderingMS.deleteOrderList(id);
         return model;
     }
 
     @GetMapping("/list")
     public ModelAndView getOrderList(@RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                       @RequestParam(value = "page", required = false) Integer page) {
+                                     @RequestParam(value = "page", required = false) Integer page) {
         int selectedPageSize = pageSize != null ? pageSize : DEFAULT_PAGE_SIZE;
         int currentPage = page != null ? page - 1 : INITIAL_PAGE;
 
@@ -55,11 +65,33 @@ public class OrderListController extends BaseAbstractController {
         return model;
     }
 
-    @PostMapping("/add")
-    public ModelAndView add(Authentication auth, OrderListRequestDto dto){
+    @GetMapping("/edit/{id}")
+    public ModelAndView getOrderListEditForm(@PathVariable(name = "id") Long id){
+        ModelAndView model = new ModelAndView("ordering/order/edit");
+        model.addObject("orderResponseDto", orderingMS.getOrderListById(id).getBody());
+        model.addObject("targets", orderingMS.getAllOrderTargets().getBody());
+        model.addObject("editOrderDto", new OrderListRequestDto());
+        return model;
+    }
+
+    @PostMapping("/edit/{id}")
+    public ModelAndView edit(Authentication auth, @PathVariable(name = "id") Long id, OrderListRequestDto dto){
         ModelAndView model = new ModelAndView("redirect:/ordering/order/list");
         dto.setUser(user(auth));
-        orderingMS.addOrderList(dto);
+        orderingMS.editOrderList(id, dto);
+        return model;
+    }
+
+
+    @GetMapping("/manage/{id}")
+    public ModelAndView manageOrderList(@PathVariable(name = "id") Long id){
+        ModelAndView model = new ModelAndView("ordering/order/management");
+        model.addObject("orderListResponseDto", orderingMS.getOrderListById(id).getBody());
+        model.addObject("requests", orderingMS.getRequestsFromOrderList(id).getBody());
+        model.addObject("orderInvoices", orderingMS.getInvoicesFromOrderList(id).getBody());
+        model.addObject("shops", orderingMS.findAllShops().getBody());
+        model.addObject("requestUpdateDto", new RequestUpdateDto());
+        model.addObject("invoiceRequestDto", new InvoiceRequestDto());
         return model;
     }
 }

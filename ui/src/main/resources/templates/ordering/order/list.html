@@ -86,7 +86,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="row col-12 colored aligned-margines redish" th:if="${emptyOrderLists.size() == 0}">
+                <div class="row col-12 colored aligned-margines redish" th:if="${emptyOrderLists.size() != 0}">
                     <div class="col-12" th:text="#{list.no.elements}">
                     </div>
                 </div>
@@ -119,7 +119,7 @@
                             </select>
                         </div>
                         <div class="col-1 middled">
-                            <label for="targetName" th:text="#{order.target.new}"></label>
+                            <label for="targetName" th:text="#{order.target.choose2}"></label>
                         </div>
                         <div class="col-2 middled">
                             <input class="form-control roundless shadow" type="text"

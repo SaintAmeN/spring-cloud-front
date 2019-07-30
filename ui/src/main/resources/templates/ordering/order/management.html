@@ -49,7 +49,7 @@
                         <div class="col-2" th:text="#{status}"></div>
                         <div class="col-3" th:text="#{invoice}"></div>
                     </div>
-                    <div th:class="${(request.getStatus.equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).ORDERED) || request.getStatus().equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).DELIVERED)) ? 'row col-12 colored shadow aligned-margines positive-event' : 'row col-12 aligned-margines colored shadow'}"
+                    <div th:class="${(request.getStatus().equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).ORDERED) || request.getStatus().equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).DELIVERED)) ? 'row col-12 colored shadow aligned-margines positive-event' : 'row col-12 aligned-margines colored shadow'}"
                         th:each="request : ${requests}">
                         <div class="col-1 break-line" th:text="${request.getProductName()}"></div>
                         <div class="col-1" th:text="${request.getPriority()}"></div>
@@ -65,10 +65,10 @@
                             </div>
                         </div>
                         <div class="col-1">
-                            <div th:if="${request.getStatus.equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).CREATED)}">
+                            <div th:if="${request.getStatus().equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).CREATED)}">
                                 <a class="link actions-details"
                                    th:if="${currentUser.isAdmin()|| request.getCreator().getId() == currentUser.getId()}"
-                                   th:href="@{'/ordering/request/delete/' + ${request.getId()}}"
+                                   th:href="@{'/ordering/request/delete/' + ${request.getId()} + '/' + ${orderListResponseDto.getId()}}"
                                    th:text="#{delete}"></a>
                             </div>
                         </div>
@@ -84,11 +84,11 @@
                                 </select>
                             </div>
                             <div class="col-4">
-                                <div th:if="${!request.getStatus.equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).CREATED)}">
+                                <div th:if="${!request.getStatus().equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).CREATED)}">
                                     <select id="invoiceId" name="invoiceId" class="form-control">
                                         <option value="" selected>None</option>
                                         <option th:if="${request.getInvoice() != null}" th:each="invoice : ${orderInvoices}"
-                                                th:selected="${request.getInvoice.getNumber().equals(invoice.getNumber())}"
+                                                th:selected="${request.getInvoice().getNumber().equals(invoice.getNumber())}"
                                                 th:attr="value = ${invoice.getId()}"
                                                 th:text="${invoice.getNumber()}"></option>
                                         <option th:if="${request.getInvoice() == null}" th:each="invoice : ${orderInvoices}"
