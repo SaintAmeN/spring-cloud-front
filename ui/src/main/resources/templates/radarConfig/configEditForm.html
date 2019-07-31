@@ -3,7 +3,7 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{config.form.title}"></title>
+    <title th:text="#{config.edit.form.title}"></title>
 </head>
 
 <body>
@@ -11,16 +11,18 @@
     <main role="main" class="container">
         <div class="container aligned-margines">
             <div class="row container window aligned-margines">
-                <h2 class="table-head-title" th:text="#{config.form.title}"></h2>
-                <form class="listing-container container" th:action="@{'/radar/'+${radarId}+'/configuration'}" th:method="put"
+                <h2 class="table-head-title" th:text="#{config.edit.form.title}"></h2>
+                <form class="listing-container container" th:action="@{'/radar/'+${radarId}+'/configuration/'+${configDto.getId()}}" method="post"
                       th:object="${configDto}">
+
+                    <input type="hidden" th:field="*{id}" th:value="*{id}" name="dtoId">
 
                     <div class="row offset-md-1 col-md-10">
                         <div class="col-3">
                             <label for="version" th:text="#{config.add.version}"></label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control2" type="number" style="width: 100%" id="version" name="version" th:value="0"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="version" name="version" th:value="${configDto.version}"/>
                         </div>
                     </div>
 
@@ -29,16 +31,16 @@
                             <label for="rx[0]" th:text="#{config.add.rx}"></label>
                         </div>
                         <div class="col-2">
-                            <input class="form-control2" type="number" style="width: 100%" id="rx[0]" name="rx[0]" th:value="4"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="rx[0]" name="rx[0]" th:value="${configDto.rx[0]}"/>
                         </div>
                         <div class="col-2">
-                            <input class="form-control2" type="number" style="width: 100%" id="rx[1]" name="rx[1]" th:value="3"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="rx[1]" name="rx[1]" th:value="${configDto.rx[1]}"/>
                         </div>
                         <div class="col-2">
-                            <input class="form-control2" type="number" style="width: 100%" id="rx[2]" name="rx[2]" th:value="2"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="rx[2]" name="rx[2]" th:value="${configDto.rx[2]}"/>
                         </div>
                         <div class="col-2">
-                            <input class="form-control2" type="number" style="width: 100%" id="rx[3]" name="rx[3]" th:value="1"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="rx[3]" name="rx[3]" th:value="${configDto.rx[3]}"/>
                         </div>
                     </div>
 
@@ -47,7 +49,7 @@
                             <label for="tx" th:text="#{config.add.tx}"></label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control2" type="number" style="width: 100%" id="tx" name="tx" th:value="-1"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="tx" name="tx" th:value="${configDto.tx}"/>
                         </div>
                     </div>
 
@@ -56,16 +58,16 @@
                             <label for="amplitude[0]" th:text="#{config.add.amplitude}"></label>
                         </div>
                         <div class="col-2">
-                            <input class="form-control2" type="number" step="0.001" style="width: 100%" id="amplitude[0]" name="amplitude[0]" th:value="1"/>
+                            <input class="form-control2" type="number" step="0.001" style="width: 100%" id="amplitude[0]" name="amplitude[0]" th:value="${configDto.amplitude[0]}"/>
                         </div>
                         <div class="col-2">
-                            <input class="form-control2" type="number" step="0.001" style="width: 100%" id="amplitude[1]" name="amplitude[1]" th:value="1"/>
+                            <input class="form-control2" type="number" step="0.001" style="width: 100%" id="amplitude[1]" name="amplitude[1]" th:value="${configDto.amplitude[1]}"/>
                         </div>
                         <div class="col-2">
-                            <input class="form-control2" type="number" step="0.001" style="width: 100%" id="amplitude[2]" name="amplitude[2]" th:value="1"/>
+                            <input class="form-control2" type="number" step="0.001" style="width: 100%" id="amplitude[2]" name="amplitude[2]" th:value="${configDto.amplitude[2]}"/>
                         </div>
                         <div class="col-2">
-                            <input class="form-control2" type="number" step="0.001" style="width: 100%" id="amplitude[3]" name="amplitude[3]" th:value="1"/>
+                            <input class="form-control2" type="number" step="0.001" style="width: 100%" id="amplitude[3]" name="amplitude[3]" th:value="${configDto.amplitude[3]}"/>
                         </div>
                     </div>
 
@@ -74,16 +76,16 @@
                             <label for="phase[0]" th:text="#{config.add.phase}"></label>
                         </div>
                         <div class="col-2">
-                            <input class="form-control2" type="number" style="width: 100%" id="phase[0]" name="phase[0]" th:value="0"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="phase[0]" name="phase[0]" th:value="${configDto.phase[0]}"/>
                         </div>
                         <div class="col-2">
-                            <input class="form-control2" type="number" style="width: 100%" id="phase[1]" name="phase[1]" th:value="0"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="phase[1]" name="phase[1]" th:value="${configDto.phase[1]}"/>
                         </div>
                         <div class="col-2">
-                            <input class="form-control2" type="number" style="width: 100%" id="phase[2]" name="phase[2]" th:value="0"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="phase[2]" name="phase[2]" th:value="${configDto.phase[2]}"/>
                         </div>
                         <div class="col-2">
-                            <input class="form-control2" type="number" style="width: 100%" id="phase[3]" name="phase[3]" th:value="0"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="phase[3]" name="phase[3]" th:value="${configDto.phase[3]}"/>
                         </div>
                     </div>
 
@@ -92,7 +94,7 @@
                             <label for="azimuth" th:text="#{config.add.azimuth}"></label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control2" type="number" step="0.1" style="width: 100%" id="azimuth" name="azimuth" th:value="0"/>
+                            <input class="form-control2" type="number" step="0.1" style="width: 100%" id="azimuth" name="azimuth" th:value="${configDto.azimuth}"/>
                         </div>
                     </div>
 
@@ -101,7 +103,7 @@
                             <label for="elevation" th:text="#{config.add.elevation}"></label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control2" type="number" step="0.1" style="width: 100%" id="elevation" name="elevation" th:value="0"/>
+                            <input class="form-control2" type="number" step="0.1" style="width: 100%" id="elevation" name="elevation" th:value="${configDto.elevation}"/>
                         </div>
                     </div>
 
@@ -110,7 +112,7 @@
                             <label for="rxGain" th:text="#{config.add.rx.gain}"></label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control2" type="number" style="width: 100%" id="rxGain" name="rxGain" th:value="0"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="rxGain" name="rxGain" th:value="${configDto.rxGain}"/>
                         </div>
                     </div>
 
@@ -119,7 +121,7 @@
                             <label for="txGain" th:text="#{config.add.tx.gain}"></label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control2" type="number" style="width: 100%" id="txGain" name="txGain" th:value="0"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="txGain" name="txGain" th:value="${configDto.txGain}"/>
                         </div>
                     </div>
 
@@ -128,7 +130,7 @@
                             <label for="txPower" th:text="#{config.add.power}"></label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control2" type="number" style="width: 100%" id="txPower" name="txPower" th:value="40"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="txPower" name="txPower" th:value="${configDto.txPower}"/>
                         </div>
                     </div>
 
@@ -137,7 +139,7 @@
                             <label for="dBmNormalization" th:text="#{config.add.normalization}"></label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control2" type="number" style="width: 100%" id="dBmNormalization" name="dBmNormalization" th:value="192"/>
+                            <input class="form-control2" type="number" style="width: 100%" id="dBmNormalization" name="dBmNormalization" th:value="${configDto.dBmNormalization}"/>
                         </div>
                     </div>
 
@@ -145,7 +147,7 @@
 
                     <div class="row offset-md-1 col-md-10">
                         <div class="offset-3 col-8">
-                            <input class="button form-control button-form-control" type="submit" th:value="#{ctrl.add}">
+                            <input class="button form-control button-form-control" type="submit" th:value="#{ctrl.edit}">
                         </div>
                     </div>
                 </form>

@@ -1,9 +1,11 @@
 package com.aps.services.ui.config;
 
+import com.aps.services.ui.component.FeignErrorDecoder;
 import com.aps.services.ui.filters.MessageInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -16,6 +18,7 @@ import java.util.Locale;
 import static com.aps.services.ui.config.Constants.COOKIE_MAX_AGE;
 
 @Configuration
+@EnableSpringDataWebSupport
 public class BasicConfiguration implements WebMvcConfigurer {
 
     @Bean
@@ -23,7 +26,6 @@ public class BasicConfiguration implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
     public CookieLocaleResolver localeResolver() {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setDefaultLocale(Locale.US);
@@ -57,6 +59,5 @@ public class BasicConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
         registry.addInterceptor(messageInterceptor);
-//        registry.addInterceptor(requestsInterceptorLogger);
     }
 }

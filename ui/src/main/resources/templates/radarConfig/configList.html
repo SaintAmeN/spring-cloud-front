@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{matrix/layout}">
+      layout:decorate="~{layout}">
 <head>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -10,10 +10,10 @@
 </head>
 <body>
 <div layout:fragment="menubar">
-    <div th:replace="matrix/fragments/navigators :: menu-bar"></div>
+    <div th:replace="fragments/navigators :: menu-bar"></div>
 </div>
 <div layout:fragment="usermenu">
-    <div th:replace="matrix/fragments/navigators :: user-dropdown-menu"></div>
+    <div th:replace="fragments/navigators :: user-dropdown-menu"></div>
 </div>
 <div layout:fragment="content" id="content" class="container lite-padding">
     <div class="col-lg-12 mb-4">
@@ -22,6 +22,24 @@
                 <h2 class="table-head-title" th:text="#{config.list.title}"></h2>
                 <h3 class="table-head-title" th:text="'for radar with id: '+${radarId}"></h3>
             </div>
+
+            <script>
+                function openHistoryPanel(id){
+                    var panel = document.getElementById('panel'+id);
+                    panel.style.display = "block";
+
+                    var closeBtn = document.getElementById('close'+id);
+                    closeBtn.onclick = function() {
+                        panel.style.display = "none";
+                    };
+
+                    window.onclick = function(event) {
+                        if (event.target == panel) {
+                            panel.style.display = "none";
+                        }
+                    }
+                }
+            </script>
 
             <div class="col-12 table" style="padding-right:15px">
                 <div class="row table-header shadow">
@@ -42,6 +60,27 @@
 
 
                 <div class="row colored shadow " th:each=" config : ${configurations}">
+
+                    <!-- The Modal -->
+                    <div th:id="${'panel'+config.id}" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span th:id="${'close'+config.id}" class="close">&times;</span>
+                            <div class="col-12 table">
+                                <div class="row table-header shadow">
+                                    <div class="col-1" th:text="#{event.time}"></div>
+                                    <div class="col-1" th:text="#{event.user}"></div>
+                                    <div class="col-10" th:text="#{event.message}"></div>
+                                </div>
+                                <div class="row colored shadow " th:each=" event : ${@eventService.getAllEventsByEntityNameAndId(config.getDtoName(), config.getId())}">
+                                    <div class="col-1" th:text="${#temporals.format(event.getTime(),'dd-MM-yyyy HH:mm')}"></div>
+                                    <div class="col-1" th:text="${event.getUsername()}"></div>
+                                    <div class="col-10" th:utext="${#strings.replace(event.getMessage(),'&#10;','&lt;br&gt;')}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-05 border" th:text="${config.id}"></div>
                     <div class="col-05 border" th:text="${config.version}"></div>
                     <div class="col-2 border" style="padding-right: 0; padding-left:0;">
@@ -84,10 +123,21 @@
                     <div class="col-05 border" th:text="${config.txPower}"></div>
                     <div class="col-1 border"
                          th:text="${config.getDBmNormalization()}"></div>
-                    <div class="col-1 border">
-                        <a class="link"
-                           th:href="@{'/configuration/'+ ${config.getId()} + '/edit'}"
-                           th:text="#{ctrl.edit}"></a>
+
+                    <div class="col-1">
+                        <a class="dropdown-pointer dropdown-toggle link" href="" th:onclick="'return false;'" data-toggle="dropdown" th:text="#{ctrl.choose.action}"></a>
+                        <ul class="dropdown-menu window">
+                            <li class="selected dropdown-item">
+                                <a class="link"
+                                   th:href="@{'/radar/'+ ${radarId} + '/configuration/' + ${config.getId()} + '/edit'}"
+                                   th:text="#{ctrl.edit}"></a>
+                            </li>
+                            <li class="selected dropdown-item">
+                                <a class="link" href=""
+                                   th:onclick="'openHistoryPanel(\''+${config.id} +'\'); return false;'"
+                                   th:text="#{ctrl.show.history}"></a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -160,7 +210,7 @@
                     </ul>
                 </div>
                 <div class="col-md-3">
-                    <a class="button w-100 shadow" th:href="@{'/configuration/'+${radarId}+'/add'}" th:text="#{add.new}"></a>
+                    <a class="button w-100 shadow" th:href="@{'/radar/'+${radarId}+'/configuration/add'}" th:text="#{add.new}"></a>
                 </div>
             </div>
 
@@ -172,7 +222,7 @@
                     </div>
                 </div>
                 <!--ADD NEW-->
-                <form class="row" th:action="@{'/configuration/'+${radarId}+'/add_comment'}" method="post"
+                <form class="row" th:action="@{'/radar/'+${radarId}+'/configuration/add_comment'}" method="post"
                       th:object="${newComment}">
                     <div class="col-05" style="padding-left: 10px">
                         <div class="thumbnail">
@@ -184,7 +234,7 @@
                     <div class="col-sm-10">
                         <div class="panel panel-default">
                             <div class="col-12 panel-heading">
-                                <strong th:text="${loggedInUserDTO.getUsername()}"></strong>
+                                <strong th:text="${username}"></strong>
                                 <label for="newComment"></label>
                             </div>
                             <textarea class="panel-body form-control" id="newComment" th:field="*{content}"
@@ -195,6 +245,7 @@
                         </div>
                     </div>
                 </form>
+                <!--ADD NEW-->
 
                 <div class="row" th:each="comment: ${comments}">
                     <div class="col-05" style="padding-left: 10px">
@@ -207,7 +258,7 @@
                     <div class="col-sm-10">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <strong th:text="${comment.author.getUsername()}"></strong>
+                                <strong th:text="${comment.author}"></strong>
                                 <span class="text-muted" th:text="${comment.created}"></span>
                             </div>
                             <div class="panel-body" th:text="${comment.content}"></div>
