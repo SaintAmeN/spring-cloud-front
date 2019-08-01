@@ -23,14 +23,14 @@
                     <div class="card-header row col-12 aligned-margines shadow-table-header">
                         <h2 class="table-head-title" th:text="#{product.list.title}"></h2>
                     </div>
-                    <table class="table table-striped card-text card-body shadow">
-                        <th class="row col-12 table-header aligned-margines shadow">
+                    <div class="table table-striped card-text card-body shadow">
+                        <div class="row col-12 table-header aligned-margines shadow">
                             <div class="col-2" th:text="#{id}"></div>
                             <div class="col-3" th:text="#{product.name}"></div>
                             <div class="col-2" th:text="#{owner}"></div>
                             <div class="col-4" th:text="#{actions}"></div>
-                        </th>
-                        <th class="row col-12 colored aligned-margines" th:each="product : ${products}"
+                        </div>
+                        <div class="row col-12 colored aligned-margines" th:each="product : ${products}"
                             th:if="${currentUser.isAdmin() || product.isApproved()}">
                             <div class="col-2" th:text="${product.getId()}">
                             </div>
@@ -51,15 +51,15 @@
                             <div class="col-1">
                                 <a class="link actions-details"
                                    th:if="${currentUser.isAdmin() || product.getCreator().getId() == currentUser.getId()}"
-                                   th:href="@{'/ordering/product/remove/' + ${product.getId()}}" th:text="#{delete}"></a>
+                                   th:href="@{'/ordering/product/delete/' + ${product.getId()}}" th:text="#{delete}"></a>
                             </div>
                             <div class="col-1">
                                 <a class="link actions-details"
-                                   th:if="${currentUser.isAdmin() && product.isApproved()}"
+                                   th:if="${currentUser.isAdmin() && !product.isApproved()}"
                                    th:href="@{'/ordering/product/approve/' + ${product.getId()}}" th:text="#{approve}"></a>
                             </div>
-                        </th>
-                    </table>
+                        </div>
+                    </div>
                     <div class="row col-12 colored aligned-margines redish" th:if="${products.getContent().size() == 0}">
                         <div class="col-12" th:text="#{list.no.elements}">
                         </div>

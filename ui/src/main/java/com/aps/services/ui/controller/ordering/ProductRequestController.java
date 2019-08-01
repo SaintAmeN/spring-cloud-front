@@ -48,12 +48,19 @@ public class ProductRequestController extends BaseAbstractController {
     }
 
     @GetMapping("/edit/{id}/{orderId}")
-    public ModelAndView edit(@PathVariable(name = "id") Long id, @PathVariable(name = "orderId") Long orderId){
+    public ModelAndView getEditForm(@PathVariable(name = "id") Long id, @PathVariable(name = "orderId") Long orderId){
         ModelAndView model = new ModelAndView("ordering/request/edit");
         model.addObject("productRequestResponseDto", orderingMS.findProductRequestById(id).getBody());
         model.addObject("units", orderingMS.findAllUnits().getBody());
         model.addObject("productRequestRequestDto", new ProductRequestRequestDto());
         model.addObject("orderId", orderId);
+        return model;
+    }
+
+    @PostMapping("/edit/{id}/{orderId}")
+    public ModelAndView editProductRequest(@PathVariable(name = "id") Long id, @PathVariable(name = "orderId") Long orderId, ProductRequestRequestDto dto){
+        ModelAndView model = new ModelAndView("redirect:/ordering/order/manage/" + orderId);
+        orderingMS.editProductRequest(id, dto);
         return model;
     }
 

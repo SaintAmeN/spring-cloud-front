@@ -62,7 +62,7 @@
                             <div th:if="${request.getStatus().equals(T(com.aps.services.model.dto.ordering.model.attributes.RequestStatus).CREATED)}">
                                 <a class="link actions-details"
                                    th:if="${currentUser.isAdmin() || request.getCreator().getId() == currentUser.getId()}"
-                                   th:href="@{'/ordering/request/edit/' + ${request.getId()}}"
+                                   th:href="@{'/ordering/request/edit/' + ${request.getId()} + '/' + ${orderListResponseDto.getId()}}"
                                    th:text="#{request.edit}"></a>
                             </div>
                         </div>

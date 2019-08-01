@@ -13,7 +13,7 @@
                 <div class="card-header row col-12 aligned-margines shadow-table-header">
                     <h3 class="table-head-title" th:text="#{request.edit}"></h3>
                 </div>
-                <form class="card shadow" th:action="@{'/ordering/request/edit/' + ${productRequestResponseDto}}" method="post"
+                <form class="card shadow" th:action="@{'/ordering/request/edit/' + ${productRequestResponseDto.getId()} + '/' + ${orderId}}" method="post"
                       th:object="${productRequestRequestDto}">
                     <div class="card-body">
                         <div class="row">

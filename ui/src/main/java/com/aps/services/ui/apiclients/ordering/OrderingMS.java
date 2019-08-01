@@ -19,6 +19,12 @@ public interface OrderingMS {
     @PostMapping("/product/add")
     ResponseEntity<Long> addProduct(@RequestBody ProductRequestDto dto);
 
+    @GetMapping("/product/approve/{id}")
+    ResponseEntity<Long> approveProduct(@PathVariable(name = "id") Long id);
+
+    @GetMapping("/product/delete/{id}")
+    ResponseEntity<Long> deleteProduct(@PathVariable(name = "id") Long id);
+
     @GetMapping("/product/get_all")
     ResponseEntity<List<ProductResponseDto>> findAllProducts();
 
@@ -138,6 +144,9 @@ public interface OrderingMS {
 
     @GetMapping("/request/delete/{id}")
     ResponseEntity<Long> deleteProductRequest(@PathVariable(name = "id") Long id);
+
+    @PostMapping("/request/edit/{id}")
+    ResponseEntity<Long> editProductRequest(@PathVariable(name = "id") Long id, @RequestBody ProductRequestRequestDto dto);
 
     @PostMapping("/request/update/{id}")
     ResponseEntity<Long> updateProductRequest(@PathVariable(name = "id") Long id, @RequestBody UpdateProductRequestRequestDto dto);

@@ -33,6 +33,20 @@ public class ProductController extends BaseAbstractController {
         return model;
     }
 
+    @GetMapping("/approve/{id}")
+    public ModelAndView approve(@PathVariable(name = "id") Long id){
+        ModelAndView model = new ModelAndView("redirect:/ordering/product/list");
+        orderingMS.approveProduct(id);
+        return model;
+    }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView delete(@PathVariable(name = "id") Long id){
+        ModelAndView model = new ModelAndView("redirect:/ordering/product/list");
+        orderingMS.deleteProduct(id);
+        return model;
+    }
+
     @GetMapping("/edit/{id}/alternatives")
     public ModelAndView editAlternatives(@PathVariable(name = "id") Long id) {
         ModelAndView model = new ModelAndView("ordering/product/edit/alternatives");
