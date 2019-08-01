@@ -2,6 +2,7 @@ package com.aps.services.ui.controller.ordering;
 
 import com.aps.services.model.dto.ordering.model.attributes.RequestPriority;
 import com.aps.services.model.dto.ordering.request.ProductRequestRequestDto;
+import com.aps.services.model.dto.ordering.request.UpdateProductRequestRequestDto;
 import com.aps.services.ui.apiclients.ordering.OrderingMS;
 import com.aps.services.ui.controller.BaseAbstractController;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,13 @@ public class ProductRequestController extends BaseAbstractController {
         model.addObject("units", orderingMS.findAllUnits().getBody());
         model.addObject("productRequestRequestDto", new ProductRequestRequestDto());
         model.addObject("orderId", orderId);
+        return model;
+    }
+
+    @PostMapping("/update/{id}/{orderId}")
+    public ModelAndView updateProductRequest(@PathVariable(name = "id") Long id, @PathVariable(name = "orderId") Long orderId, UpdateProductRequestRequestDto dto){
+        ModelAndView model = new ModelAndView("redirect:/ordering/order/manage/" + orderId);
+        orderingMS.updateProductRequest(id, dto);
         return model;
     }
 }

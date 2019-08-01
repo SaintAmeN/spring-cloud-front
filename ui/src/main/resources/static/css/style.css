@@ -478,7 +478,7 @@ ol > li:hover > ul {
 }
 
 .positive-event {
-    background-color: #9affa3;
+    background-color: #9affa3 !important;
 }
 
 .field-icon {

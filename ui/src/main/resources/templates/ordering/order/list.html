@@ -86,7 +86,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="row col-12 colored aligned-margines redish" th:if="${emptyOrderLists.size() != 0}">
+                <div class="row col-12 colored aligned-margines redish" th:if="${orders.isEmpty()}">
                     <div class="col-12" th:text="#{list.no.elements}">
                     </div>
                 </div>

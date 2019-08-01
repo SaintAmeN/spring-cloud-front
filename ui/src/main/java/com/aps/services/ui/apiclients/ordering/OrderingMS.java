@@ -124,6 +124,9 @@ public interface OrderingMS {
     @GetMapping("/order/get/{id}/invoices")
     ResponseEntity<List<InvoiceResponseDto>> getInvoicesFromOrderList(@PathVariable(name = "id") Long id);
 
+    @GetMapping("/order/invoice/add/{orderId}")
+    ResponseEntity<Long> addInvoiceToRequest(@PathVariable(name = "orderId") Long orderId, @RequestBody InvoiceRequestDto dto);
+
     @PostMapping("/order/request/add/{orderId}")
     ResponseEntity<Long> addProductRequest(@PathVariable(name = "orderId") Long orderId, @RequestBody ProductRequestRequestDto dto);
 
@@ -136,6 +139,6 @@ public interface OrderingMS {
     @GetMapping("/request/delete/{id}")
     ResponseEntity<Long> deleteProductRequest(@PathVariable(name = "id") Long id);
 
-    @GetMapping("/order/invoice/add/{orderId}")
-    ResponseEntity<Long> addInvoiceToRequest(@PathVariable(name = "orderId") Long orderId, @RequestBody InvoiceRequestDto dto);
+    @PostMapping("/request/update/{id}")
+    ResponseEntity<Long> updateProductRequest(@PathVariable(name = "id") Long id, @RequestBody UpdateProductRequestRequestDto dto);
 }
