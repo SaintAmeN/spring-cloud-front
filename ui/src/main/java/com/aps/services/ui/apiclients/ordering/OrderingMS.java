@@ -2,7 +2,9 @@ package com.aps.services.ui.apiclients.ordering;
 
 import com.aps.services.model.dto.ordering.request.*;
 import com.aps.services.model.dto.ordering.response.*;
+import com.aps.services.model.dto.ordering.summary.OrderSummaryDto;
 import com.aps.services.model.pagination.OwnPageImpl;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -135,6 +137,9 @@ public interface OrderingMS {
 
     @PostMapping("/order/request/add/{orderId}")
     ResponseEntity<Long> addProductRequest(@PathVariable(name = "orderId") Long orderId, @RequestBody ProductRequestRequestDto dto);
+
+    @GetMapping("/order/summary/{id}")
+    ResponseEntity<OrderSummaryDto> getOrderSummary(@PathVariable(name = "id") Long id);
 
     @GetMapping("/unit/get_all")
     ResponseEntity<List<UnitResponseDto>> findAllUnits();

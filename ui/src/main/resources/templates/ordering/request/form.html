@@ -22,7 +22,7 @@
                             <select required id="shop" th:field="*{productId}" class="form-control roundless shadow">
                                 <option class="form-control roundless shadow" th:each="product : ${products}"
                                         th:value="${product.getId()}"
-                                        th:if="${!product.isApproved()}"
+                                        th:if="${product.isApproved()}"
                                         th:text="${product.getName()}"></option>
                             </select>
                         </div>
