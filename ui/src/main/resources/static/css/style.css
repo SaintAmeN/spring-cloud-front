@@ -579,10 +579,6 @@ input[type=checkbox] {
     text-shadow: 1px 1px 1px #62c6df !important;
 }
 
-a:not([href]):not([tabindex]) {
-    color: #62c6df !important;
-}
-
 .font-navbar-logo {
     font-size: 25px;
 !important;

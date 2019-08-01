@@ -27,6 +27,24 @@
                 }
             </script>
 
+            <script>
+                function openHistoryPanel(id){
+                    var panel = document.getElementById('panel'+id);
+                    panel.style.display = "block";
+
+                    var closeBtn = document.getElementById('close'+id);
+                    closeBtn.onclick = function() {
+                        panel.style.display = "none";
+                    };
+
+                    window.onclick = function(event) {
+                        if (event.target == panel) {
+                            panel.style.display = "none";
+                        }
+                    }
+                }
+            </script>
+
             <div class="col-12 table" style="padding-right:15px">
                 <div class="row table-header shadow">
                     <div class="row col-9">
@@ -37,6 +55,27 @@
                     <div class="col-3" th:text="#{users.actions}"></div>
                 </div>
                 <div class="row colored shadow" th:each="radar : ${radars}">
+
+                    <!-- The Modal -->
+                    <div th:id="${'panel'+radar.id}" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span th:id="${'close'+radar.id}" class="close">&times;</span>
+                            <div class="col-12 table">
+                                <div class="row table-header shadow">
+                                    <div class="col-1" th:text="#{event.time}"></div>
+                                    <div class="col-1" th:text="#{event.user}"></div>
+                                    <div class="col-10" th:text="#{event.message}"></div>
+                                </div>
+                                <div class="row colored shadow " th:each=" event : ${@eventService.getAllEventsByEntityNameAndId(radar.getDtoName(), radar.getId())}">
+                                    <div class="col-1" th:text="${#temporals.format(event.getTime(),'dd-MM-yyyy HH:mm')}"></div>
+                                    <div class="col-1" th:text="${event.getUsername()}"></div>
+                                    <div class="col-10" th:utext="${#strings.replace(event.getMessage(),'&#10;','&lt;br&gt;')}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row col-9"
                          th:onclick="'window.location.href = \'' + @{'/radar/' + ${radar.getId()}} + '/configuration\''">
                         <div class="col-2" style="padding-left: 15px;" th:text="${radar.id}"></div>
@@ -44,73 +83,84 @@
                         <div class="col-5" th:text="${radar.radarBoardSerialId}"></div>
                     </div>
                     <div class="col-3">
-                        <a class="link"
-                           href="/"
-                           th:onclick="'show(\'config'+${radar.id} +'\'); return false;'"
-                           th:text="#{show.current.config}"></a>
+                        <a class="dropdown-pointer dropdown-toggle link" href="" th:onclick="'return false;'" data-toggle="dropdown" th:text="#{ctrl.choose.action}"></a>
+                        <ul class="dropdown-menu window">
+                            <li class="selected dropdown-item">
+                                <a class="link" href=""
+                                th:onclick="'show(\'config'+${radar.id} +'\'); return false;'"
+                                th:text="#{show.current.config}"></a>
+                            </li>
+                            <li class="selected dropdown-item">
+                                <a class="link" href=""
+                                   th:onclick="'openHistoryPanel(\''+${radar.id} +'\'); return false;'"
+                                   th:text="#{ctrl.show.history}"></a>
+                            </li>
+                        </ul>
                     </div>
-                    <!--&lt;!&ndash;CURRENT CONFIG&ndash;&gt;-->
-                    <!--<div class="col-12" th:if="${radar.lastUsedConfiguration}==null" th:id="${'config'+radar.id}" style="display: none" th:text="#{no.config}"></div>-->
-                    <!--<div class="col-12" th:if="${radar.lastUsedConfiguration}!=null" th:id="${'config'+radar.id}" style="display: none">-->
-                        <!--<div class="row col-12">-->
-                            <!--<div class="col-05 border" th:text="#{config.id}"></div>-->
-                            <!--<div class="col-05 border" th:text="#{config.version}"></div>-->
-                            <!--<div class="col-2 border" th:text="#{config.rx}"></div>-->
-                            <!--<div class="col-05 border" th:text="#{config.tx}"></div>-->
-                            <!--<div class="col-2 border" th:text="#{config.amplitude}"></div>-->
-                            <!--<div class="col-2 border" th:text="#{config.phase}"></div>-->
-                            <!--<div class="col-05 border" th:text="#{config.azimuth}"></div>-->
-                            <!--<div class="col-05 border" th:text="#{config.elevation}"></div>-->
-                            <!--<div class="col-1 border" th:text="#{config.rx.gain}"></div>-->
-                            <!--<div class="col-1 border" th:text="#{config.tx.gain}"></div>-->
-                            <!--<div class="col-05 border" th:text="#{config.power}"></div>-->
-                            <!--<div class="col-1 border" th:text="#{config.normalization}"></div>-->
-                        <!--</div>-->
 
 
-                        <!--<div class="row col-12">-->
-                            <!--<div class="col-05 border" th:text="${radar.lastUsedConfiguration.id}"></div>-->
-                            <!--<div class="col-05 border" th:text="${radar.lastUsedConfiguration.version}"></div>-->
-                            <!--<div class="col-2 border" style="padding-right: 0; padding-left:0;">-->
-                                <!--<div class="row" style="margin-left: 0; margin-right: 0;">-->
-                                    <!--<div class="col-3 border" th:text="${radar.lastUsedConfiguration.rx[0]}"></div>-->
-                                    <!--<div class="col-3 border" th:text="${radar.lastUsedConfiguration.rx[1]}"></div>-->
-                                    <!--<div class="col-3 border" th:text="${radar.lastUsedConfiguration.rx[2]}">b</div>-->
-                                    <!--<div class="col-3 border" th:text="${radar.lastUsedConfiguration.rx[3]}">b</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="col-05 border" th:text="${radar.lastUsedConfiguration.tx}"></div>-->
-                            <!--<div class="col-2 border" style="padding-right: 0; padding-left:0;">-->
-                                <!--<div class="row " style="margin-left: 0; margin-right: 0;">-->
-                                    <!--<div class="col-3 no-padding border"-->
-                                         <!--th:text="${radar.lastUsedConfiguration.amplitude[0]}"></div>-->
-                                    <!--<div class="col-3 no-padding border"-->
-                                         <!--th:text="${radar.lastUsedConfiguration.amplitude[1]}"></div>-->
-                                    <!--<div class="col-3 no-padding border"-->
-                                         <!--th:text="${radar.lastUsedConfiguration.amplitude[2]}"></div>-->
-                                    <!--<div class="col-3 no-padding border"-->
-                                         <!--th:text="${radar.lastUsedConfiguration.amplitude[3]}"></div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="col-2 border" style="padding-right: 0; padding-left:0;">-->
-                                <!--<div class="row " style="margin-left: 0; margin-right: 0;">-->
-                                    <!--<div class="col-3 no-padding border"-->
-                                         <!--th:text="${radar.lastUsedConfiguration.phase[0]}"></div>-->
-                                    <!--<div class="col-3 no-padding border"-->
-                                         <!--th:text="${radar.lastUsedConfiguration.phase[1]}"></div>-->
-                                    <!--<div class="col-3 no-padding border"-->
-                                         <!--th:text="${radar.lastUsedConfiguration.phase[2]}"></div>-->
-                                    <!--<div class="col-3 no-padding border"-->
-                                         <!--th:text="${radar.lastUsedConfiguration.phase[3]}"></div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="col-05 border" th:text="${radar.lastUsedConfiguration.azimuth}"></div>-->
-                            <!--<div class="col-05 border" th:text="${radar.lastUsedConfiguration.elevation}"></div>-->
-                            <!--<div class="col-1 border" th:text="${radar.lastUsedConfiguration.rxGain}"></div>-->
-                            <!--<div class="col-1 border" th:text="${radar.lastUsedConfiguration.txGain}"></div>-->
-                            <!--<div class="col-05 border" th:text="${radar.lastUsedConfiguration.txPower}"></div>-->
-                            <!--<div class="col-1 border" th:text="${radar.lastUsedConfiguration.getDBmNormalization()}"></div>-->
-                        <!--</div>-->
+                    <!--CURRENT CONFIG-->
+                    <div class="col-12" th:if="${radar.currentConfiguration}==null" th:id="${'config'+radar.id}" style="display: none" th:text="#{no.config}"></div>
+                    <div class="col-12" th:if="${radar.currentConfiguration}!=null" th:id="${'config'+radar.id}" style="display: none">
+                        <div class="row col-12">
+                            <div class="col-05 border" th:text="#{config.id}"></div>
+                            <div class="col-05 border" th:text="#{config.version}"></div>
+                            <div class="col-2 border" th:text="#{config.rx}"></div>
+                            <div class="col-05 border" th:text="#{config.tx}"></div>
+                            <div class="col-2 border" th:text="#{config.amplitude}"></div>
+                            <div class="col-2 border" th:text="#{config.phase}"></div>
+                            <div class="col-05 border" th:text="#{config.azimuth}"></div>
+                            <div class="col-05 border" th:text="#{config.elevation}"></div>
+                            <div class="col-1 border" th:text="#{config.rx.gain}"></div>
+                            <div class="col-1 border" th:text="#{config.tx.gain}"></div>
+                            <div class="col-05 border" th:text="#{config.power}"></div>
+                            <div class="col-1 border" th:text="#{config.normalization}"></div>
+                        </div>
+
+
+                        <div class="row col-12">
+                            <div class="col-05 border" th:text="${radar.currentConfiguration.id}"></div>
+                            <div class="col-05 border" th:text="${radar.currentConfiguration.version}"></div>
+                            <div class="col-2 border" style="padding-right: 0; padding-left:0;">
+                                <div class="row" style="margin-left: 0; margin-right: 0;">
+                                    <div class="col-3 border" th:text="${radar.currentConfiguration.rx[0]}"></div>
+                                    <div class="col-3 border" th:text="${radar.currentConfiguration.rx[1]}"></div>
+                                    <div class="col-3 border" th:text="${radar.currentConfiguration.rx[2]}">b</div>
+                                    <div class="col-3 border" th:text="${radar.currentConfiguration.rx[3]}">b</div>
+                                </div>
+                            </div>
+                            <div class="col-05 border" th:text="${radar.currentConfiguration.tx}"></div>
+                            <div class="col-2 border" style="padding-right: 0; padding-left:0;">
+                                <div class="row " style="margin-left: 0; margin-right: 0;">
+                                    <div class="col-3 no-padding border"
+                                         th:text="${radar.currentConfiguration.amplitude[0]}"></div>
+                                    <div class="col-3 no-padding border"
+                                         th:text="${radar.currentConfiguration.amplitude[1]}"></div>
+                                    <div class="col-3 no-padding border"
+                                         th:text="${radar.currentConfiguration.amplitude[2]}"></div>
+                                    <div class="col-3 no-padding border"
+                                         th:text="${radar.currentConfiguration.amplitude[3]}"></div>
+                                </div>
+                            </div>
+                            <div class="col-2 border" style="padding-right: 0; padding-left:0;">
+                                <div class="row " style="margin-left: 0; margin-right: 0;">
+                                    <div class="col-3 no-padding border"
+                                         th:text="${radar.currentConfiguration.phase[0]}"></div>
+                                    <div class="col-3 no-padding border"
+                                         th:text="${radar.currentConfiguration.phase[1]}"></div>
+                                    <div class="col-3 no-padding border"
+                                         th:text="${radar.currentConfiguration.phase[2]}"></div>
+                                    <div class="col-3 no-padding border"
+                                         th:text="${radar.currentConfiguration.phase[3]}"></div>
+                                </div>
+                            </div>
+                            <div class="col-05 border" th:text="${radar.currentConfiguration.azimuth}"></div>
+                            <div class="col-05 border" th:text="${radar.currentConfiguration.elevation}"></div>
+                            <div class="col-1 border" th:text="${radar.currentConfiguration.rxGain}"></div>
+                            <div class="col-1 border" th:text="${radar.currentConfiguration.txGain}"></div>
+                            <div class="col-05 border" th:text="${radar.currentConfiguration.txPower}"></div>
+                            <div class="col-1 border" th:text="${radar.currentConfiguration.getDBmNormalization()}"></div>
+                        </div>
                         <!--CURRENT CONFIG-->
                     </div>
                 </div>

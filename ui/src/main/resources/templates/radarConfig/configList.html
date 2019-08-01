@@ -61,25 +61,25 @@
 
                 <div class="row colored shadow " th:each=" config : ${configurations}">
 
-                    <!--&lt;!&ndash; The Modal &ndash;&gt;-->
-                    <!--<div th:id="${'panel'+config.id}" class="modal">-->
-                        <!--&lt;!&ndash; Modal content &ndash;&gt;-->
-                        <!--<div class="modal-content">-->
-                            <!--<span th:id="${'close'+config.id}" class="close">&times;</span>-->
-                            <!--<div class="col-12 table">-->
-                                <!--<div class="row table-header shadow">-->
-                                    <!--<div class="col-1" th:text="#{event.time}"></div>-->
-                                    <!--<div class="col-1" th:text="#{event.user}"></div>-->
-                                    <!--<div class="col-10" th:text="#{event.message}"></div>-->
-                                <!--</div>-->
-                                <!--<div class="row colored shadow " th:each=" event : ${@eventService.getAllEventsByEntityNameAndId(config.getEntityName(), config.getId())}">-->
-                                    <!--<div class="col-1" th:text="${#temporals.format(event.getTime(),'dd-MM-yyyy HH:mm')}"></div>-->
-                                    <!--<div class="col-1" th:text="${event.getUsername()}"></div>-->
-                                    <!--<div class="col-10" th:utext="${#strings.replace(event.getMessage(),'&#10;','&lt;br&gt;')}"></div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                    <!-- The Modal -->
+                    <div th:id="${'panel'+config.id}" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span th:id="${'close'+config.id}" class="close">&times;</span>
+                            <div class="col-12 table">
+                                <div class="row table-header shadow">
+                                    <div class="col-1" th:text="#{event.time}"></div>
+                                    <div class="col-1" th:text="#{event.user}"></div>
+                                    <div class="col-10" th:text="#{event.message}"></div>
+                                </div>
+                                <div class="row colored shadow " th:each=" event : ${@eventService.getAllEventsByEntityNameAndId(config.getDtoName(), config.getId())}">
+                                    <div class="col-1" th:text="${#temporals.format(event.getTime(),'dd-MM-yyyy HH:mm')}"></div>
+                                    <div class="col-1" th:text="${event.getUsername()}"></div>
+                                    <div class="col-10" th:utext="${#strings.replace(event.getMessage(),'&#10;','&lt;br&gt;')}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-05 border" th:text="${config.id}"></div>
                     <div class="col-05 border" th:text="${config.version}"></div>
@@ -125,7 +125,7 @@
                          th:text="${config.getDBmNormalization()}"></div>
 
                     <div class="col-1">
-                        <a class="dropdown-pointer dropdown-toggle" data-toggle="dropdown" th:text="#{ctrl.choose.action}"></a>
+                        <a class="dropdown-pointer dropdown-toggle link" href="" th:onclick="'return false;'" data-toggle="dropdown" th:text="#{ctrl.choose.action}"></a>
                         <ul class="dropdown-menu window">
                             <li class="selected dropdown-item">
                                 <a class="link"
@@ -133,8 +133,8 @@
                                    th:text="#{ctrl.edit}"></a>
                             </li>
                             <li class="selected dropdown-item">
-                                <a class="link"
-                                   th:onclick="'openHistoryPanel(\''+${config.id} +'\');'"
+                                <a class="link" href=""
+                                   th:onclick="'openHistoryPanel(\''+${config.id} +'\'); return false;'"
                                    th:text="#{ctrl.show.history}"></a>
                             </li>
                         </ul>
