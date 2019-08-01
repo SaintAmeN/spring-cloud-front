@@ -65,24 +65,24 @@
                     <div th:if="${orders.getTotalPages()  != 1}" class="form-group col-md-11 pagination-centered">
                         <ul class="pagination">
                             <li th:class="${orders.getNumber() == 0} ? disabled"><a class="page-link"
-                                                                                   th:href="@{/order/list/(pageSize=${selectedPageSize}, page=1)}">«</a>
+                                                                                    th:href="@{/ordering/order/list/(pageSize=${selectedPageSize}, page=1)}">«</a>
                             </li>
                             <li th:class="${orders.getNumber() == 0} ? disabled"><a class="page-link"
-                                                                                   th:href="@{/order/list/(pageSize=${selectedPageSize}, page=${orders.getNumber()})}">←</a>
+                                                                                    th:href="@{/ordering/order/list/(pageSize=${selectedPageSize}, page=${orders.getNumber()})}">←</a>
                             </li>
-                            <!--                            <li th:class="${orderLists.number == (page - 1)} ? 'active pointer-disabled'"-->
-                            <!--                                th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a-->
-                            <!--                                    class="page-link"-->
-                            <!--                                    th:href="@{/order/list/(pageSize=${selectedPageSize}, page=${page})}"-->
-                            <!--                                    th:text="${page}"></a></li>-->
-                            <!--                            <li th:class="${orderLists.number + 1 == orderLists.totalPages} ? disabled"><a-->
-                            <!--                                    class="page-link"-->
-                            <!--                                    th:href="@{/order/list/(pageSize=${selectedPageSize}, page=${orderLists.number + 2})}">→</a>-->
-                            <!--                            </li>-->
-                            <!--                            <li th:class="${orderLists.number + 1 == orderLists.totalPages} ? disabled"><a-->
-                            <!--                                    class="page-link"-->
-                            <!--                                    th:href="@{/order/list/(pageSize=${selectedPageSize}, page=${orderLists.totalPages})}">»</a>-->
-                            <!--                            </li>-->
+                            <li th:class="${orders.getNumber() == (page - 1)} ? 'active pointer-disabled'"
+                                th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a
+                                    class="page-link"
+                                    th:href="@{/ordering/order/list/(pageSize=${selectedPageSize}, page=${page})}"
+                                    th:text="${page}"></a></li>
+                            <li th:class="${orders.getNumber()  + 1 == orders.getTotalPages()} ? disabled"><a
+                                    class="page-link"
+                                    th:href="@{/ordering/order/list/(pageSize=${selectedPageSize}, page=${orders.getNumber()  + 2})}">→</a>
+                            </li>
+                            <li th:class="${orders.getNumber()  + 1 == orders.getTotalPages()} ? disabled"><a
+                                    class="page-link"
+                                    th:href="@{/ordering/order/list/(pageSize=${selectedPageSize}, page=${orders.getTotalPages()})}">»</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

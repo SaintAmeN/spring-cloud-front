@@ -64,19 +64,19 @@
                             <li th:class="${shops.getNumber() == 0} ? disabled"><a class="page-link"
                                                                                    th:href="@{/ordering/shop/list/(pageSize=${selectedPageSize}, page=${shops.getNumber()})}">←</a>
                             </li>
-                            <!--                                <li th:class="${shopList.number == (page - 1)} ? 'active pointer-disabled'"-->
-                            <!--                                    th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a-->
-                            <!--                                        class="page-link"-->
-                            <!--                                        th:href="@{/shop/list/(pageSize=${selectedPageSize}, page=${page})}"-->
-                            <!--                                        th:text="${page}"></a></li>-->
-                            <!--                                <li th:class="${shopList.number + 1 == shopList.totalPages} ? disabled"><a-->
-                            <!--                                        class="page-link"-->
-                            <!--                                        th:href="@{/shop/list/(pageSize=${selectedPageSize}, page=${shopList.number + 2})}">→</a>-->
-                            <!--                                </li>-->
-                            <!--                                <li th:class="${shopList.number + 1 == shopList.totalPages} ? disabled"><a-->
-                            <!--                                        class="page-link"-->
-                            <!--                                        th:href="@{/shop/list/(pageSize=${selectedPageSize}, page=${shopList.totalPages})}">»</a>-->
-                            <!--                                </li>-->
+                            <li th:class="${shops.getNumber() == (page - 1)} ? 'active pointer-disabled'"
+                                th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a
+                                    class="page-link"
+                                    th:href="@{/ordering/shop/list/(pageSize=${selectedPageSize}, page=${page})}"
+                                    th:text="${page}"></a></li>
+                            <li th:class="${shops.getNumber()  + 1 == shops.getTotalPages()} ? disabled"><a
+                                    class="page-link"
+                                    th:href="@{/ordering/shop/list/(pageSize=${selectedPageSize}, page=${shops.getNumber()  + 2})}">→</a>
+                            </li>
+                            <li th:class="${shops.getNumber()  + 1 == shops.getTotalPages()} ? disabled"><a
+                                    class="page-link"
+                                    th:href="@{/ordering/shop/list/(pageSize=${selectedPageSize}, page=${shops.getTotalPages()})}">»</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

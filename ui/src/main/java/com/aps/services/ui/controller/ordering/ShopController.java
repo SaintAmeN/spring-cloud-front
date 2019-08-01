@@ -1,6 +1,9 @@
 package com.aps.services.ui.controller.ordering;
 
 import com.aps.services.model.dto.ordering.request.ShopRequestDto;
+import com.aps.services.model.dto.ordering.response.ShopResponseDto;
+import com.aps.services.model.pagination.OwnPageImpl;
+import com.aps.services.model.pagination.PagerModel;
 import com.aps.services.ui.apiclients.ordering.OrderingMS;
 import com.aps.services.ui.controller.BaseAbstractController;
 import lombok.RequiredArgsConstructor;
@@ -76,7 +79,9 @@ public class ShopController extends BaseAbstractController {
         int currentPage = page != null ? page - 1 : INITIAL_PAGE;
 
         ModelAndView model = new ModelAndView("ordering/shop/list");
-        model.addObject("shops", orderingMS.getShopList(selectedPageSize, currentPage).getBody());
+        OwnPageImpl<ShopResponseDto> shops = orderingMS.getShopList(selectedPageSize, currentPage).getBody();
+        model.addObject("shops", shops);
+        model.addObject("pager", new PagerModel(shops.getTotalPages(), shops.getNumber(), BUTTONS_TO_SHOW));
         model.addObject("selectedPageSize", selectedPageSize);
         model.addObject("pageSizes", PAGE_SIZES);
 

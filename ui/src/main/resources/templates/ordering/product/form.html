@@ -14,9 +14,6 @@
 </div>
 <div layout:fragment="content" id="content" class="container lite-padding">
     <main role="main" class="container">
-        <div id="hideMe" class="warning-nav" th:if="${error_message}">
-            <div th:text="${error_message}"></div>
-        </div>
         <div class="container aligned-margines">
             <div class="col-lg-12 mb-4">
                 <form id="productForm" class="card shadow" th:action="@{/ordering/product/add}"

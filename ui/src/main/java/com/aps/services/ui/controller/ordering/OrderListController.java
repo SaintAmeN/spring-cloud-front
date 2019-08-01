@@ -3,22 +3,22 @@ package com.aps.services.ui.controller.ordering;
 import com.aps.services.model.dto.ordering.request.InvoiceRequestDto;
 import com.aps.services.model.dto.ordering.request.OrderListRequestDto;
 import com.aps.services.model.dto.ordering.request.RequestUpdateDto;
+import com.aps.services.model.dto.ordering.response.OrderListResponseDto;
+import com.aps.services.model.pagination.OwnPageImpl;
+import com.aps.services.model.pagination.PagerModel;
 import com.aps.services.ui.apiclients.ordering.OrderingMS;
 import com.aps.services.ui.controller.BaseAbstractController;
 import com.aps.services.ui.util.ordering.ExcelWriter;
 import com.aps.services.ui.util.ordering.OrderSummaryDownloader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
-import static com.aps.services.ui.config.Constants.INITIAL_PAGE;
-import static com.aps.services.ui.config.Constants.PAGE_SIZES;
+import static com.aps.services.ui.config.Constants.*;
 import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
 
 /**
@@ -60,10 +60,12 @@ public class OrderListController extends BaseAbstractController {
         int currentPage = page != null ? page - 1 : INITIAL_PAGE;
 
         ModelAndView model = new ModelAndView("ordering/order/list");
-        model.addObject("orders", orderingMS.gerOrderList(selectedPageSize, currentPage).getBody());
+        OwnPageImpl<OrderListResponseDto> orders = orderingMS.gerOrderList(selectedPageSize, currentPage).getBody();
+        model.addObject("orders", orders);
         model.addObject("orderListRequestDto", new OrderListRequestDto());
         model.addObject("emptyOrderLists", orderingMS.getEmptyOrderLists().getBody());
         model.addObject("targets", orderingMS.getAllOrderTargets().getBody());
+        model.addObject("pager", new PagerModel(orders.getTotalPages(), orders.getNumber(), BUTTONS_TO_SHOW));
         model.addObject("selectedPageSize", selectedPageSize);
         model.addObject("pageSizes", PAGE_SIZES);
 

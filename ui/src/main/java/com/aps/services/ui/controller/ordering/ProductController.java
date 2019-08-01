@@ -3,6 +3,9 @@ package com.aps.services.ui.controller.ordering;
 import com.aps.services.model.dto.ordering.request.ProductCodeRequestDto;
 import com.aps.services.model.dto.ordering.request.ProductRequestDto;
 import com.aps.services.model.dto.ordering.request.UrlRequestDto;
+import com.aps.services.model.dto.ordering.response.ProductResponseDto;
+import com.aps.services.model.pagination.OwnPageImpl;
+import com.aps.services.model.pagination.PagerModel;
 import com.aps.services.ui.apiclients.ordering.OrderingMS;
 import com.aps.services.ui.controller.BaseAbstractController;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import static com.aps.services.ui.config.Constants.INITIAL_PAGE;
-import static com.aps.services.ui.config.Constants.PAGE_SIZES;
+import static com.aps.services.ui.config.Constants.*;
 import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
 
 /**
@@ -34,14 +36,14 @@ public class ProductController extends BaseAbstractController {
     }
 
     @GetMapping("/approve/{id}")
-    public ModelAndView approve(@PathVariable(name = "id") Long id){
+    public ModelAndView approve(@PathVariable(name = "id") Long id) {
         ModelAndView model = new ModelAndView("redirect:/ordering/product/list");
         orderingMS.approveProduct(id);
         return model;
     }
 
     @GetMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable(name = "id") Long id){
+    public ModelAndView delete(@PathVariable(name = "id") Long id) {
         ModelAndView model = new ModelAndView("redirect:/ordering/product/list");
         orderingMS.deleteProduct(id);
         return model;
@@ -132,7 +134,7 @@ public class ProductController extends BaseAbstractController {
     }
 
     @GetMapping("/details/{id}")
-    public ModelAndView getProductDetails(@PathVariable(name = "id") Long id){
+    public ModelAndView getProductDetails(@PathVariable(name = "id") Long id) {
         ModelAndView model = new ModelAndView("ordering/product/details");
         model.addObject("productResponseDto", orderingMS.findProductById(id).getBody());
         model.addObject("alternatives", orderingMS.findCurrentProductAlternatives(id).getBody());
@@ -157,7 +159,9 @@ public class ProductController extends BaseAbstractController {
         int currentPage = page != null ? page - 1 : INITIAL_PAGE;
 
         ModelAndView model = new ModelAndView("ordering/product/list");
-        model.addObject("products", orderingMS.getProductList(selectedPageSize, currentPage).getBody());
+        OwnPageImpl<ProductResponseDto> products = orderingMS.getProductList(selectedPageSize, currentPage).getBody();
+        model.addObject("products", products);
+        model.addObject("pager", new PagerModel(products.getTotalPages(), products.getNumber(), BUTTONS_TO_SHOW));
         model.addObject("selectedPageSize", selectedPageSize);
         model.addObject("pageSizes", PAGE_SIZES);
 

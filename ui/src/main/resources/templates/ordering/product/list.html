@@ -74,24 +74,24 @@
                         <div class="form-group col-md-11 pagination-centered">
                             <ul class="pagination">
                                 <li th:class="${products.getNumber() == 0} ? disabled"><a class="page-link"
-                                                                                        th:href="@{/product/list/(pageSize=${selectedPageSize}, page=1)}">«</a>
+                                                                                        th:href="@{/ordering/product/list/(pageSize=${selectedPageSize}, page=1)}">«</a>
                                 </li>
                                 <li th:class="${products.getNumber() == 0} ? disabled"><a class="page-link"
-                                                                                        th:href="@{/product/list/(pageSize=${selectedPageSize}, page=${products.getNumber()})}">←</a>
+                                                                                        th:href="@{/ordering/product/list/(pageSize=${selectedPageSize}, page=${products.getNumber()})}">←</a>
                                 </li>
-<!--                                <li th:class="${products.getNumber() == (page - 1)} ? 'active pointer-disabled'"-->
-<!--                                    th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a-->
-<!--                                        class="page-link"-->
-<!--                                        th:href="@{/product/list/(pageSize=${selectedPageSize}, page=${page})}"-->
-<!--                                        th:text="${page}"></a></li>-->
-<!--                                <li th:class="${productList.number + 1 == productList.totalPages} ? disabled"><a-->
-<!--                                        class="page-link"-->
-<!--                                        th:href="@{/product/list/(pageSize=${selectedPageSize}, page=${productList.number + 2})}">→</a>-->
-<!--                                </li>-->
-<!--                                <li th:class="${productList.number + 1 == productList.totalPages} ? disabled"><a-->
-<!--                                        class="page-link"-->
-<!--                                        th:href="@{/product/list/(pageSize=${selectedPageSize}, page=${productList.totalPages})}">»</a>-->
-<!--                                </li>-->
+                                <li th:class="${products.getNumber() == (page - 1)} ? 'active pointer-disabled'"
+                                    th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a
+                                        class="page-link"
+                                        th:href="@{/ordering/product/list/(pageSize=${selectedPageSize}, page=${page})}"
+                                        th:text="${page}"></a></li>
+                                <li th:class="${products.getNumber() + 1 == products.getTotalPages()} ? disabled"><a
+                                        class="page-link"
+                                        th:href="@{/ordering/product/list/(pageSize=${selectedPageSize}, page=${products.getNumber() + 2})}">→</a>
+                                </li>
+                                <li th:class="${products.getNumber() + 1 == products.getTotalPages()} ? disabled"><a
+                                        class="page-link"
+                                        th:href="@{/ordering/product/list/(pageSize=${selectedPageSize}, page=${products.getTotalPages()})}">»</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
