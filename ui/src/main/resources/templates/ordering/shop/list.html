@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <div class="container aligned-margines">
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h2 class="table-head-title" th:text="#{shop.list.title}"></h2>
+                </div>
+                <div class="table table-striped card-text card-body shadow">
+                    <div class="row col-12 table-header aligned-margines shadow">
+                        <div class="col-2" th:text="#{id}"></div>
+                        <div class="col-3" th:text="#{shop.name}"></div>
+                        <div class="col-3" th:text="#{owner}"></div>
+                        <div class="col-4" th:text="#{actions}"></div>
+                    </div>
+                    <div class="row col-12 colored aligned-margines shadow" th:each="shop : ${shops}"
+                        th:if="${shop.isApproved() || currentUser.isAdmin()}">
+                        <div class="col-2" th:text="${shop.getId()}"></div>
+                        <div class="col-3 break-line" th:text="${shop.getName()}"></div>
+                        <div class="col-3 break-line" th:text="${shop.getCreator().getName()}"></div>
+                        <div class="col-1">
+                            <a class="link actions-details"
+                               th:href="@{'/ordering/shop/details/' + ${shop.getId()}}" th:text="#{details}"></a>
+                        </div>
+                        <div class="col-1">
+                            <a class="link actions-details"
+                               th:if="${currentUser.isAdmin() || shop.getCreator().getId() == currentUser.getId()}"
+                               th:href="@{'/ordering/shop/edit/' + ${shop.getId()}}" th:text="#{edit}"></a>
+                        </div>
+                        <div class="col-1">
+                            <a class="link actions-details"
+                               th:if="${currentUser.isAdmin() || shop.getCreator().getId() == currentUser.getId()}"
+                               th:href="@{'/ordering/shop/delete/' + ${shop.getId()}}" th:text="#{delete}"></a>
+                        </div>
+                        <div class="col-1">
+                            <a class="link actions-details"
+                               th:if="${currentUser.isAdmin() && !shop.isApproved()}"
+                               th:href="@{'/ordering/shop/approve/' + ${shop.getId()}}" th:text="#{approve}"></a>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row col-12 colored aligned-margines redish" th:if="${shops.getContent().size() == 0}">
+                    <div class="col-12" th:text="#{list.no.elements}">
+                    </div>
+                </div>
+                <div class="row offset-4" th:if="${shops.totalPages > 1}">
+                    <div class="form-group col-md-1.5"><select class="form-control roundless" id="pageSizeSelect">
+                        <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
+                                th:selected="${pageSize} == ${selectedPageSize}"></option>
+                    </select></div>
+                    <div th:if="${shops.getTotalPages() != 1}" class="form-group col-md-11 pagination-centered">
+                        <ul class="pagination">
+                            <li th:class="${shops.getNumber() == 0} ? disabled"><a class="page-link"
+                                                                                   th:href="@{/ordering/shop/list/(pageSize=${selectedPageSize}, page=1)}">«</a>
+                            </li>
+                            <li th:class="${shops.getNumber() == 0} ? disabled"><a class="page-link"
+                                                                                   th:href="@{/ordering/shop/list/(pageSize=${selectedPageSize}, page=${shops.getNumber()})}">←</a>
+                            </li>
+                            <li th:class="${shops.getNumber() == (page - 1)} ? 'active pointer-disabled'"
+                                th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a
+                                    class="page-link"
+                                    th:href="@{/ordering/shop/list/(pageSize=${selectedPageSize}, page=${page})}"
+                                    th:text="${page}"></a></li>
+                            <li th:class="${shops.getNumber()  + 1 == shops.getTotalPages()} ? disabled"><a
+                                    class="page-link"
+                                    th:href="@{/ordering/shop/list/(pageSize=${selectedPageSize}, page=${shops.getNumber()  + 2})}">→</a>
+                            </li>
+                            <li th:class="${shops.getNumber()  + 1 == shops.getTotalPages()} ? disabled"><a
+                                    class="page-link"
+                                    th:href="@{/ordering/shop/list/(pageSize=${selectedPageSize}, page=${shops.getTotalPages()})}">»</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="offset-10 col-2 paddingless">
+                    <a class="button shadow" th:href="@{'/ordering/shop/add'}"
+                       th:text="#{shop.create}"></a>
+                </div>
+            </div>
+            <div class="offset-9">
+                <a class="button w-100 shadow" th:href="@{'/'}"
+                   th:text="#{ctrl.back.to.home.page}"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

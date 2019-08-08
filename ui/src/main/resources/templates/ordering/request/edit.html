@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <div class="container aligned-margines">
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h3 class="table-head-title" th:text="#{request.edit}"></h3>
+                </div>
+                <form class="card shadow" th:action="@{'/ordering/request/edit/' + ${productRequestResponseDto.getId()} + '/' + ${orderId}}" method="post"
+                      th:object="${productRequestRequestDto}">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="offset-md-1 col-md-5 middledd">
+                                <label for="shop" th:text="#{product.name}"></label>
+                            </div>
+                            <div id="shop" class="col-md-5 middled">
+                                <input class="form-control roundless shadow" type="text"
+                                       th:value="${productRequestResponseDto.getProductName()}" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="offset-md-1 col-md-5 middled">
+                                <label for="quantity" th:text="#{quantity}"></label>
+                            </div>
+                            <div class="col-md-2 middled">
+                                <input id="quantity" name="quantity" required class="form-control roundless shadow" type="number" min="0" step="0.01"
+                                       th:value="${productRequestResponseDto.getQuantity()}">
+                            </div>
+                            <div class="col-md-3 middled">
+                                <select id="unitId" name="unitId" class="form-control roundless shadow">
+                                    <option class="form-control roundless shadow" th:each="unit: ${units}"
+                                            th:selected="${productRequestResponseDto.getUnit().equals(unit.getName())}"
+                                            th:attr="value = ${unit.getId()}"
+                                            th:text="${unit.getName()}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="offset-md-1 col-md-5 middled">
+                                <label for="priority" th:text="#{priority}"></label>
+                            </div>
+                            <div class="col-md-5 middled">
+                                <select id="priority" name="priority" class="form-control roundless shadow">
+                                    <option class="form-control roundless" th:each="priority : ${T(com.aps.services.model.dto.ordering.model.attributes.RequestPriority).values()}"
+                                            th:selected="${productRequestResponseDto.getPriority().equals(priority)}"
+                                            th:attr="value = ${priority}"
+                                            th:text="${priority.name()}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="offset-md-1 col-md-5 middled">
+                                <label for="description" th:text="#{description.additional}"></label>
+                            </div>
+                            <div class="col-md-5 middled">
+                                <textarea id="description" name="description" class="form-control roundless shadow" type="text" th:value="${productRequestResponseDto.getDescription()}">
+                                    [[${productRequestResponseDto.getDescription()}]]
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="offset-md-10 col-md-2 middled">
+                                <input class="form-control w-100 button roundless shadow" type="submit"
+                                       th:value="#{edit}">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="offset-8">
+            <a class="button button-create-orderlist shadow" th:href="@{'/ordering/order/manage/' + ${orderId}}" th:text="#{order.list.back}"></a>
+        </div>
+<!--        <hr>-->
+<!--        <div class="col-lg-12 mb-4">-->
+<!--            <div class="card shadow-list-change">-->
+<!--                <div class="card-header row col-12 aligned-margines shadow-list-change">-->
+<!--                    <h2 class="table-head-title" th:text="#{order.details.last.change}"></h2>-->
+<!--                </div>-->
+<!--                <div class="card-body">-->
+<!--                    <table class="table table-striped card-text card-body shadow-list-change">-->
+<!--                        <th class="row col-12 table-header aligned-margines shadow-list-change">-->
+<!--                            <div class="col-6" th:text="#{details}"/>-->
+<!--                            <div class="col-3" th:text="#{order.details.changed.by}"/>-->
+<!--                            <div class="col-3" th:text="#{last.updated.time}"/>-->
+<!--                        </th>-->
+<!--                        <th class="row col-12 colored aligned-margines shadow-list-change"-->
+<!--                            th:each=" events : ${productRequest.getApplicationEvents()}"-->
+<!--                            th:if="${events.getEvent().contains('Changed')}">-->
+<!--                            <div class="col-6" th:text="${events.getEvent()}"/>-->
+<!--                            <div class="col-3" th:text="${events.getMsg()}"/>-->
+<!--                            <div class="col-3"-->
+<!--                                 th:text="*{#temporals.format(events.getTime(),'dd-MM-yyyy HH:mm:ss')}"></div>-->
+<!--                        </th>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</div>
+</body>
+</html>

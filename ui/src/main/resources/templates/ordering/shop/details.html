@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container">
+    <div class="container aligned-margines">
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h3 class="table-head-title" th:text="#{shop.details}"></h3>
+                </div>
+                <div class="table table-striped card-text card-body shadow">
+                    <div class="row col-12 table-header aligned-margines shadow">
+                        <div class="col-2" th:text="#{id}"></div>
+                        <div class="col-5" th:text="#{shop.name}"></div>
+                        <div class="col-5" th:text="#{shop.url.address}"></div>
+                    </div>
+                    <div class="row col-12 table aligned-margines colored shadow">
+                        <div class="col-2" th:text="${shopResponseDto.getId()}"></div>
+                        <div class="col-5 break-line" th:text="${shopResponseDto.getName()}"></div>
+                        <div class="col-5 break-line" th:text="${shopResponseDto.getUrl()}"></div>
+                    </div>
+                    <div class="row col-12 table-header aligned-margines shadow">
+                        <div class="col-5" th:text="#{shop.address.street}"></div>
+                        <div class="col-3" th:text="#{shop.address.code}"></div>
+                        <div class="col-4" th:text="#{shop.address.city}"></div>
+                    </div>
+                    <div class="row col-12 table aligned-margines colored shadow">
+                        <div class="col-5 break-line" th:text="${shopResponseDto.getStreet()}"></div>
+                        <div class="col-3 break-line" th:text="${shopResponseDto.getCode()}"></div>
+                        <div class="col-4 break-line" th:text="${shopResponseDto.getCity()}"></div>
+                    </div>
+                </div>
+                <div class="offset-10 col-2 paddingless">
+                    <a class="button w-100 shadow" th:if="${currentUser.isAdmin() || shopResponseDto.getCreator().getId() == currentUser.getId()}"
+                       th:href="@{'/ordering/shop/edit/' + ${shopResponseDto.getId()}}" th:text="#{ctrl.edit}"></a>
+                </div>
+            </div>
+            <div class="offset-10">
+                <a class="button w-100 shadow" th:href="@{/ordering/shop/list/}" th:text="#{ctrl.previous}"></a>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h3 class="table-head-title" th:text="#{shop.location}"></h3>
+                </div>
+                <div class="card-body shadow">
+                    <div class="offs-5 shadow">
+                        <input id="locationInfo" type="hidden" th:data="${shopResponseDto.getGeolocationInfo()}">
+                        <div id="mapdiv" style="height: 500px;"></div>
+
+                        <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+                        <script>
+                            map = new OpenLayers.Map("mapdiv");
+                            map.addLayer(new OpenLayers.Layer.OSM());
+
+                            var info = document.getElementById("locationInfo").getAttribute("data");
+                            var xmlhttp = new XMLHttpRequest();
+                            var url = "https://nominatim.openstreetmap.org/search?q=" + info + "&format=json";
+                            var lon, lat;
+
+                            xmlhttp.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    var myArr = JSON.parse(this.responseText);
+
+                                    lat = myArr["0"].boundingbox[0];
+                                    lon = myArr["0"].boundingbox[2];
+
+                                    var lonLat = new OpenLayers.LonLat(lon, lat)
+                                        .transform(
+                                            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                                            map.getProjectionObject() // to Spherical Mercator Projection
+                                        );
+
+                                    var zoom = 16;
+
+                                    var markers = new OpenLayers.Layer.Markers("Markers");
+                                    map.addLayer(markers);
+
+                                    markers.addMarker(new OpenLayers.Marker(lonLat));
+
+                                    map.setCenter(lonLat, zoom);
+                                }
+                            };
+                            xmlhttp.open("GET", url, true);
+                            xmlhttp.send();
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

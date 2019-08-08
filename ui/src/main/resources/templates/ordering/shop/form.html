@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container">
+    <div class="offset-1 col-lg-12">
+        <form class="card shadow" th:action="@{/ordering/shop/add}" method="post" th:object="${shopRequestDto}">
+<!--            TODO-->
+            <div class="card-header row col-12 aligned-margines">
+                <h3 th:text="#{shop.add}"></h3>
+            </div>
+            <div class="row card-body" >
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="shopName" th:text="#{shop.name}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <input required class="form-control roundless shadow" type="text" id="shopName"
+                                   th:field="*{name}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="address-street" th:text="#{shop.address.street}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <input class="form-control roundless shadow" type="text" id="address-street"
+                                   th:field="*{street}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="address-code" th:text="#{shop.address.code}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <input class="form-control roundless shadow" type="text" id="address-code"
+                                   th:field="*{code}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="address-city" th:text="#{shop.address.city}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <input class="form-control roundless shadow" type="text" id="address-city"
+                                   th:field="*{city}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-1 col-md-5 middled">
+                            <label for="url" th:text="#{shop.link}"></label>
+                        </div>
+                        <div class="col-md-5 middled">
+                            <input class="form-control roundless shadow" type="text" id="url" th:field="*{url}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-md-10 col-md-2 middled">
+                    <input class="form-control roundless button shadow" type="submit" th:value="#{shop.create}">
+                </div>
+            </div>
+        </form>
+        <div class="offset-9">
+            <a class="button w-100 shadow" th:href="@{'/ordering/shop/list/'}" th:text="#{ctrl.previous}"></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

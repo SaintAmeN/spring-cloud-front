@@ -1,7 +1,10 @@
 package com.aps.services.ui.controller;
 
 import com.aps.services.model.AccountAuthentication;
+import com.aps.services.model.dto.common.UserInfoRequest;
 import com.aps.services.model.exception.usageerrors.UnauthorizedException;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,7 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  * @project ms-ui
  * @created 15.07.19
  */
-public abstract class BaseAbstractController {
+public abstract class BaseAbstractController implements MessageSourceAware {
+    protected MessageSource messageSource;
 
     @ModelAttribute(name = "username")
     public String username(Authentication authentication) {
@@ -29,4 +33,15 @@ public abstract class BaseAbstractController {
         return String.valueOf(((AccountAuthentication) authentication.getPrincipal()).getUid());
     }
 
+    @ModelAttribute(name = "currentUser")
+    public UserInfoRequest user(Authentication authentication) {
+        return UserInfoRequest.builder().id(Long.parseLong(userId(authentication))).name(username(authentication)).isAdmin(
+                ((User) authentication.getPrincipal()).getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"))
+        ).build();
+    }
+
+    @Override
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 }

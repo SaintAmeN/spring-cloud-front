@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container lite-padding">
+    <div class="container aligned-margines">
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h2 class="table-head-title" th:text="#{order.list.title}"></h2>
+                </div>
+                <table class="table table-striped card-text card-body shadow">
+                    <th class="row col-12 table-header aligned-margines shadow">
+                        <div class="col-1" th:text="#{id}"></div>
+                        <div class="col-2" th:text="#{order.name}"></div>
+                        <div class="col-1" th:text="#{owner}"></div>
+                        <div class="col-2" th:text="#{created.time}"></div>
+                        <div class="col-2" th:text="#{updated.time}"></div>
+                        <div class="col-4" th:text="#{actions}"></div>
+                    </th>
+                    <th class="row col-12 colored aligned-margines shadow" th:each="order : ${orders}"
+                        th:if="${!order.isArchived()}">
+                        <div class="col-1" th:text="${order.getId()}"></div>
+                        <div class="col-2 break-line" th:text="${order.getName()}"></div>
+                        <div class="col-1 break-line" th:text="${order.getCreator().getName()}"></div>
+                        <div class="col-2 break-line" th:object="${order}"
+                             th:text="*{#temporals.format(creationTime,'dd-MM-yyyy HH:mm:ss')}"></div>
+                        <div class="col-2" th:object="${order}"
+                             th:text="*{#temporals.format(updateTime,'dd-MM-yyyy HH:mm:ss')}"></div>
+                        <div class="col-1">
+                            <a class="link actions-details"
+                               th:href="@{'/ordering/order/manage/' + ${order.getId()}}"
+                               th:text="#{manage}"></a>
+                        </div>
+                        <div class="col-1">
+                            <a class="link actions-details"
+                               th:if="${currentUser.isAdmin() || order.getCreator().getId() == currentUser.getId()}"
+                               th:href="@{'/ordering/order/edit/' + ${order.getId()}}" th:text="#{edit}"></a>
+                        </div>
+                        <div class="col-1">
+                            <a class="link actions-details"
+                               th:if="${currentUser.isAdmin() || order.getCreator().getId() == currentUser.getId()}"
+                               th:href="@{'/ordering/order/archive/' + ${order.getId()}}"
+                               th:text="#{archive}"></a>
+                        </div>
+                        <div class="col-1">
+                            <a class="link actions-details"
+                               th:if="${currentUser.isAdmin() || order.getCreator().getId() == currentUser.getId()}"
+                               th:href="@{'/ordering/order/delete/' + ${order.getId()}}" th:text="#{delete}"></a>
+                        </div>
+                    </th>
+                </table>
+                <div class="row offset-4" th:if="${orders.getTotalPages() > 1}">
+                    <div class="form-group col-md-1.5">
+                        <select class="form-control pagination" id="pageSizeSelect">
+                            <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
+                                    th:selected="${pageSize} == ${selectedPageSize}">
+                            </option>
+                        </select>
+                    </div>
+                    <div th:if="${orders.getTotalPages()  != 1}" class="form-group col-md-11 pagination-centered">
+                        <ul class="pagination">
+                            <li th:class="${orders.getNumber() == 0} ? disabled"><a class="page-link"
+                                                                                    th:href="@{/ordering/order/list/(pageSize=${selectedPageSize}, page=1)}">«</a>
+                            </li>
+                            <li th:class="${orders.getNumber() == 0} ? disabled"><a class="page-link"
+                                                                                    th:href="@{/ordering/order/list/(pageSize=${selectedPageSize}, page=${orders.getNumber()})}">←</a>
+                            </li>
+                            <li th:class="${orders.getNumber() == (page - 1)} ? 'active pointer-disabled'"
+                                th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"><a
+                                    class="page-link"
+                                    th:href="@{/ordering/order/list/(pageSize=${selectedPageSize}, page=${page})}"
+                                    th:text="${page}"></a></li>
+                            <li th:class="${orders.getNumber()  + 1 == orders.getTotalPages()} ? disabled"><a
+                                    class="page-link"
+                                    th:href="@{/ordering/order/list/(pageSize=${selectedPageSize}, page=${orders.getNumber()  + 2})}">→</a>
+                            </li>
+                            <li th:class="${orders.getNumber()  + 1 == orders.getTotalPages()} ? disabled"><a
+                                    class="page-link"
+                                    th:href="@{/ordering/order/list/(pageSize=${selectedPageSize}, page=${orders.getTotalPages()})}">»</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row col-12 colored aligned-margines redish" th:if="${orders.isEmpty()}">
+                    <div class="col-12" th:text="#{list.no.elements}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow" th:if="${emptyOrderLists.size() < 2}">
+                <form th:action="@{/ordering/order/add}" method="post" th:object="${orderListRequestDto}">
+                    <div class="card-header row col-12 aligned-margines shadow-table-header">
+                        <h3 class="table-head-title" th:text="#{order.add}"></h3>
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-1 middled">
+                            <label for="orderListName" th:text="#{order.name}"></label>
+                        </div>
+                        <div class="col-3 middled">
+                            <input required class="form-control roundless shadow" type="text"
+                                   id="orderListName"
+                                   th:field="*{name}">
+                        </div>
+                        <div class="col-1 middled">
+                            <label for="targetName" th:text="#{order.target.choose}"></label>
+                        </div>
+                        <div class="col-2 middled">
+                            <select id="targetId" name="targetId" class="form-control roundless">
+                                <option selected class="form-control rounded"></option>
+                                <option class="form-control roundless" th:each="target : ${targets}"
+                                        th:value="${target.getId()}"
+                                        th:text="${target.getName()}"></option>
+                            </select>
+                        </div>
+                        <div class="col-1 middled">
+                            <label for="targetName" th:text="#{order.target.choose2}"></label>
+                        </div>
+                        <div class="col-2 middled">
+                            <input class="form-control roundless shadow" type="text"
+                                   id="targetName"
+                                   th:field="*{targetName}">
+                        </div>
+                        <div class="col-2 middled">
+                            <input class="form-control roundless button shadow" type="submit"
+                                   th:value="#{order.create}">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="offset-9">
+                <a class="button w-100 shadow" th:href="@{'/'}"
+                   th:text="#{ctrl.back.to.home.page}"></a>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-4" th:if="${emptyOrderLists.size() >= 2}">
+            <div class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h4 th:text="#{order.notification.empty.p1}+' '+${emptyOrderLists.size()}+' '+#{order.notification.empty.p2}"></h4>
+                </div>
+                <div class="card-body">
+                    <div style="color: blue" th:each="emptyOrder : ${emptyOrderLists}">
+                        <li th:text="'ID: '+${emptyOrder.getId()}+' Name: '+${emptyOrder.getName()}"></li>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

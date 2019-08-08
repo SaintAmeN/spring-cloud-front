@@ -133,6 +133,16 @@
             <artifactId>spring-hateoas</artifactId>
             <version>0.25.1.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.0.1</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -182,6 +192,19 @@
             </activation>
             <properties>
                 <bootstrapprofile>docker</bootstrapprofile>
+                <production-active>false</production-active>
+            </properties>
+        </profile>
+        <profile>
+            <id>local</id>
+            <activation>
+                <property>
+                    <name>env.machine</name>  <!--To zmienna środowiskowa.-->
+                    <value>local</value>
+                </property>
+            </activation>
+            <properties>
+                <bootstrapprofile>local</bootstrapprofile>
                 <production-active>false</production-active>
             </properties>
         </profile>

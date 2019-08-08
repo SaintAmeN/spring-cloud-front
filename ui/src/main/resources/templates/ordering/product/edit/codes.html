@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+</head>
+<body>
+<div layout:fragment="content" id="content" class="container">
+    <div class="container aligned-margines">
+        <div class="col-lg-12 mb-4">
+            <div id="productForm" class="card shadow">
+                <div class="card-header row col-12 aligned-margines shadow-table-header">
+                    <h3 class="table-head-title" th:text="#{product.manage.codes}"></h3>
+                </div>
+                <div class="row card-body">
+                    <div class="row col-md-12">
+                        <div class="offset-1 row col-5 middled separate-right">
+                            <h3 class="table-head-title" th:text="#{product.codes}"></h3>
+                        </div>
+                        <div class="offset-1 col-md-5 card-body middled bold">
+                            <div class="row col-12 table-header aligned-margines shadow">
+                                <div class="col-3" th:text="#{product.code.id}"></div>
+                                <div class="col-5" th:text="#{product.code.value}"></div>
+                                <div class="col-4" th:text="#{product.code.delete}"></div>
+                            </div>
+                            <div class="row col-12 colored aligned-margines shadow bold"
+                                 th:each="code : ${currentCodes.entrySet()}">
+                                <div class="col-3 table-element" th:text="${code.getValue()}"></div>
+                                <div class="col-5 table-element" th:text="${code.getKey()}"></div>
+                                <div class="col-4">
+                                    <a class="button form-control" th:text="#{delete}"
+                                       th:href="@{'/ordering/product/edit/codes/delete/' + ${productId} + '/' + ${code.getValue()}}"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row card-body">
+                    <div class="row col-md-12">
+                        <div class="offset-1 row col-5 middled separate-right">
+                            <h3 class="table-head-title" th:text="#{product.code.add}"></h3>
+                        </div>
+                        <form class="offset-1 col-md-5 card-body middled bold"
+                              th:action="@{'/ordering/product/edit/codes/add/' + ${productId}}" th:object="${productCodeRequest}"
+                              method="post">
+                            <div class="row col-12 aligned-margines">
+                                <div class="col-4" th:text="#{product.code.value}"></div>
+                                <input required class="col-8 form-control roundless" type="text" th:field="*{code}">
+                            </div>
+                            <hr>
+                            <div class="row col-12 aligned-margines">
+                                <input class="form-control col-12 button roundless" type="submit"
+                                       th:value="#{product.code.add}">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="offset-8">
+            <a class="button button-create-orderlist shadow" th:href="@{'/ordering/product/edit/'+${productId}}"
+               th:text="#{ctrl.previous}"></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
