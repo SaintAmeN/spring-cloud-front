@@ -1,8 +1,6 @@
 spring:
   application:
     name: ui-ms
-  profiles:
-    active: @bootstrapprofile@
   cloud:
     config:
-      uri: http://aps-platform.com:18002
+      uri: http://localhost:8002

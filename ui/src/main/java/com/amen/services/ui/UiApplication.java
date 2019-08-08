@@ -11,16 +11,8 @@ import org.springframework.context.annotation.ComponentScan;
 @Slf4j
 @SpringBootApplication
 @EnableDiscoveryClient
-@EntityScan(basePackages = "com.aps.services.ui.model.event")
-@ComponentScan(basePackages = {
-        "com.aps.services.ui",
-        "com.aps.services.ui.config",
-        "com.aps.services.ui.service",
-        "com.aps.services.ui.component",
-        "feign",
-        "com.aps.services.ui.model.event"
-})
-@EnableFeignClients(basePackages = {"com.aps.services.ui.apiclients", "com.aps.services.ui.apiclients"})
+@ComponentScan(basePackages = {"com.amen.services"})
+@EnableFeignClients(basePackages = {"com.amen.services.ui"})
 public class UiApplication {
 
     public static void main(String[] args) {
