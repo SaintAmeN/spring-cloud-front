@@ -8,11 +8,10 @@
         <version>2.1.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.aps.services</groupId>
+    <groupId>com.amen.services</groupId>
     <artifactId>ui</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ui</name>
-    <description>Demo project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -71,13 +70,6 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.aps.services</groupId>
-            <artifactId>common-services</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
         <!-- Do wypisywania dodatkowych atrybutów związanych z security. -->
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
@@ -142,6 +134,11 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>4.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
         </dependency>
     </dependencies>
 
